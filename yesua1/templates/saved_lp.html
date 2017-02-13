@@ -1,0 +1,28 @@
+<html>
+{% extends "banner_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Create Lesson Plan" %}{% endblock %}
+
+<!-- Don't know the purpose of the following line -->
+{% block body_class %}home{% endblock %}
+
+<body>
+{% block banner %}
+    {% url "search_results" as search_results_url %}
+    <form role="form" action = "{{search_results_url}} " method = "post">
+    {% csrf_token %}
+      <p>
+        {% blocktrans %}
+        Lesson plan for {{input_title}} saved!
+    {% endblocktrans %}
+    </p>
+    <input type="hidden" id="query" name="query" value="{{input_title}}"/>
+    <button type="submit" class="btn btn-default">View Saved Plan</button>
+    </form>
+
+{% endblock %}
+  </body>
+</html>
+
