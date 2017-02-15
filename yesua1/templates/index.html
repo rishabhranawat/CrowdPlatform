@@ -294,8 +294,10 @@
         $('#'+name_desc).val("none")
         var url =  $('#'+name_desc).val()
         //console.log($('input[name= name_url]').attr("name"))
-        alert('Are you sure you want to delete this item?')
-        $('#' + itemGroup + '_' + itemId + '_row').remove()
+        if(confirm('Are you sure you want to delete this item?')){
+          $('#' + itemGroup + '_' + itemId + '_row').remove();
+        }
+        
        // var delete_existing = deleteItem(itemType, itemId, lessonId, itemGroup)
         /*$(this).attr('name','none')
         $(this).attr('id','none')*/
@@ -384,8 +386,7 @@
       });
   
        $('.item-down').click(function(){
-                 alert('Hello world')
-
+        
         var itemGroup=""
         var itemId=0
         var myTable=""
