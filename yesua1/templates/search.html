@@ -11,6 +11,7 @@
 
 {% block banner %}
 
+
 	{% url "search_results_terse" as search_results_terse_url %}
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -20,7 +21,7 @@
 
     <!-- Our own CSS -->
     <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
-    
+    <h2>Search Lesson Plan</h2>
     <form role="form" action = "{{search_results_terse_url}} " method = "POST">
       {% csrf_token %}
       <div class="form-group">
