@@ -18,7 +18,7 @@
 
     {% block banner %}
 
-     
+      <h2> Create a Lesson Plan </h2>
       {% url "clp:save_lesson_plan" as save_lesson_plan_url %}
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -43,49 +43,44 @@
       
       <!-- First Div -->
       {% if engage_urls %}
-      <table class="table table-hover" id="table1" name="table1">
+      <div class="container">
+        <table class="table table-hover" id="table1" name="table1">
 
-        <thead>
-          <tr>
-            <th>Engage</th>
-          </tr>
-        </thead>
+          <thead>
+            <tr>
+              <th>Engage</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          
-          {% for enlink in engage_urls %}
-          <!--- search result -->
-          <!-- <tr> -->
-            <input type="hidden" id="engageurl_{{enlink.item_id}}" name="engageurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
-            <input type="hidden" id="engagedesc_{{enlink.item_id}}" name="engagedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
-          <!--</tr> -->
-          <tr id="engage_{{enlink.item_id}}_row">
-            <td>
-              <div class="col-md-11">
-                  <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.url }}</a></h4>
-                  <p>{{ enlink.desc }}</p>
-              </div>
-              <div class="col-md-1">
-               <!-- <input id = 'enagage_test_{{ enlink.item_id}}' type = "image" class = "img-responsive item-bon link_item" src ="{% static "images/keep.png" %}" width="20" height="20"/>-->
-               
-                <input id = "engage_{{enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
-        
-                  <input id = "engage_{{enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15" />
-              
-                  <input id = "engage_{{enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
-               
-              </div>
-            </td>
-          </tr> 
-          <!-- search result ends -->
-          {% endfor %}
-
-        
-          
-
+          <tbody>
+            
+            {% for enlink in engage_urls %}
+            <!--- search result -->
+            <!-- <tr> -->
+              <input type="hidden" id="engageurl_{{enlink.item_id}}" name="engageurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
+              <input type="hidden" id="engagedesc_{{enlink.item_id}}" name="engagedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
+            <!--</tr> -->
+            <tr id="engage_{{enlink.item_id}}_row">
+              <td>
+                  <div class="col-xs-12 col-md-11">
+                        <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.url }}</a></h4>
+                        <p>{{ enlink.desc }}</p>  
+                  </div>
+                  
+                  <div class="col-md-1 col-xs-12">
+                  
+                    <input id = "engage_{{enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+            
+                    <input id = "engage_{{enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15" />
+                  
+                      <input id = "engage_{{enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
+                  </div>
+                </td>
+            </tr> 
+        {% endfor %}
         </tbody>
-
       </table>
+      </div>
       {% endif %}
       <!-- second div -->
       {% if explain_urls %}
@@ -386,7 +381,7 @@
       });
   
        $('.item-down').click(function(){
-        
+
         var itemGroup=""
         var itemId=0
         var myTable=""
