@@ -1,0 +1,12 @@
+td.dragHandle {
+	width:100px;
+}
+
+td.showDragHandle {
+	background-image: url('../images/updown2.png');
+	background-size:30px 30px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	cursor: move;
+	width:100px;
+}
