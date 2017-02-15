@@ -1,0 +1,23 @@
+<html>
+ {% extends "banner_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block head_title %}{% trans "Search" %}{% endblock %}
+
+<!-- Don't know the purpose of the following line -->
+{% block body_class %}home{% endblock %}
+
+{% block banner %}
+
+	    {% url "search_q_results" as search_q_results_url %}
+    <form role="form" action = "{{search_q_results_url}} " method = "POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="exampleInputEmail1">Lesson Title </label>
+        <input type="text" class="form-control" name="quest">
+      </div>
+      <button type="submit" class="btn btn-default">Search Questions</button>
+    </form>
+{% endblock %}
+</html>

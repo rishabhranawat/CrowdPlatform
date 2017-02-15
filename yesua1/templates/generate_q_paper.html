@@ -1,0 +1,23 @@
+<html>
+ {% extends "banner_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block head_title %}{% trans "Search" %}{% endblock %}
+
+<!-- Don't know the purpose of the following line -->
+{% block body_class %}home{% endblock %}
+
+{% block banner %}
+
+	    {% url "question_paper" as gen_qp_results_url %}
+    <form role="form" action = "{{gen_qp_results_url}} " method = "POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="exampleInputEmail1">Course Name </label>
+        <input type="text" class="form-control" name="quest">
+      </div>
+      <button type="submit" class="btn btn-default">Generate a question paper</button>
+    </form>
+{% endblock %}
+</html>
