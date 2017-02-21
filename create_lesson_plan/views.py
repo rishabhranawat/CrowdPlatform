@@ -12,8 +12,13 @@ from django.db.models import Q
 from django.contrib.sessions.backends.db import SessionStore
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
+from multiprocessing import Pool
+from multiprocessing import Process
+from multiprocessing import Manager
+from multiprocessing import Queue
 #from operator import itemgetter
 import summsrch
+import time
 
 # list of subjects
 subjects = ['Math', 'Computer Science']
@@ -25,10 +30,11 @@ filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog']
 types=['Document', 'Image']
 
 class Links(object):
-	def __init__(self,url,desc,value):
+	def __init__(self,url,desc,value, title):
 		self.url = url
 		self.desc = desc
 		self.value = value
+		self.title = title
 
 # determine if a search result is to be filtered, just based on its URL
 def isToBeFiltered(url):
@@ -65,19 +71,11 @@ def processed(query,type1,type2):
             query+="+site:wikipedia.org"
             #print "Created query " + query
         elif type2 == 2:
-            query+="+examples"
-        elif type2 == 3:
-            query+="+applications"
-    
-    # explain phase
-    elif type1 == 2:
-        if type2 == 1:
             query+=" filetype:ppt site:edu "
-        elif type2 == 2:
+        elif type2 == 3:
             query+=" concepts filetype:pdf site:edu "
-    
     # evaluate phase
-    elif type1 == 3:
+    elif type1 == 2:
         if type2 == 1:
             query+="+homeworks+site:edu"
         elif type2 == 2:
@@ -94,21 +92,15 @@ def run_topic_search(duplicate_dict, query_set, type1):
  # for now the search queries are manually defined
  # type2 specifies what is appended to the main query before sending to bing
  # look at the function processed for the different values
-    
+    type2_range = [3, 2]
     for query in query_set:
-        for type2 in range(1,4):
+        query_results ={} 
+        output_links = Queue()	
+        for type2 in range(1,type2_range[type1-1]):
             # process and run each query
             processed_query = processed(query, type1, type2)
             query2 = query
-            query2 = query2.replace("+Math","")
-            query2 = query2.replace("+Computer Science","")
-            if type1 == 1:
-              query2+="+Engage"
-            elif type1 ==2:
-              query2+="+Explain"
-            elif type1 ==3:
-              query2+="+Evaluate"
-
+ 
             results = bing.bing_search(processed_query, 'Web', query2)
             #print len(results)
 
@@ -121,31 +113,37 @@ def run_topic_search(duplicate_dict, query_set, type1):
             #print "number of links %d"%len(valid_result)
             if len(valid_result)==0:
               continue
-            result_filtered = summsrch.summ_search(processed_query,valid_result)
-            # number of unique results
-            count = 0
-            # index into results
-            x = 0
-            
-            
-            for r in result_filtered:
-                link = Links(r['Url'], r['Description'], r['Value'])
-                link_list.append(link)
-                count = count + 1
+            query_results[processed_query] = valid_result
 
-   	        
-    #print "Number of final limks %d and type %d" %(type1,len(link_list))
-    #new_link_list = sorted(link_list, key=lambda x: x.value, reverse=True)
-    # ASHWIN: I removed reverse=True because I changed the scoring in summsearch.py so that lower
-    # values of 'value' are better
+        query_threads =[]   
+        index =0 
+        for key, value in query_results.iteritems():
+            query_threads.append(Process(target= get_relevant_links,args=(key,value,index,output_links)))
+            index+=1
+            query_threads[-1].start()
+
+        for i in range(len(query_threads)):
+          query_threads[i].join()
+
+        for i in range(len(query_threads)):
+          link_list+=output_links.get()
+
     new_link_list = sorted(link_list, key=lambda x: x.value)
     if len(link_list) >= 10:
      count=10
     else:
-     count = len(link_list)     
-    # return the duplicates list and the list of link objects
+     count = len(link_list)
     output = {'dups':duplicate_dict, 'links':new_link_list[0:count]}
     return output
+
+def get_relevant_links(query,results,query_type,output):
+  result_filtered = summsrch.summ_search(query,results,query_type)
+  link_list =[]
+  for r in result_filtered:
+    link = Links(r['Url'], r['Description'], r['Value'], r['title'])
+    link_list.append(link)
+
+  output.put(link_list)
 
 # use this to create a new lesson plan
 def create_lesson_plan(request):
@@ -154,15 +152,13 @@ def create_lesson_plan(request):
 
 # use this to display a lesson plan
 def display_lesson_plan(request, lesson_plan_id = ""):
-    # get all the objects required to display complete lesson plan
+    
     l = lesson.objects.get(id=lesson_plan_id)
     print "found lesson with id: %d" % l.id
     engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
-    #engage_img1 = Engage_Images.objects.filter(lesson_fk=l)
     explain_urls = Explain_Urls.objects.filter(lesson_fk=l)
-    #explain_img1 = Explain_Images.objects.filter(lesson_fk=l)
     evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
-    #evaluate_img1 = Evaluate_Images.objects.filter(lesson_fk=l)
+
     doc=Document.objects.filter(lesson_fk=l)
     pic = Image.objects.filter(lesson_fk=l)
     # add to the context
@@ -174,20 +170,14 @@ def display_lesson_plan(request, lesson_plan_id = ""):
     c['evaluate_urls'] = evaluate_urls
     c['doc'] = doc
     c['pic'] = pic
-    #if engage_img1:
-     #   c['engage_img1'] = engage_img1[0]
-    #if explain_img1:
-     #   c['explain_img1'] = explain_img1[0]
-    #if evaluate_img1:
-     #   c['evaluate_img1'] = evaluate_img1[0]
 
-    # render
-    #if request.user.username == l.user_name:
     return render(request, 'index.html', c)
-    #return render(request,'index_display_2.html',c)
+
+
 
 # displays the lesson plan created based on web search results using user keywords
 def show_lesson_plan(request):
+  ts = time.time()
   if 'input_title' in request.POST:
    # receive search parameters
    subject_name = request.POST['subject_name']
@@ -237,57 +227,15 @@ def show_lesson_plan(request):
    for url in outputs['links']:
    	#print url
     #if contains(url,course_list,input_bullets,input_title,subject_list):
-    	e = Engage_Urls(lesson_fk = l,item_id=i, url = url.url, desc = url.desc)
+    	e = Engage_Urls(lesson_fk = l,item_id=i, url = url.url, desc = url.desc, title=url.title)
     	#e.save()
     	#print e.url
     	engage_urls.append(e)
     	#engage_urls_length.append(i)
     	i = i+1
 
-   # find an engage img, add it to the duplicate list
-   #engage_img1 = ""
-   #engage_img = bing.bing_search(query_set[0],'Image')
-   #if engage_img:
-    #engage_img1 = engage_img[0]['Url']
-    #img_dups[engage_img1] = 1
-   #else:
-    #engage_img1 = ""
-   #enga_img = Engage_Images(lesson_fk = l, url = engage_img1)
-   #enga_img.save()
-
-   # for explain phase, run query set (explain type1 = 2)
-   outputs = run_topic_search(dups, query_set, 2)
-   #print "Explain %d"%len(outputs['links'])
-   # list of urls for the explain phase
-   explain_urls = []
-   explain_urls_length = []
-   dups = outputs['dups']
-   #print "explain %d"%len(outputs['links'])
-   i=0
-   for url in outputs['links']:
-   	#print url
-   	#if contains(url,course_list,input_bullets,input_title,subject_list):
-   		e = Explain_Urls(lesson_fk = l,item_id=i, url = url.url, desc = url.desc)
-   		#e.save()
-   		explain_urls.append(e)
-   		i=i+1
-
-   # find an explain image
-   #explain_img1 = ""
-   #explain_img = bing.bing_search(query_set[0],'Image')
-   #if explain_img:
-    #for img in explain_img:
-     #if img['Url'] not in img_dups:
-      #explain_img1 = img['Url']
-      #img_dups[explain_img1] = 1
-      #break
-   #else: 
-    #explain_img1 = ""
-   #expl_img = Explain_Images(lesson_fk = l, url = explain_img1)
-   #expl_img.save()
-
    # for evalaute phase, run query set (explain type1 = 3)
-   outputs = run_topic_search(dups, query_set, 3)
+   outputs = run_topic_search(dups, query_set, 2)
    #print "Evaluate %d"%len(outputs['links'])
    # list of urls for the evaluate phase
    evaluate_urls = []
@@ -297,26 +245,19 @@ def show_lesson_plan(request):
    for url in outputs['links']:
    	#print url
    	#if contains(url,course_list,input_bullets,input_title,subject_list):
-   		e = Evaluate_Urls(lesson_fk = l,item_id=i, url = url.url, desc = url.desc)
+   		e = Evaluate_Urls(lesson_fk = l,item_id=i, url = url.url, desc = url.desc, title=url.title)
    		#e.save()
    		evaluate_urls.append(e)
    		i=i+1
 
-    # get an img for evaluate phase
-   #evaluate_img1 = ""
-   #evaluate_img = bing.bing_search(query_set[0],'Image')
-   #if evaluate_img:
-    #for img in explain_img:
-     #if img['Url'] not in img_dups:
-      #evaluate_img1 = img['Url']
-      #img_dups[explain_img1] = 1
-      #break
-   #else:
-    #evaluate_img1 = ""
-   #eval_img = Evaluate_Images(lesson_fk = l, url = evaluate_img1)
-   #eval_img.save()
 
-   return render(request, 'index.html', {'lesson_plan':l, 'input_title' : input_title, 'engage_urls': engage_urls, 'explain_urls' : explain_urls, 'evaluate_urls' : evaluate_urls})
+   print(time.time() -ts)
+
+   return render(request, 'index.html', {'lesson_plan':l, 
+   	'input_title' : input_title, 
+   	'engage_urls': engage_urls, 
+   	'explain_urls' : None, 
+   	'evaluate_urls' : evaluate_urls})
   else:
    return HttpResponse('input_title not found')
 
@@ -580,7 +521,7 @@ def save_lesson_plan(request):
 		random= "exceeded"
 	#print len(evaluate_urls)
 	j=0	
-	i=0
+	i=1
 	length = len(Document.objects.filter(lesson_fk=l))
 	#for i in range(1,10):
 	try:
@@ -590,17 +531,18 @@ def save_lesson_plan(request):
 		#	print item
 		#try:
 			if request.POST[item] != "none":
+				print "Hey %d" %i
 				e1 = Document(lesson_fk = l,docfile=request.POST[item])
 		#		print e1.docfile.name
 				e_exist = Document.objects.filter(lesson_fk=l, docfile= request.POST[item])
 				if len(e_exist)==0:
 		#			print "Exist"
-					if user_name != request.user.username:
+					#if user_name != request.user.username:
 						#length = len(Engage_Urls.objects.filter(lesson_fk=l)) 
-						e1.item_id= length
+					#	e1.item_id= length
 		#				print length
 					e1.save()
-					length = length+1
+					#length = length+1
 				#e1.save()
 				doc.append(e1)
 				j=j+1
@@ -609,7 +551,7 @@ def save_lesson_plan(request):
 		random = "exceeded"
 
 	j=0
-	i=0
+	i=1
 	length = len(Image.objects.filter(lesson_fk=l))
 	#for i in range(1,10):
 	try:
@@ -624,12 +566,12 @@ def save_lesson_plan(request):
 		#		print e1.docfile.name
 				e_exist = Image.objects.filter(lesson_fk=l, docfile= request.POST[item])
 				if len(e_exist)==0:
-					if user_name != request.user.username:
+					#if user_name != request.user.username:
 						#length = len(Engage_Urls.objects.filter(lesson_fk=l)) 
-						e1.item_id= length
+						#e1.item_id= length
 		#				print length
 					e1.save()
-					length = length+1
+					#length = length+1
 				#e1.save()
 				pic.append(e1)
 				j=j+1
