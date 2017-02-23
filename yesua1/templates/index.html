@@ -25,21 +25,21 @@
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-                                <script type="text/javascript">
-                            function extractDomain(url) {
-                                        console.log("here!");
-                                        var domain;
-                                        if (url.indexOf("://") > -1) {
-                                            domain = url.split('/')[2];
-                                        }
-                                        else {
-                                            domain = url.split('/')[0];
-                                        }
-                                        //find & remove port number
-                                        domain = domain.split(':')[0];
-                                        return domain;
-                            }
-                        </script>
+          <script type="text/javascript">
+            function extractDomain(url) {
+                        console.log("here!");
+                        var domain;
+                        if (url.indexOf("://") > -1) {
+                            domain = url.split('/')[2];
+                        }
+                        else {
+                            domain = url.split('/')[0];
+                        }
+                        //find & remove port number
+                        domain = domain.split(':')[0];
+                        return domain;
+            }
+          </script>
 
     <!-- Our own CSS -->
     <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
