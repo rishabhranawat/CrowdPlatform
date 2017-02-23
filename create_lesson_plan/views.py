@@ -244,7 +244,7 @@ def show_lesson_plan(request):
         # e.save()
         evaluate_urls.append(e)
         i = i + 1
-
+    
     return render(request, 'index.html', {'lesson_plan': l,
                                           'input_title': input_title,
                                           'engage_urls': engage_urls,
@@ -273,13 +273,6 @@ def remove_from_lp(request):
         elif itemGroup == "explain":
             e = Explain_Urls.objects.filter(
                 lesson_fk=l, item_id=itemId).delete()
-        # elif itemType == 'img':
-        # if itemGroup == 'engage':
-        # e = Engage_Images.objects.get(item_id=itemId).delete()
-        # elif itemGroup == 'evaluate':
-        # e = Evaluate_Images.objects.get(item_id=itemId).delete()
-        # elif itemGroup == 'explain':
-        # e = Explain_Images.objects.get(item_id=itemId).delete()
         return HttpResponse('Deleted')
     else:
         return HttpResponse('Expecting POST request.')
