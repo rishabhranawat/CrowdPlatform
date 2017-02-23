@@ -1,0 +1,34 @@
+<html>
+{% extends "banner_base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Upload Lesson Plan" %}{% endblock %}
+
+<!-- Don't know the purpose of the following line -->
+{% block body_class %}home{% endblock %}
+
+<body>
+{% block banner %}
+    <!-- Header files [To-Do (Rish): Format is weird as of now. Fix it later]-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+
+    <div class="container">
+        {{user.user_name}}
+
+        {% for lp in lesson_plans %}
+        <div class="col-xs-12 col-md-12">
+            {{lp.lesson_title}}
+        </div>
+        {% endfor %}
+    </div>
+
+
+   
+{% endblock %}
+  </body>
+</html>
+

@@ -87,6 +87,14 @@
                         </p>
                         <p>{{ enlink.desc }}</p>  
                   </div>
+                  <div class="col-md-1">
+                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+            
+                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15"/>
+               
+                  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
+               
+              </div>
                 </td>
             </tr> 
         {% endfor %}
