@@ -11,19 +11,35 @@
 <body>
 {% block banner %}
     {% url "upload_lp" as upload_lp_url %}
-    <h2>Upload Lesson Plan</h2>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
     
-    <form role="form" action = "{{upload_lesson_plan}} " method = "post">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value ="Submit"/>
+    <!-- Header files [To-Do (Rish): Format is weird as of now. Fix it later]-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+
+
+    <h2>Upload Lesson Plan</h2>
+    <form enctype="multipart/form-data" role="form" action = "{{upload_lesson_plan}} " method = "post">
+        {% csrf_token %}
+        {% load bootstrap %}
+        {{form|bootstrap}}
+        <div id="upload_prev"></div>
+        <input type="submit" value ="Submit"/>
+    </form>
+
+    <!-- Script to display all files uploaded --> 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#upload").change(function() { 
+                var files = $('#upload')[0].files;
+                for (var i = 0; i < files.length; i++) {
+                    $("#upload_prev").append(files[i].name);
+                }
+            });
+        });
+    </script>
 {% endblock %}
   </body>
 </html>

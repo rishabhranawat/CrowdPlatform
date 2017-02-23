@@ -245,7 +245,6 @@ def show_lesson_plan(request):
         evaluate_urls.append(e)
         i = i + 1
 
-    print(time.time() - ts)
     return render(request, 'index.html', {'lesson_plan': l,
                                           'input_title': input_title,
                                           'engage_urls': engage_urls,
@@ -291,26 +290,26 @@ class upload_lesson_plan(View):
 
   def get(self, request, *args, **kwargs):
     form = UploadLessonPlanForm()
-    print("here!")
     return render(request, 'upload.html', {'form': form})
 
   def post(self, request, *args, **kwargs):
     if request.method == 'POST':
-      print(request.POST)
       subject_name = request.POST['subject_name']
       course_name = request.POST['course_name']
       title = request.POST['input_title'].lower().replace('+', ' ')
       grade = request.POST['input_grade']
       bullets = request.POST['input_bullets']
-      document = request.POST['docfile']
+      files = request.FILES['docfile']
+      print(files)
 
       l = lesson(user_name=request.user.username,
         subject=subject_name, course_name=course_name,
         lesson_title=title, grade=grade, bullets=bullets)
       l.save()
 
-      d = Document(lesson_fk=l, docfile=document)
-      d.save()
+      for f in files:
+        d = Document(lesson_fk=l, docfile=f)
+        d.save()
 
       return HttpResponse("Thanks for uploading your document")
 
