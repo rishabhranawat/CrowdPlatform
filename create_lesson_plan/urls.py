@@ -4,6 +4,8 @@ from create_lesson_plan import views
 
 urlpatterns = [
     url(r'^$', views.create_lesson_plan, name="create_lesson_plan"),
+    url(r'^profile/', views.user_profile.as_view(), name="profile"),
+    
     url(r"^show_lesson_plan/",views.show_lesson_plan, name="show_lesson_plan"),
     url(r"^remove_from_lp/",views.remove_from_lp, name="remove_from_lp"),
     #url(r"^show_temp_lesson_plan/",views.show_temp_lesson_plan, name="show_temp_lesson_plan"),

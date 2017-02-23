@@ -16,6 +16,7 @@ from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.views import View
+from django.contrib.auth.models import User
 
 from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls
 from create_lesson_plan.models import Explain_Urls, Evaluate_Urls, MCQ
@@ -244,7 +245,7 @@ def show_lesson_plan(request):
         # e.save()
         evaluate_urls.append(e)
         i = i + 1
-    
+
     return render(request, 'index.html', {'lesson_plan': l,
                                           'input_title': input_title,
                                           'engage_urls': engage_urls,
@@ -307,7 +308,13 @@ class upload_lesson_plan(View):
       return HttpResponse("Thanks for uploading your document")
 
 
-
+class user_profile(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        user = User.objects.get(username=user)
+        lesson_plans = lesson.objects.filter(user_name=user)
+        return render(request, 'profile.html', {'user':user, 
+            'lesson_plans':lesson_plans})
 
 # Landing page for search lesson plan, i.e. the html page shown when user
 # clicks on the "Search Lesson plan"
