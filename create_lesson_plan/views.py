@@ -30,7 +30,7 @@ import bing
 # list of subjects
 subjects = ['Math', 'Computer Science']
 # list of education levels
-grades = ['High School', 'Undergraduate']
+grades = ['Undergraduate']
 # filters used in web search results
 filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog']
 # list of type of uploads
@@ -199,6 +199,7 @@ def show_lesson_plan(request):
       lesson_title=input_title, 
       grade=input_grade, 
       bullets=input_bullets)
+    l.save()
     
     # get course outline bullets, build query from each bullet
     input_bullets = input_bullets.lower()
@@ -230,8 +231,10 @@ def show_lesson_plan(request):
     for url in outputs['links']:
         e = Engage_Urls(lesson_fk=l, item_id=i, url=url.url,
                         desc=url.desc, title=url.title)
+        # e.save()
         engage_urls.append(e)
         i = i + 1
+    
 
     # for evalaute phase, run query set (explain type1 = 3)
     outputs = run_topic_search(dups, query_set, 2)
@@ -315,6 +318,16 @@ class user_profile(View):
         lesson_plans = lesson.objects.filter(user_name=user)
         return render(request, 'profile.html', {'user':user, 
             'lesson_plans':lesson_plans})
+
+
+class user_lesson_plan(View):
+    def get(self, request, pk, *args, **kwargs):
+        l = lesson.objects.get(pk=pk)
+        engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
+        evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
+
+        return render(request, 'user_lesson_plan.html', {'l':l, 
+            'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
 
 # Landing page for search lesson plan, i.e. the html page shown when user
 # clicks on the "Search Lesson plan"

@@ -21,7 +21,7 @@
 
         {% for lp in lesson_plans %}
         <div class="col-xs-12 col-md-12">
-            {{lp.lesson_title}}
+            <a href="{% url 'clp:lesson_plan' lp.pk %}">{{lp.lesson_title}}</a>
         </div>
         {% endfor %}
     </div>
