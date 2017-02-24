@@ -367,7 +367,7 @@ def summ_search(qry,results,index):
     #print "Constant c"
     #print len(avg)
     #comparator = (0.5*np.percentile(avg,90)+0.5*np.percentile(var,75))
-    comparator = np.nanpercentile(page_p[index],50)
+    comparator = np.nanpercentile(page_p[index],75)
     print 'Values: %s and Comparator value: %.4f' % (page_p[index], comparator)
     result_list_filtered =[]
     for r in result_list:

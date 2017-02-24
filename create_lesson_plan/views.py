@@ -49,6 +49,8 @@ class Links(object):
 
 
 def isToBeFiltered(url):
+    if "wikipedia" in url:
+        return True
     if len(url) > 100:
         return True
     for temp in filters:
@@ -102,6 +104,7 @@ def run_topic_search(duplicate_dict, query_set, type1):
     link_list = []
 
     type2_range = [3, 2]
+    new_link_list = []
     for query in query_set:
         query_results = {}
         output_links = Queue()
@@ -120,28 +123,34 @@ def run_topic_search(duplicate_dict, query_set, type1):
 
             if len(valid_result) == 0:
                 continue
-            query_results[processed_query] = valid_result
+            
+            for each_result in valid_result:
+                l = Links(each_result['Url'], each_result['Description'], -1, each_result['title'])
+                new_link_list.append(l)
 
-        query_threads = []
-        index = 0
-        for key, value in query_results.iteritems():
-            query_threads.append(
-                Process(target=get_relevant_links, args=(key, value, index, output_links)))
-            index += 1
-            query_threads[-1].start()
+        # for key, value in query_results.iteritems():
+        #     query_threads.append(
+        #         Process(target=get_relevant_links, args=(key, value, index, output_links)))
+        #     index += 1
+        #     query_threads[-1].start()
 
-        for i in range(len(query_threads)):
-            query_threads[i].join()
+        # for i in range(len(query_threads)):
+        #     query_threads[i].join()
 
-        for i in range(len(query_threads)):
-            link_list += output_links.get()
+        # for i in range(len(query_threads)):
+        #     link_list += output_links.get()
 
-    new_link_list = sorted(link_list, key=lambda x: x.value)
-    if len(link_list) >= 10:
-        count = 10
-    else:
-        count = len(link_list)
-    output = {'dups': duplicate_dict, 'links': new_link_list[0:count]}
+
+
+
+
+    # new_link_list = sorted(link_list, key=lambda x: x.value)
+    # print("new_link_list", new_link_list)
+    # if len(link_list) >= 10:
+    #     count = 10
+    # else:
+    #     count = len(link_list)
+    output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
 
 
@@ -185,6 +194,7 @@ def display_lesson_plan(request, lesson_plan_id=""):
 # displays the lesson plan created based on web search results using user
 # keywords
 def show_lesson_plan(request):
+  ts = time.time()
   if 'input_title' in request.POST:
     subject_name = request.POST['subject_name']
     course_name = request.POST['course_name']
@@ -248,7 +258,7 @@ def show_lesson_plan(request):
         # e.save()
         evaluate_urls.append(e)
         i = i + 1
-
+    print(time.time()-ts)
     return render(request, 'index.html', {'lesson_plan': l,
                                           'input_title': input_title,
                                           'engage_urls': engage_urls,
