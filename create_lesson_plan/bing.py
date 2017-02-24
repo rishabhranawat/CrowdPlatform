@@ -13,10 +13,11 @@ def bing_search(query, search_type, query_original):
     credentials = (':%s' % key).encode('base64')[:-1]
     auth = 'Basic %s' % credentials
     #url = 'https://api.datamarket.azure.com/Data.ashx/Bing/Search/'+search_type+'?Query=%27'+query+'%27&$top=10&$format=json'
+    print(query)
     if("wikipedia" in query):
-        url = 'https://api.datamarket.azure.com/Bing/Search/'+search_type+'?Query=%27'+query+'%27&$top=10&$format=json'
+        url = 'https://api.datamarket.azure.com/Bing/Search/'+search_type+'?Query=%27'+query+'%27&$top=3&$format=json'
     else:
-        url = 'https://api.datamarket.azure.com/Bing/Search/'+search_type+'?Query=%27'+query+'%27&$top=20&$format=json'
+        url = 'https://api.datamarket.azure.com/Bing/Search/'+search_type+'?Query=%27'+query+'%27&$top=5&$format=json'
     try:
       #proxy settings for IITD network
      #proxy = urllib2.ProxyHandler({'https': 'https://tt1140924:decode#thecode@proxy22.iitd.ernet.in:3128'})
