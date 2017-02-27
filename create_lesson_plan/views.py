@@ -49,8 +49,6 @@ class Links(object):
 
 
 def isToBeFiltered(url):
-    if "wikipedia" in url:
-        return True
     if len(url) > 100:
         return True
     for temp in filters:
@@ -114,7 +112,7 @@ def run_topic_search(duplicate_dict, query_set, type1):
             query2 = query
 
             results = bing.bing_search(processed_query, 'Web', query2)
-
+            
             valid_result = []
             for r in results:
                 if r['Url'] not in duplicate_dict and not isToBeFiltered(r['Url']):
@@ -126,30 +124,9 @@ def run_topic_search(duplicate_dict, query_set, type1):
             
             for each_result in valid_result:
                 l = Links(each_result['Url'], each_result['Description'], -1, each_result['title'])
+                print(l.url)
                 new_link_list.append(l)
 
-        # for key, value in query_results.iteritems():
-        #     query_threads.append(
-        #         Process(target=get_relevant_links, args=(key, value, index, output_links)))
-        #     index += 1
-        #     query_threads[-1].start()
-
-        # for i in range(len(query_threads)):
-        #     query_threads[i].join()
-
-        # for i in range(len(query_threads)):
-        #     link_list += output_links.get()
-
-
-
-
-
-    # new_link_list = sorted(link_list, key=lambda x: x.value)
-    # print("new_link_list", new_link_list)
-    # if len(link_list) >= 10:
-    #     count = 10
-    # else:
-    #     count = len(link_list)
     output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
 
@@ -160,7 +137,6 @@ def get_relevant_links(query, results, query_type, output):
     for r in result_filtered:
         link = Links(r['Url'], r['Description'], r['Value'], r['title'])
         link_list.append(link)
-
     output.put(link_list)
 
 # use this to create a new lesson plan
