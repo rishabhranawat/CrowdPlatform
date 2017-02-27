@@ -84,18 +84,23 @@ def processed(query, type1, type2):
     if type1 == 1:
         if type2 == 1:
             query += "+site:wikipedia.org"
+            limit = 2
             # print "Created query " + query
         elif type2 == 2:
             query += " filetype:ppt site:edu "
+            limit = 1
         elif type2 == 3:
             query += " concepts filetype:pdf site:edu "
+            limit = 3
     # evaluate phase
     elif type1 == 2:
         if type2 == 1:
             query += "+homeworks+site:edu"
+            limit = 2
         elif type2 == 2:
             query += " midterm+solutions site:edu"
-    return query
+            limit = 2
+    return query, limit
 
 
 def run_topic_search(duplicate_dict, query_set, type1):
@@ -108,10 +113,10 @@ def run_topic_search(duplicate_dict, query_set, type1):
         output_links = Queue()
         for type2 in range(1, type2_range[type1 - 1]):
             # process and run each query
-            processed_query = processed(query, type1, type2)
+            processed_query, limit = processed(query, type1, type2)
             query2 = query
 
-            results = bing.bing_search(processed_query, 'Web', query2)
+            results = bing.bing_search(processed_query, 'Web', limit, query2)
             
             valid_result = []
             for r in results:

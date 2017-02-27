@@ -19,11 +19,26 @@
     <div class="container">
         {{user.user_name}}
 
-        {% for lp in lesson_plans %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Past Campaigns</h2>
+            </div>
+            {% for lp in lesson_plans %}
+            <div class="col-md-4 col-sm-6">
+                <h4><i class="glyphicon glyphicon-plus-sign"></i> {{lp.lesson_title}}</h4>
+                <a href="{% url 'clp:lesson_plan' lp.pk %}">
+                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+<!--         {% for lp in lesson_plans %}
         <div class="col-xs-12 col-md-12">
+
             <a href="{% url 'clp:lesson_plan' lp.pk %}">{{lp.lesson_title}}</a>
         </div>
-        {% endfor %}
+        {% endfor %} -->
     </div>
 
 
