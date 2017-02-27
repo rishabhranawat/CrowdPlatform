@@ -78,34 +78,46 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
 # ================================================================================
 # create search query based on type1 and type2
 
-
-def processed(query, type1, type2):
+def processed(query, type1, type2, bullets):
     # engage phase
     if type1 == 1:
         if type2 == 1:
             query += "+site:wikipedia.org"
-            limit = 2
-            # print "Created query " + query
+            if bullets == 3: limit = 2
+            elif bullets == 2: limit = 2
+            else: limit = 3
+            
         elif type2 == 2:
             query += " filetype:ppt site:edu "
-            limit = 1
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 2
+            else: limit = 3
+
         elif type2 == 3:
             query += " concepts filetype:pdf site:edu "
-            limit = 3
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 2
+            else: limit = 3
+    
     # evaluate phase
     elif type1 == 2:
         if type2 == 1:
             query += "+homeworks+site:edu"
-            limit = 2
+            if bullets == 3: limit = 2
+            if bullets == 2: limit = 3
+            else: limit = 5
+
         elif type2 == 2:
             query += " midterm+solutions site:edu"
-            limit = 2
+            if bullets == 3: limit = 2
+            elif bullets == 2: limit = 3
+            else: limit = 5
     return query, limit
 
 
 def run_topic_search(duplicate_dict, query_set, type1):
     link_list = []
-
+    
     type2_range = [3, 2]
     new_link_list = []
     for query in query_set:
@@ -113,7 +125,7 @@ def run_topic_search(duplicate_dict, query_set, type1):
         output_links = Queue()
         for type2 in range(1, type2_range[type1 - 1]):
             # process and run each query
-            processed_query, limit = processed(query, type1, type2)
+            processed_query, limit = processed(query, type1, type2, len(query_set))
             query2 = query
 
             results = bing.bing_search(processed_query, 'Web', limit, query2)
