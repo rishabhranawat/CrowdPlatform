@@ -25,10 +25,18 @@
             </div>
             {% for lp in lesson_plans %}
             <div class="col-md-4 col-sm-6">
-                <h4><i class="glyphicon glyphicon-plus-sign"></i> {{lp.lesson_title}}</h4>
-                <a href="{% url 'clp:lesson_plan' lp.pk %}">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
+                <h4><i class="glyphicon glyphicon-plus-sign"></i> <a href="{% url 'clp:lesson_plan' lp.pk %}"> {{lp.lesson_title}} </a></h4>
+                <div class="col-md-12 col-sm-12" style="background-color: white;">
+                    
+                    <p>{{lp.course_name}}</p>
+                    <p>{{lp.bullets}}</p>
+                    <p>{{lp.grade}}</p>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    
+                </div>
             </div>
             {% endfor %}
         </div>
