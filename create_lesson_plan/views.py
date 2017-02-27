@@ -117,7 +117,7 @@ def processed(query, type1, type2, bullets):
 
 def run_topic_search(duplicate_dict, query_set, type1):
     link_list = []
-    
+
     type2_range = [3, 2]
     new_link_list = []
     for query in query_set:
@@ -202,7 +202,6 @@ def show_lesson_plan(request):
       lesson_title=input_title, 
       grade=input_grade, 
       bullets=input_bullets)
-    l.save()
     
     # get course outline bullets, build query from each bullet
     input_bullets = input_bullets.lower()
@@ -363,43 +362,47 @@ def save_lesson_plan(request):
         # print user_name
         # print 'hello'
         # print request.user.username
-        exist = False
-        l_list = lesson.objects.filter(Q(user_name=request.user.username, subject=subject_name,
-                                         course_name__icontains=course_name, lesson_title__icontains=input_title, grade=input_grade))
+        # exist = False
+        # l_list = lesson.objects.filter(Q(user_name=request.user.username, subject=subject_name,
+        #                                  course_name__icontains=course_name, 
+        #                                  lesson_title__icontains=input_title, 
+        #                                  grade=input_grade))
         #l_list_exist = lesson.objects.filter(Q(user_name = user_name, subject= subject_name,course_name__icontains=course_name, lesson_title__icontains=input_title, grade=input_grade))
     # Create new lesson object
+        print(input_bullets)
         l = lesson(user_name=request.user.username, subject=subject_name, course_name=course_name,
                    lesson_title=input_title, grade=input_grade, bullets=input_bullets)
+        l.save()
 
     # Lesson plan being saved already exists in database
-        if len(l_list) > 0:
-                    # print 'length = ',len(l_list)
-            exist = True
-            l = l_list[0]
-            if user_name == request.user.username:
-                # print "delete"
-                e = Engage_Urls.objects.filter(lesson_fk=l)
-                if len(e) > 0:
-                    e.delete()
-                e = Explain_Urls.objects.filter(lesson_fk=l)
-                if len(e) > 0:
-                    e.delete()
-                e = Evaluate_Urls.objects.filter(lesson_fk=l)
-                if len(e) > 0:
-                    e.delete()
-                e = Document.objects.filter(lesson_fk=l)
-                if len(e) > 0:
-                    e.delete()
-                e = Image.objects.filter(lesson_fk=l)
-                if len(e) > 0:
-                    e.delete()
-            # engage_urls_exist.extend(Engage_Urls.objects.filter(lesson_fk=l))
-            # explain_urls_exist.extend(Explain_Urls.objects.filter(lesson_fk=l))
-            # evaluate_urls_exist.extend(Evaluate_Urls.objects.filter(lesson_fk=l))
-        else:
-            # print 'length not > 0'
-            #l = lesson(user_name = request.user.username, subject=subject_name,course_name = course_name, lesson_title = input_title, grade = input_grade, bullets = input_bullets)
-            l.save()
+        # if len(l_list) > 0:
+        #             # print 'length = ',len(l_list)
+        #     exist = True
+        #     l = l_list[0]
+        #     if user_name == request.user.username:
+        #         # print "delete"
+        #         e = Engage_Urls.objects.filter(lesson_fk=l)
+        #         if len(e) > 0:
+        #             e.delete()
+        #         e = Explain_Urls.objects.filter(lesson_fk=l)
+        #         if len(e) > 0:
+        #             e.delete()
+        #         e = Evaluate_Urls.objects.filter(lesson_fk=l)
+        #         if len(e) > 0:
+        #             e.delete()
+        #         e = Document.objects.filter(lesson_fk=l)
+        #         if len(e) > 0:
+        #             e.delete()
+        #         e = Image.objects.filter(lesson_fk=l)
+        #         if len(e) > 0:
+        #             e.delete()
+        #     # engage_urls_exist.extend(Engage_Urls.objects.filter(lesson_fk=l))
+        #     # explain_urls_exist.extend(Explain_Urls.objects.filter(lesson_fk=l))
+        #     # evaluate_urls_exist.extend(Evaluate_Urls.objects.filter(lesson_fk=l))
+        # else:
+        #     # print 'length not > 0'
+        #     #l = lesson(user_name = request.user.username, subject=subject_name,course_name = course_name, lesson_title = input_title, grade = input_grade, bullets = input_bullets)
+        #     l.save()
 
     else:
         print 'input_title not found'
