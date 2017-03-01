@@ -24,6 +24,7 @@ def bing_search(query, search_type, limit, query_original):
      #urllib2.install_opener(opener)
      request = urllib2.Request(url)
      request.add_header('Authorization', auth)
+     request.add_header('Options', 'DisableLocationDetection')
      request.add_header('User-Agent', user_agent)
      request_opener = urllib2.build_opener()
      #request_opener = urllib2.build_opener(proxy)
