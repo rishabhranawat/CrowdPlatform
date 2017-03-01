@@ -18,7 +18,7 @@
 
     {% block banner %}
 
-      <h2>{{l.subject}} <span> {{l.course_name}}</h2>
+      <h2>{{l.course_name}} <span> : {{l.lesson_title}}</h2>
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -78,7 +78,7 @@
               <td>
                   <div class="col-xs-12 col-md-11">
 
-                      <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.url }}</a></h4>
+                      <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
                        <p id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
                             document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
@@ -115,8 +115,8 @@
           <tr id="evaluate_{{enlink.item_id}}_row">
             <td>
               <div class="col-md-11" >
-                  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.url }}</a></h4>
-                                          <p id='domainId+{{enlink.url}}'>
+                 <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
+                          <p id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
                             document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
                           </script>
