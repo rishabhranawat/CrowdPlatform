@@ -174,7 +174,7 @@ def display_lesson_plan(request, lesson_plan_id=""):
     pic = Image.objects.filter(lesson_fk=l)
     # add to the context
     c = {}
-    c['lesson_plan'] = l
+    c['l'] = l
     c['input_title'] = l.lesson_title
     c['engage_urls'] = engage_urls
     c['explain_urls'] = explain_urls
@@ -424,8 +424,10 @@ def save_lesson_plan(request):
         # try:
             if request.POST[item] != "none":
                 itemdesc = "engagedesc_" + str(i)
+                itemtitle = "engagetitle_" + str(i)
                 e1 = Engage_Urls(lesson_fk=l, item_id=j, url=request.POST[
-                                 item], desc=request.POST[itemdesc])
+                                 item], desc=request.POST[itemdesc], 
+                                 title=request.POST[itemtitle])
                 # print e1.url
                 e_exist = Engage_Urls.objects.filter(
                     lesson_fk=l, url=request.POST[item])
@@ -456,6 +458,7 @@ def save_lesson_plan(request):
         # try:
             if request.POST[item] != "none":
                 itemdesc = "explaindesc_" + str(i)
+
                 e1 = Explain_Urls(lesson_fk=l, item_id=j, url=request.POST[
                                   item], desc=request.POST[itemdesc])
         #		print e1.url
@@ -489,8 +492,10 @@ def save_lesson_plan(request):
         # try:
             if request.POST[item] != "none":
                 itemdesc = "evaluatedesc_" + str(i)
+                itemtitle = "evaluatetitle_" + str(i)
                 e1 = Evaluate_Urls(lesson_fk=l, item_id=j, url=request.POST[
-                                   item], desc=request.POST[itemdesc])
+                                   item], desc=request.POST[itemdesc], 
+                                   title=request.POST[itemtitle])
         #		print e1.url
                 evaluate_urls.append(e1)
                 e_exist = Evaluate_Urls.objects.filter(
