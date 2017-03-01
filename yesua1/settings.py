@@ -88,7 +88,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "create_lesson_plan",
     "create_lesson_plan.apps",
-    "background_task",
     #"create_lesson_plan.apps.CreateLessonPlanConfig",
 
     # theme
