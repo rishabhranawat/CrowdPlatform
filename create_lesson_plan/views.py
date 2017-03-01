@@ -28,7 +28,7 @@ import summsrch
 import bing
 
 # list of subjects
-subjects = ['Math', 'Computer Science']
+subjects = ['Computer Science']
 # list of education levels
 grades = ['Undergraduate', 'Graduate']
 # filters used in web search results
@@ -182,7 +182,7 @@ def display_lesson_plan(request, lesson_plan_id=""):
     c['doc'] = doc
     c['pic'] = pic
 
-    return render(request, 'index.html', c)
+    return render(request, 'user_lesson_plan.html', c)
 
 # displays the lesson plan created based on web search results using user
 # keywords
