@@ -30,7 +30,7 @@ import bing
 # list of subjects
 subjects = ['Math', 'Computer Science']
 # list of education levels
-grades = ['Undergraduate']
+grades = ['Undergraduate', 'Graduate']
 # filters used in web search results
 filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog']
 # list of type of uploads
@@ -83,9 +83,9 @@ def processed(query, type1, type2, bullets):
     if type1 == 1:
         if type2 == 1:
             query += "+site:wikipedia.org"
-            if bullets == 3: limit = 2
-            elif bullets == 2: limit = 2
-            else: limit = 3
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 1
+            else: limit = 2
             
         elif type2 == 2:
             query += " filetype:ppt site:edu "
@@ -298,7 +298,7 @@ class upload_lesson_plan(View):
       title = request.POST['input_title'].lower().replace('+', ' ')
       grade = request.POST['input_grade']
       bullets = request.POST['input_bullets']
-      files = request.FILES['docfile']
+      files = request.FILES.getlist('myfiles[]')
       print(files)
 
       l = lesson(user_name=request.user.username,

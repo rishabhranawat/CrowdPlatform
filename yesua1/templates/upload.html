@@ -21,12 +21,13 @@
 
 
     <h2>Upload Lesson Plan</h2>
-    <form enctype="multipart/form-data" role="form" action = "{{upload_lesson_plan}} " method = "post">
+    <form enctype="multipart/form-data" role="form" method = "post">
         {% csrf_token %}
         {% load bootstrap %}
         {{form|bootstrap}}
+        <input type="file" id="upload" name="myfiles[]" multiple>
         <div id="upload_prev"></div>
-        <input type="submit" value ="Submit"/>
+        <button type="submit">{% trans "upload_lesson_plan" %}</button>
     </form>
 
     <!-- Script to display all files uploaded --> 

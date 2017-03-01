@@ -9,9 +9,8 @@ class UploadLessonPlanForm(forms.Form):
 	input_title = forms.CharField(label='Lesson Title')
 	input_grade = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES)
 	input_bullets = forms.CharField(label='Bullets', widget=forms.Textarea)
-	docfile = forms.FileField(label='Select File(s)', 
-		widget=forms.ClearableFileInput(attrs={
-			'multiple': True,
-			'id': "upload",
-			'name': 'upload[]'
-			}))
+	# upload = forms.FileField(label='Select File(s)', 
+	# 	widget=forms.ClearableFileInput(attrs={
+	# 		'multiple': True,
+	# 		'id': "upload",
+	# 		'name': 'upload[]'}))
