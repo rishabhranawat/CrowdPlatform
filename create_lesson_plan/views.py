@@ -585,24 +585,8 @@ def save_lesson_plan(request):
             i = i + 1
     except Exception as e:
         random = "exceeded"
-    # save_new_lp(l,'engage',engage_urls,exist)
-    # save_new_lp(l,'explain',explain_urls,exist)
-    # save_new_lp(l,'evaluate',evaluate_urls,exist)
-    #engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
-    #engage_img1 = Engage_Images.objects.filter(lesson_fk=l)
-    #explain_urls = Explain_Urls.objects.filter(lesson_fk=l)
-    #explain_img1 = Explain_Images.objects.filter(lesson_fk=l)
-    #evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
-    #evaluate_img1 = Evaluate_Images.objects.filter(lesson_fk=l)
-    # doc=Document.objects.filter(lesson_fk=l)
-    #pic = Image.objects.filter(lesson_fk=l)
-    # if 'engageurl_1' in request.POST:
-    #	print request.POST['engageurl_1']
-    return render(request, 'index.html', {'lesson_plan': l, 'input_title': input_title, 'engage_urls': engage_urls, 'explain_urls': explain_urls, 'evaluate_urls': evaluate_urls, 'doc': doc, 'pic': pic})
-    # return HttpResponse('engage_url1 found!!!')
-    # else:
-    #	return HttpResponse('engage_url1 not found')
-
+    
+    return redirect('/create_lesson_plan/profile/')
 # search existing lesson plans from the database based on user's request
 
 class SearchLessonPlans(View):
@@ -666,72 +650,6 @@ def generate_q_paper(request):
 
 def submit_question(request):
     return render(request, 'question_entry.html')
-
-# def submitted_question(request):
-#    if 'lesson_title' in request.POST:
-#        if request.POST['type'] == "mcq":
-#            course_name = request.POST['course_name']
-#            input_title = request.POST['lesson_title']
-#            input_grade = request.POST['grade']
-#                question = request.POST['question']
-#                    optiona = request.POST['optA']
-#                        optionb = request.POST['optB']
-#                        optionc = request.POST['optC']
-#                        optiond= request.POST['optD']
-#                        correct_answer = request.POST['correct']
-#                        q = MCQ(course_name = course_name, lesson_title = input_title, grade = input_grade, question = question, optiona = optiona, optionb = optionb, optionc = optionc, optiond = optiond, correct_answer = correct_answer)
-#                        q.save()
-#                        return render(request,'question_entry.html')
-#                elif request.POST['type'] == "fitb":
-#                    course_name = request.POST['course_name']
-#                        lesson_title = request.POST['lesson_title']
-#                        input_grade = request.POST['grade']
-#                        if 'question1' in request.POST:
-#                            question = request.POST['question1']
-#                        else:
-#                            print "question1 not in POST request"
-#                        answer = request.POST['answer1']
-#                        q = FITB(course_name = course_name, lesson_title = lesson_title, grade = input_grade, question = question, answer = answer)
-#                        q.save()
-#                    return render(request,'question_entry.html')
-#        else:
-#            HttpResponse('type not found')
-#    else:
-#        return HttpResponse('lesson_title not found')
-
-# ==============================================================
-# THESE FUNCTIONS ARE NOT BEING USED, CAN BE DELETED EVENTUALLY
-# ==============================================================
-
-# display uploaded search results
-# def uploaded_search_results(request):
-#  if 'query' in request.POST:
-#   query = request.POST['query']
-#   l = lesson.objects.filter(Q(lesson_title__icontains=query))
-#   en = Engage_Urls.objects.filter(lesson_fk=l[0])
-#   ex = Explain_Urls.objects.filter(lesson_fk=l[0])
-#   ev = Evaluate_Urls.objects.filter(lesson_fk=l[0])
-#   return render(request,'search_results.html',{'lesson_title': l[0].lesson_title, 'en': en, 'ex': ex, 'ev': ev})
-#  else:
-#   return HttpResponse('query not found')
-
-# def save_new_lp(l,itemGroup,new_url_list,exist):
-#    if exist:
-#    #s_new = set(new_url_list)
-#    #s = set(url_list)
-#    #for x in url_list:
-#    # if x not in s_new
-#    #  remove_from_lp(l,itemGroup,x.item_id)
-#    if itemGroup == 'engage':
-#        e = Engage_Urls.objects.filter(lesson_fk=l).delete()
-#    elif itemGroup == "evaluate":
-#        e = Evaluate_Urls.objects.filter(lesson_fk=l).delete()
-#    elif itemGroup == "explain":
-#        e = Explain_Urls.objects.filter(lesson_fk=l).delete()
-#        for x in new_url_list:
-#        x.save()
-#
-# display searched lesson plan
 
 
 def search_results(request):
