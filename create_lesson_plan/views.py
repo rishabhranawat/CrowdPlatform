@@ -25,7 +25,6 @@ from create_lesson_plan.models import FITB, Engage_Images, Explain_Images
 from create_lesson_plan.models import Evaluate_Images, Document, Image
 from create_lesson_plan.forms import *
 
-import summsrch
 import bing
 
 # list of subjects
@@ -335,11 +334,17 @@ class user_profile(View):
 class user_lesson_plan(View):
     def get(self, request, pk, *args, **kwargs):
         l = lesson.objects.get(pk=pk)
+        input_title = l.lesson_title
         engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
         evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
 
-        return render(request, 'user_lesson_plan.html', {'l':l, 
-            'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+        return render(request, 'index.html', {'lesson_plan': l,
+                                                  'input_title': input_title,
+                                                  'engage_urls': engage_urls,
+                                                  'explain_urls': None,
+                                                  'evaluate_urls': evaluate_urls})
+        # return render(request, 'user_lesson_plan.html', {'l':l, 
+        #     'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
 
 # Landing page for search lesson plan, i.e. the html page shown when user
 # clicks on the "Search Lesson plan"
@@ -385,34 +390,34 @@ def save_lesson_plan(request):
         l.save()
 
     # Lesson plan being saved already exists in database
-        # if len(l_list) > 0:
-        #             # print 'length = ',len(l_list)
-        #     exist = True
-        #     l = l_list[0]
-        #     if user_name == request.user.username:
-        #         # print "delete"
-        #         e = Engage_Urls.objects.filter(lesson_fk=l)
-        #         if len(e) > 0:
-        #             e.delete()
-        #         e = Explain_Urls.objects.filter(lesson_fk=l)
-        #         if len(e) > 0:
-        #             e.delete()
-        #         e = Evaluate_Urls.objects.filter(lesson_fk=l)
-        #         if len(e) > 0:
-        #             e.delete()
-        #         e = Document.objects.filter(lesson_fk=l)
-        #         if len(e) > 0:
-        #             e.delete()
-        #         e = Image.objects.filter(lesson_fk=l)
-        #         if len(e) > 0:
-        #             e.delete()
-        #     # engage_urls_exist.extend(Engage_Urls.objects.filter(lesson_fk=l))
-        #     # explain_urls_exist.extend(Explain_Urls.objects.filter(lesson_fk=l))
-        #     # evaluate_urls_exist.extend(Evaluate_Urls.objects.filter(lesson_fk=l))
-        # else:
-        #     # print 'length not > 0'
-        #     #l = lesson(user_name = request.user.username, subject=subject_name,course_name = course_name, lesson_title = input_title, grade = input_grade, bullets = input_bullets)
-        #     l.save()
+        if len(l_list) > 0:
+                    # print 'length = ',len(l_list)
+            exist = True
+            l = l_list[0]
+            if user_name == request.user.username:
+                # print "delete"
+                e = Engage_Urls.objects.filter(lesson_fk=l)
+                if len(e) > 0:
+                    e.delete()
+                e = Explain_Urls.objects.filter(lesson_fk=l)
+                if len(e) > 0:
+                    e.delete()
+                e = Evaluate_Urls.objects.filter(lesson_fk=l)
+                if len(e) > 0:
+                    e.delete()
+                e = Document.objects.filter(lesson_fk=l)
+                if len(e) > 0:
+                    e.delete()
+                e = Image.objects.filter(lesson_fk=l)
+                if len(e) > 0:
+                    e.delete()
+            # engage_urls_exist.extend(Engage_Urls.objects.filter(lesson_fk=l))
+            # explain_urls_exist.extend(Explain_Urls.objects.filter(lesson_fk=l))
+            # evaluate_urls_exist.extend(Evaluate_Urls.objects.filter(lesson_fk=l))
+        else:
+            # print 'length not > 0'
+            #l = lesson(user_name = request.user.username, subject=subject_name,course_name = course_name, lesson_title = input_title, grade = input_grade, bullets = input_bullets)
+            l.save()
 
     else:
         print 'input_title not found'
