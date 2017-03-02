@@ -21,7 +21,7 @@
 
 
     <h2>Upload Lesson Plan</h2>
-    <form enctype="multipart/form-data" role="form" method = "post">
+    <form enctype="multipart/form-data" action="{% url 'clp:upload_lesson_plan' %}" role="form" method = "post">
         {% csrf_token %}
         {% load bootstrap %}
         {{form|bootstrap}}

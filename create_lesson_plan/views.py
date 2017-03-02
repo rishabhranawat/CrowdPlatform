@@ -7,7 +7,7 @@ from multiprocessing import Process
 from multiprocessing import Manager
 from multiprocessing import Queue
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.db.models import Q
@@ -16,6 +16,7 @@ from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.views import View
+from django.views.generic.edit import FormView
 from django.contrib.auth.models import User
 
 from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls
@@ -285,7 +286,7 @@ def remove_from_lp(request):
 
 
 
-class upload_lesson_plan(View):
+class upload_lesson_plan(FormView):
 
   def get(self, request, *args, **kwargs):
     form = UploadLessonPlanForm()
@@ -310,7 +311,7 @@ class upload_lesson_plan(View):
         d = Document(lesson_fk=l, docfile=f)
         d.save()
 
-      return HttpResponse("Thanks for uploading your document")
+      return redirect('/create_lesson_plan/profile')
 
 
 class user_profile(View):
@@ -318,8 +319,10 @@ class user_profile(View):
         user = request.user
         user = User.objects.get(username=user)
         lesson_plans = lesson.objects.filter(user_name=user)
-        return render(request, 'profile.html', {'user':user, 
-            'lesson_plans':lesson_plans})
+        context = {
+            'user':user, 
+            'lesson_plans':lesson_plans}
+        return render(request, 'profile.html', context)
 
 
 class user_lesson_plan(View):
