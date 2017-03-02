@@ -258,7 +258,7 @@ class GenerateLessonPlan(View):
                 evaluate_urls.append(e)
                 i = i + 1
             print(time.time()-ts)
-            return render(request, 'index.html', {'lesson_plan': l,
+            return render(request, 'index_rish.html', {'lesson_plan': l,
                                                   'input_title': input_title,
                                                   'engage_urls': engage_urls,
                                                   'explain_urls': None,
@@ -338,13 +338,13 @@ class user_lesson_plan(View):
         engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
         evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
 
-        return render(request, 'index.html', {'lesson_plan': l,
-                                                  'input_title': input_title,
-                                                  'engage_urls': engage_urls,
-                                                  'explain_urls': None,
-                                                  'evaluate_urls': evaluate_urls})
-        # return render(request, 'user_lesson_plan.html', {'l':l, 
-        #     'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+        # return render(request, 'index.html', {'lesson_plan': l,
+        #                                           'input_title': input_title,
+        #                                           'engage_urls': engage_urls,
+        #                                           'explain_urls': None,
+        #                                           'evaluate_urls': evaluate_urls})
+        return render(request, 'user_lesson_plan.html', {'l':l, 
+            'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
 
 # Landing page for search lesson plan, i.e. the html page shown when user
 # clicks on the "Search Lesson plan"
