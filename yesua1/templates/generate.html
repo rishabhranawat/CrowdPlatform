@@ -3,16 +3,13 @@
 {% load i18n %}
 {% load staticfiles %}
 
-{% block head_title %}{% trans "Search" %}{% endblock %}
+{% block head_title %}{% trans "Generate Lesson Plan" %}{% endblock %}
 
 <!-- Don't know the purpose of the following line -->
 {% block body_class %}home{% endblock %}
 
 
 {% block banner %}
-
-
-	{% url "search_results_terse" as search_results_terse_url %}
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -21,13 +18,13 @@
 
     <!-- Our own CSS -->
     <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
-    <h2>Search Lesson Plan</h2>
-
-    <form enctype="multipart/form-data" action="{% url 'search_lesson_plan' %}" role="form" method = "post">
+    <h2>Generate a Lesson Plan</h2>
+    <br></br>
+    <form enctype="multipart/form-data" action="{% url 'clp:generate_lesson_plan' %}" role="form" method = "post">
         {% csrf_token %}
         {% load bootstrap %}
         {{form|bootstrap}}
-        <button class="btn btn-primary" type="submit">{% trans "Search Lesson Plan" %}</button>
+        <button class="btn btn-primary" type="submit">{% trans "Generate A Lesson Plan" %}</button>
     </form>
 {% endblock %}
 </html>

@@ -23,7 +23,7 @@ from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls
 from create_lesson_plan.models import Explain_Urls, Evaluate_Urls, MCQ
 from create_lesson_plan.models import FITB, Engage_Images, Explain_Images
 from create_lesson_plan.models import Evaluate_Images, Document, Image
-from create_lesson_plan.forms import UploadLessonPlanForm
+from create_lesson_plan.forms import *
 
 import summsrch
 import bing
@@ -187,78 +187,85 @@ def display_lesson_plan(request, lesson_plan_id=""):
 
 # displays the lesson plan created based on web search results using user
 # keywords
-def show_lesson_plan(request):
-  ts = time.time()
-  if 'input_title' in request.POST:
-    subject_name = request.POST['subject_name']
-    course_name = request.POST['course_name']
-    input_title = request.POST['input_title']
-    input_grade = request.POST['input_grade']
-    input_bullets = request.POST['input_bullets']
-    
-    # Create new lesson object
-    l = lesson(user_name=request.user.username, 
-      subject=subject_name, 
-      course_name=course_name, 
-      lesson_title=input_title, 
-      grade=input_grade, 
-      bullets=input_bullets)
-    
-    # get course outline bullets, build query from each bullet
-    input_bullets = input_bullets.lower()
-    input_bullets = input_bullets.split('\n')
-    query_set = []
-    subject_name = string.replace(subject_name, ' ', '+')
-    subject_name = subject_name.lower()
-    subject_list = subject_name.split('+')
-    course_name = string.replace(course_name, ' ', '+')
-    course_name = course_name.lower()
-    course_list = course_name.split('+')
-    input_title = string.replace(input_title, ' ', '+')
-    input_title = input_title.lower()
-    input_list = input_title.split('+')
-    
-    for bullet in input_bullets:
-        bullet = bullet.strip()
-        bullet = string.replace(bullet, ' ', '+')
-        query_set.append(bullet + "+" + input_title)
-    
-    dups = {}
-    outputs = run_topic_search(dups, query_set, 1)
-    # list of urls for the engage phase
-    engage_urls = []
-    engage_urls_length = []
-    dups = outputs['dups']
 
-    i = 0
-    for url in outputs['links']:
-        e = Engage_Urls(lesson_fk=l, item_id=i, url=url.url,
-                        desc=url.desc, title=url.title)
-        # e.save()
-        engage_urls.append(e)
-        i = i + 1
-    
+class GenerateLessonPlan(View):
+    form = GenerateLessonPlanForm()
 
-    # for evalaute phase, run query set (explain type1 = 3)
-    outputs = run_topic_search(dups, query_set, 2)
-    evaluate_urls = []
-    dups = outputs['dups']
-    # print "evaluate %d"%len(outputs['links'])
-    i = 0
-    for url in outputs['links']:
-        e = Evaluate_Urls(lesson_fk=l, item_id=i,
-                          url=url.url, desc=url.desc, title=url.title)
-        # e.save()
-        evaluate_urls.append(e)
-        i = i + 1
-    print(time.time()-ts)
-    return render(request, 'index.html', {'lesson_plan': l,
-                                          'input_title': input_title,
-                                          'engage_urls': engage_urls,
-                                          'explain_urls': None,
-                                          'evaluate_urls': evaluate_urls})
-  else:
-      return HttpResponse('input_title not found')
+    def get(self, request, *args, **kwargs):
+        return render(request, 'generate.html', {'form':self.form})
+
+    def post(self, request, *args, **kwargs):
+          ts = time.time()
+          if 'input_title' in request.POST:
+            subject_name = request.POST['subject_name']
+            course_name = request.POST['course_name']
+            input_title = request.POST['input_title']
+            input_grade = request.POST['input_grade']
+            input_bullets = request.POST['lesson_outline']
+            
+            # Create new lesson object
+            l = lesson(user_name=request.user.username, 
+              subject=subject_name, 
+              course_name=course_name, 
+              lesson_title=input_title, 
+              grade=input_grade, 
+              bullets=input_bullets)
+            
+            # get course outline bullets, build query from each bullet
+            input_bullets = input_bullets.lower()
+            input_bullets = input_bullets.split('\n')
+            query_set = []
+            subject_name = string.replace(subject_name, ' ', '+')
+            subject_name = subject_name.lower()
+            subject_list = subject_name.split('+')
+            course_name = string.replace(course_name, ' ', '+')
+            course_name = course_name.lower()
+            course_list = course_name.split('+')
+            input_title = string.replace(input_title, ' ', '+')
+            input_title = input_title.lower()
+            input_list = input_title.split('+')
+            
+            for bullet in input_bullets:
+                bullet = bullet.strip()
+                bullet = string.replace(bullet, ' ', '+')
+                query_set.append(bullet + "+" + input_title)
+            
+            dups = {}
+            outputs = run_topic_search(dups, query_set, 1)
+            # list of urls for the engage phase
+            engage_urls = []
+            engage_urls_length = []
+            dups = outputs['dups']
+
+            i = 0
+            for url in outputs['links']:
+                e = Engage_Urls(lesson_fk=l, item_id=i, url=url.url,
+                                desc=url.desc, title=url.title)
+                # e.save()
+                engage_urls.append(e)
+                i = i + 1
+            
+
+            # for evalaute phase, run query set (explain type1 = 3)
+            outputs = run_topic_search(dups, query_set, 2)
+            evaluate_urls = []
+            dups = outputs['dups']
+            # print "evaluate %d"%len(outputs['links'])
+            i = 0
+            for url in outputs['links']:
+                e = Evaluate_Urls(lesson_fk=l, item_id=i,
+                                  url=url.url, desc=url.desc, title=url.title)
+                # e.save()
+                evaluate_urls.append(e)
+                i = i + 1
+            print(time.time()-ts)
+            return render(request, 'index.html', {'lesson_plan': l,
+                                                  'input_title': input_title,
+                                                  'engage_urls': engage_urls,
+                                                  'explain_urls': None,
+                                                  'evaluate_urls': evaluate_urls})
+          else:
+              return HttpResponse('input_title not found')
 
 
 # remove an item from the lesson plan
@@ -598,46 +605,25 @@ def save_lesson_plan(request):
 
 # search existing lesson plans from the database based on user's request
 
+class SearchLessonPlans(View):
+    form = SearchResultsForm()
 
-def search_results_terse(request):
-    if 'subject_name' in request.POST:
-        subject = request.POST['subject_name']
-        course = ''
-        grade = ''
-        title = ''
-        if 'course' in request.POST:
-            course = request.POST['course']
-        if 'grade' in request.POST:
-            grade = request.POST['grade']
-        if 'title' in request.POST:
-            title = request.POST['title']
+    def get(self, request, *args, **kwargs):
+        return render(request, 'search.html', {'form':self.form})
 
-        l = []
-        if len(title) and grade and course and subject:
-            l = lesson.objects.filter(
-                Q(subject=subject, course_name__icontains=course, lesson_title__icontains=title, grade=grade))
-        elif len(title) and course and subject:
-            l = lesson.objects.filter(
-                Q(subject=subject, course_name__icontains=course, lesson_title__icontains=title))
-        elif grade and course and subject:
-            l = lesson.objects.filter(
-                Q(subject=subject, course_name__icontains=course, grade=grade))
-        elif grade and len(title) and subject:
-            l = lesson.objects.filter(
-                Q(subject=subject, lesson_title__icontains=title, grade=grade))
-        elif grade and subject:
-            l = lesson.objects.filter(Q(subject=subject, grade=grade))
-        elif len(title) and subject:
-            l = l = lesson.objects.filter(
-                Q(subject=subject, lesson_title__icontains=title))
-        elif course and subject:
-            l = l = lesson.objects.filter(
-                Q(subject=subject, course_name__icontains=course))
-        else:
-            l = lesson.objects.filter(Q(subject__icontains=subject))
-        return render(request, 'search_results_terse.html', {'lessons': l})
-    else:
-        return HttpResponse('Could not find any lesson plans, please enter the Subject Name')
+    def post(self, request, *args, **kwargs):
+        if(request.method == 'POST'):
+            subject = request.POST['subject_name']
+            course_name = request.POST['course_name']
+            input_grade = request.POST['input_grade']
+            input_title = request.POST['input_title']
+
+            lessons = lesson.objects.filter(Q(subject = subject, 
+                course_name__icontains=course_name,
+                lesson_title__icontains=input_title,
+                grade=input_grade))
+            return render(request, 'search_results_terse.html', 
+                {'lessons':lessons})
 
 # =================================================
 # FUNCTIONS FOR HANDLING QUESTIONS, NO LONGER USED
