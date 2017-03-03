@@ -72,7 +72,7 @@
                   <div class="col-md-1">
                 <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
             
-                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="delete()" width="15" height="15"/>
+                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
                
                   <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
                
@@ -119,7 +119,7 @@
               <div class="col-md-1">
                 <input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'evaluate');" width="20" height="20"/>
   
-                  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15"/>
+                  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate');" width="15" height="15"/>
                 
                   <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
               </div>
@@ -152,21 +152,42 @@
             return cookieValue;
         }
 
-        function delete_url_collection(link_id, type){
+        function delete_url_collection(link_id, type, up_down){
+          var up_down = up_down || null;
           var csrf_token = getCookie('csrftoken');
-          var data = {'id':link_id , 'csrfmiddlewaretoken': csrf_token};
-          if(type=="engage"){
-            var url = "{% url 'clp:user_lesson_plan' l.pk 2 %}";
-          }
-          else if(type=="evaluate"){
-            var url = "{% url 'clp:user_lesson_plan' l.pk 3 %}";
-          }
+          var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
+
+          var url = "{% url 'clp:user_lesson_plan' l.pk 2 %}";
           if(data != null){
               $.ajax({ 
                   data: data ,
                   type: "POST",
                   url: url,
                   success: function(response) {
+                    console.log(response);
+                    location.reload();
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
+
+        function reorder_collection(link_id, type, up_down){
+          var up_down = up_down || null;
+          var csrf_token = getCookie('csrftoken');
+          var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
+
+          var url = "{% url 'clp:user_lesson_plan' l.pk 3 %}";
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: url,
+                  success: function(response) {
+                    console.log(response);
                     location.reload();
                   },
                   error: function(e, x, r) {

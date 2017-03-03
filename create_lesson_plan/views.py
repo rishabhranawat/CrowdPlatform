@@ -313,41 +313,83 @@ class user_profile(View):
 
 
 class UserLessonPlan(View):
+    def get_details(self, pk):
+        l = lesson.objects.get(pk=pk)
+        engage_urls = Engage_Urls.objects.filter(lesson_fk=l).order_by('item_id')
+        evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l).order_by('item_id')
+        return l, engage_urls, evaluate_urls
+
    
     def get(self, request, pk, todo, *args, **kwargs):
         if(todo == '1'):
-            l = lesson.objects.get(pk=pk)
-            engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
-            evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
+            l, engage_urls, evaluate_urls = self.get_details(pk)
 
             return render(request, 'user_lesson_plan.html', {'l':l, 
                 'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
 
     def post(self, request, pk, todo, *args, **kwargs):
         if(todo=='2'):
-            return self.delete_engage(request, pk)
-        elif(todo == '3'):
-            return self.delete_evlauate(request, pk)
+            return self.delete_link(request, pk)
+        elif(todo=='3'):
+            return self.reorder_links(request, pk)
 
-    def delete_engage(self, request, pk):
-        l = lesson.objects.get(pk=pk)
+    def delete_link(self, request, pk):
+        l, engage_urls, evaluate_urls = self.get_details(pk)
+        url_type = request.POST["type"]
+        item_id = int(request.POST['id'])
 
-        engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
-        engage_urls = engage_urls.filter(item_id=int(request.POST['id'])).delete()
-        evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
-        
-        return render(request, 'user_lesson_plan.html', {'l':l, 
-                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+        if(url_type=="engage"): 
+            engage_urls = engage_urls.filter(item_id=item_id).delete()
+        elif(url_type=="evaluate"):
+            evaluate_urls = evaluate_urls.filter(item_id=item_id).delete()
+        return HttpResponse("okay!")
 
-    def delete_evlauate(self, request, pk):
-        l = lesson.objects.get(pk=pk)
+    def get_link_with_item_id(self, urls, item_id):
+        for each in urls:
+            if(each.item_id == item_id):
+                return each
+        return None
 
-        engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
-        evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
-        evaluate_urls = evaluate_urls.filter(item_id=int(request.POST['id'])).delete()
-        
-        return render(request, 'user_lesson_plan.html', {'l':l, 
-                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+    def get_next_lowest_id(self, urls, item_id):
+        next_min = None
+        for i in range(len(urls)-1, -1, -1):
+            each = urls[i]
+            if(each.item_id != item_id and each.item_id < item_id):
+                return each
+        return None
+
+    def reorder_links(self, request, pk):
+        l, engage_urls, evaluate_urls = self.get_details(pk)
+        url_type = request.POST["type"]
+        item_id = int(request.POST['id'])
+        up_down = request.POST["up_down"]
+
+        for each in engage_urls:
+            print(item_id, each.item_id)
+        if(url_type=="engage"):
+            n = len(engage_urls)
+            rank = n-item_id+1
+            if(up_down == "up"):
+                move_link_up = self.get_link_with_item_id(engage_urls, item_id)
+                move_link_down = self.get_next_lowest_id(engage_urls, item_id)
+
+                if(move_link_down != None):
+                    move_link_up.item_id=move_link_down.item_id
+                    move_link_up.save()
+
+                    move_link_down.item_id=item_id
+                    move_link_down.save()
+                    return HttpResponse("Okay")
+                else:
+                    return HttpResponse("Okay at top")
+
+
+
+
+
+
+
+
 
 
 # Landing page for search lesson plan, i.e. the html page shown when user
