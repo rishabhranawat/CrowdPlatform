@@ -168,14 +168,102 @@ def create_lesson_plan(request):
 
 class GenerateLessonPlan(View):
     form = GenerateLessonPlanForm()
+    pk = None
+
+    def get_details(self, pk):
+        l = lesson.objects.get(pk=pk)
+        engage_urls = Engage_Urls.objects.filter(lesson_fk=l).order_by('item_id')
+        evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l).order_by('item_id')
+        return l, engage_urls, evaluate_urls
+
+
+    def delete_link(self, request, pk):
+        l, engage_urls, evaluate_urls = self.get_details(pk)
+        url_type = request.POST["type"]
+        item_id = int(request.POST['id'])
+
+        if(url_type=="engage"): 
+            engage_urls = engage_urls.filter(item_id=item_id).delete()
+        elif(url_type=="evaluate"):
+            evaluate_urls = evaluate_urls.filter(item_id=item_id).delete()
+        return redirect('/create_lesson_plan/generate_lesson_plan/1')
+
+    def get_link_with_item_id(self, urls, item_id):
+        for each in urls:
+            if(each.item_id == item_id):
+                return each
+        return None
+
+    def get_next_lowest_id(self, urls, item_id):
+        next_min = None
+        for i in range(len(urls)-1, -1, -1):
+            each = urls[i]
+            if(each.item_id != item_id and each.item_id < item_id):
+                return each
+        return None
+
+    def get_next_highest_id(self, urls, item_id):
+        for each in urls:
+            print(each.item_id, item_id)
+        for i in range(0, len(urls), 1):
+            each = urls[i]
+            if(each.item_id != item_id and each.item_id > item_id):
+                return each
+        return None
+
+
+    def reorder_links(self, request, pk):
+        l, engage_urls, evaluate_urls = self.get_details(pk)
+        url_type = request.POST["type"]
+        item_id = int(request.POST['id'])
+        up_down = request.POST["up_down"]
+
+        if(url_type=="engage"):
+            urls = engage_urls
+        elif(url_type=="evaluate"):
+            urls = evaluate_urls
+        
+        if(up_down == "up"):
+            move_link_up = self.get_link_with_item_id(urls, item_id)
+            move_link_down = self.get_next_lowest_id(urls, item_id)
+
+            if(move_link_down != None):
+                move_link_up.item_id=move_link_down.item_id
+                move_link_up.save()
+
+                move_link_down.item_id=item_id
+                move_link_down.save()
+                return HttpResponse("Okay")
+            else:
+                return HttpResponse("Okay at top")
+        else:
+            move_link_down = self.get_link_with_item_id(urls, item_id)
+            move_link_up = self.get_next_highest_id(urls, item_id)
+
+            if(move_link_up != None):
+                move_link_down.item_id = move_link_up.item_id
+                move_link_down.save()
+
+                move_link_up.item_id = item_id
+                move_link_up.save()
+
+                return HttpResponse("Okay")
+            else:
+                return HttpResponse("At the Bottom anyway")
 
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})
 
-    def post(self, request, *args, **kwargs):
-          print("here!")
-          
-          ts = time.time()
+    def post(self, request, todo,*args, **kwargs):
+       
+        if(todo == '2'):
+            pk = int(request.POST['pk'])
+            return self.delete_link(request, pk)
+        elif(todo=='3'):
+            pk = int(request.POST['pk'])
+            return self.reorder_links(request, pk)
+
+        if(todo == '1'):
           if 'input_title' in request.POST:
             subject_name = request.POST['subject_name']
             course_name = request.POST['course_name']
@@ -190,6 +278,8 @@ class GenerateLessonPlan(View):
               lesson_title=input_title, 
               grade=input_grade, 
               bullets=input_bullets)
+            l.save()
+            
             
             # get course outline bullets, build query from each bullet
             input_bullets = input_bullets.lower()
@@ -221,7 +311,7 @@ class GenerateLessonPlan(View):
             for url in outputs['links']:
                 e = Engage_Urls(lesson_fk=l, item_id=i, url=url.url,
                                 desc=url.desc, title=url.title)
-                # e.save()
+                e.save()
                 engage_urls.append(e)
                 i = i + 1
             
@@ -235,17 +325,17 @@ class GenerateLessonPlan(View):
             for url in outputs['links']:
                 e = Evaluate_Urls(lesson_fk=l, item_id=i,
                                   url=url.url, desc=url.desc, title=url.title)
-                # e.save()
+                e.save()
                 evaluate_urls.append(e)
                 i = i + 1
-            print(time.time()-ts)
-            return render(request, 'index_rish.html', {'lesson_plan': l,
+            return render(request, 'index_rish.html', {'l': l,
                                                   'input_title': input_title,
                                                   'engage_urls': engage_urls,
                                                   'explain_urls': None,
                                                   'evaluate_urls': evaluate_urls})
           else:
               return HttpResponse('input_title not found')
+
 
 
 # remove an item from the lesson plan
