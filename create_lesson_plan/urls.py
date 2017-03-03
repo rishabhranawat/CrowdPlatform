@@ -9,5 +9,9 @@ urlpatterns = [
 
     url(r"^save_lesson_plan/",views.save_lesson_plan,name="save_lesson_plan"),
     url(r'^upload_lesson_plan/', views.upload_lesson_plan.as_view(), name="upload_lesson_plan"),
-    url(r'^(?P<pk>\d+)/lesson_plan/', views.user_lesson_plan.as_view(), name='lesson_plan'),
+    url(r'^(?P<pk>\d+)/user_lesson_plan/(?P<todo>[-\w]+)', views.UserLessonPlan.as_view(), name='user_lesson_plan'),
+    url(r'^(?P<pk>\d+)/search_lesson_plan/', views.DisplaySearchLessonPlan.as_view(), 
+    	name='display_search_lesson_plan'),
+
 ]
+
