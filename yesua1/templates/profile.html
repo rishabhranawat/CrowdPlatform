@@ -21,32 +21,21 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="page-header">All Lesson Plans</h2>
+                <h2 class="page-header">Your Lesson Plans</h2>
             </div>
             {% for lp in lesson_plans %}
             <div class="col-md-4 col-sm-6">
-                <h4><i class="glyphicon glyphicon-plus-sign"></i> <a href="{% url 'clp:lesson_plan' lp.pk %}"> {{lp.lesson_title}} </a></h4>
+                <h4><i class="glyphicon glyphicon-plus-sign"></i><a href="{% url 'clp:user_lesson_plan' lp.pk 1 %}"> {{lp.lesson_title}} </a></h4>
                 <div class="col-md-12 col-sm-12" style="background-color: white;">
-                    
-                    <p>{{lp.course_name}}</p>
+                    <p><strong>Course:<strong></p>
+                    <p>{{lp.grade}} : {{lp.course_name}}</p>
+                    <p><strong>Course Outline:<strong></p>
                     <p>{{lp.bullets}}</p>
-                    <p>{{lp.grade}}</p>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    
                 </div>
             </div>
             {% endfor %}
         </div>
 
-<!--         {% for lp in lesson_plans %}
-        <div class="col-xs-12 col-md-12">
-
-            <a href="{% url 'clp:lesson_plan' lp.pk %}">{{lp.lesson_title}}</a>
-        </div>
-        {% endfor %} -->
     </div>
 
 

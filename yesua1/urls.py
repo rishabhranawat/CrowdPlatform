@@ -28,7 +28,6 @@ urlpatterns = [
     url(r"^account/", include("account.urls")),
     url(r"^create_lesson_plan/",include("create_lesson_plan.urls",namespace="clp")),
     url(r"^search_lesson_plan/",v.SearchLessonPlans.as_view(), name="search_lesson_plan"),
-    url(r"^lesson_plan/(?P<lesson_plan_id>.+)/$", v.display_lesson_plan, name="show_lesson_plan"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

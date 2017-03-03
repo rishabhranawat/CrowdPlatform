@@ -18,6 +18,8 @@ from django.core import serializers
 from django.views import View
 from django.views.generic.edit import FormView
 from django.contrib.auth.models import User
+from django.core import serializers
+
 
 from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls
 from create_lesson_plan.models import Explain_Urls, Evaluate_Urls, MCQ
@@ -161,29 +163,6 @@ def create_lesson_plan(request):
     dropdown_options = {'subjects': subjects, 'grades': grades}
     return render(request, 'form.html', dropdown_options)
 
-# use this to display a lesson plan
-def display_lesson_plan(request, lesson_plan_id=""):
-
-    l = lesson.objects.get(id=lesson_plan_id)
-    print "found lesson with id: %d" % l.id
-    engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
-    explain_urls = Explain_Urls.objects.filter(lesson_fk=l)
-    evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
-
-    doc = Document.objects.filter(lesson_fk=l)
-    pic = Image.objects.filter(lesson_fk=l)
-    # add to the context
-    c = {}
-    c['l'] = l
-    c['input_title'] = l.lesson_title
-    c['engage_urls'] = engage_urls
-    c['explain_urls'] = explain_urls
-    c['evaluate_urls'] = evaluate_urls
-    c['doc'] = doc
-    c['pic'] = pic
-
-    return render(request, 'user_lesson_plan.html', c)
-
 # displays the lesson plan created based on web search results using user
 # keywords
 
@@ -195,6 +174,7 @@ class GenerateLessonPlan(View):
 
     def post(self, request, *args, **kwargs):
           print("here!")
+          
           ts = time.time()
           if 'input_title' in request.POST:
             subject_name = request.POST['subject_name']
@@ -332,20 +312,43 @@ class user_profile(View):
         return render(request, 'profile.html', context)
 
 
-class user_lesson_plan(View):
-    def get(self, request, pk, *args, **kwargs):
+class UserLessonPlan(View):
+   
+    def get(self, request, pk, todo, *args, **kwargs):
+        if(todo == '1'):
+            l = lesson.objects.get(pk=pk)
+            engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
+            evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
+
+            return render(request, 'user_lesson_plan.html', {'l':l, 
+                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+
+    def post(self, request, pk, todo, *args, **kwargs):
+        if(todo=='2'):
+            return self.delete_engage(request, pk)
+        elif(todo == '3'):
+            return self.delete_evlauate(request, pk)
+
+    def delete_engage(self, request, pk):
         l = lesson.objects.get(pk=pk)
-        input_title = l.lesson_title
+
+        engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
+        engage_urls = engage_urls.filter(item_id=int(request.POST['id'])).delete()
+        evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
+        
+        return render(request, 'user_lesson_plan.html', {'l':l, 
+                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+
+    def delete_evlauate(self, request, pk):
+        l = lesson.objects.get(pk=pk)
+
         engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
         evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
-
-        # return render(request, 'index.html', {'lesson_plan': l,
-        #                                           'input_title': input_title,
-        #                                           'engage_urls': engage_urls,
-        #                                           'explain_urls': None,
-        #                                           'evaluate_urls': evaluate_urls})
+        evaluate_urls = evaluate_urls.filter(item_id=int(request.POST['id'])).delete()
+        
         return render(request, 'user_lesson_plan.html', {'l':l, 
-            'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+
 
 # Landing page for search lesson plan, i.e. the html page shown when user
 # clicks on the "Search Lesson plan"
@@ -614,6 +617,17 @@ class SearchLessonPlans(View):
                 grade=input_grade))
             return render(request, 'search_results_terse.html', 
                 {'lessons':lessons})
+
+
+class DisplaySearchLessonPlan(View):
+    def get(self, request, pk, *args, **kwargs):
+        l = lesson.objects.get(pk=pk)
+        input_title = l.lesson_title
+        engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
+        evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
+
+        return render(request, 'display_search_lesson_plan.html', {'l':l, 
+            'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
 
 # =================================================
 # FUNCTIONS FOR HANDLING QUESTIONS, NO LONGER USED

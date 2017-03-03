@@ -63,12 +63,12 @@
           <!--- search result -->
           <tr id="lesson_{{forloop.counter}}">
             <td>
-              <div class="col-md-12 clickable-link" id="{{ lesson.id }}">
+              <a href="{% url 'clp:search_lesson_plan' lesson.pk %} "><div class="col-md-12 clickable-link" id="{{ lesson.id }}">
                    <p>Course: {{ lesson.course_name }}</p>
                    <p>Title: {{ lesson.lesson_title }}</p>
                    <p>Author: {{ lesson.user_name }} </p>
                    <p>Grade: {{ lesson.grade }}</p>
-              </div>
+              </div></a>
             </td>
           </tr> 
           <!-- search result ends -->
@@ -86,16 +86,6 @@
      
     <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script>
-      // this will provide link funcionality to the results
-      $('.clickable-link').click(function(){
-          // grab the elemnt o
-          var current_id = $(this).attr('id');
-          var link_to_lesson = '{% url "show_lesson_plan" 0 %}'.replace('0', current_id);
-          window.location.href = link_to_lesson;
-        });
-
-      </script>
 
     </div>
 

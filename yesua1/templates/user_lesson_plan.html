@@ -70,7 +70,7 @@
                         <p>{{ enlink.desc }}</p>  
                   </div>
                   <div class="col-md-1">
-                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
             
                   <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="delete()" width="15" height="15"/>
                
@@ -117,7 +117,7 @@
                   <p>{{ enlink.desc }}</p>
               </div>
               <div class="col-md-1">
-                <input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+                <input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'evaluate');" width="20" height="20"/>
   
                   <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15"/>
                 
@@ -152,18 +152,22 @@
             return cookieValue;
         }
 
-        function delete(){
-          console.log("here!");
+        function delete_url_collection(link_id, type){
           var csrf_token = getCookie('csrftoken');
-          var data = {'collection':collection , 'csrfmiddlewaretoken': csrf_token};
+          var data = {'id':link_id , 'csrfmiddlewaretoken': csrf_token};
+          if(type=="engage"){
+            var url = "{% url 'clp:user_lesson_plan' l.pk 2 %}";
+          }
+          else if(type=="evaluate"){
+            var url = "{% url 'clp:user_lesson_plan' l.pk 3 %}";
+          }
           if(data != null){
               $.ajax({ 
                   data: data ,
                   type: "POST",
-                  url: "/create_lesson_plan/generate_lesson_plan/",
+                  url: url,
                   success: function(response) {
-
-                    alert("here!");
+                    location.reload();
                   },
                   error: function(e, x, r) {
                       console.log("Failed!");

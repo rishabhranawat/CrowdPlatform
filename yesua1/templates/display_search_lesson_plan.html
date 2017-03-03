@@ -1,0 +1,126 @@
+  <html>
+  {% extends "banner_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block head_title %}{% trans "Create Lesson Plan" %}{% endblock %}
+
+<!-- Don't know the purpose of the following line -->
+{% block body_class %}home{% endblock %}
+
+  <head>
+
+    <title>Results</title>
+  </head>
+
+  <body>
+
+    {% block banner %}
+
+      <h2>{{l.course_name}} <span> : {{l.lesson_title}}</h2>
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script type="text/javascript">
+      function extractDomain(url) {
+          var domain;
+          if (url.indexOf("://") > -1) {domain = url.split('/')[2];}
+          else {domain = url.split('/')[0];}
+          
+          domain = domain.split(':')[0];
+          return domain;
+      }
+    </script>
+
+    <!-- Our own CSS -->
+    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+    
+      <!-- First Div -->
+      {% if engage_urls %}
+      <div class="container">
+        <table class="table table-hover" id="table1" name="table1">
+
+          <thead>
+            <tr>
+              <th>Engage</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            
+            {% for enlink in engage_urls %}
+
+            <!--</tr> -->
+            <tr id="engage_{{enlink.item_id}}_row">
+              <td>
+                  <div class="col-xs-12 col-md-11">
+
+                        <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
+                        <p id='domainId+{{enlink.url}}'>
+                          <script text="text/javascript">
+                            document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
+                          </script>
+                        </p>
+                        <p>{{ enlink.desc }}</p>  
+                  </div>
+                  
+                </td>
+            </tr> 
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      {% endif %}
+
+      
+      <!-- third div -->
+      {% if evaluate_urls %}
+      <table class="table table-hover" id="table3">
+
+        <thead>
+          <tr>
+            <th>Evaluate</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!--- search result -->
+          {% for enlink in evaluate_urls %}
+          <!--- search result -->
+           
+          <tr id="evaluate_{{enlink.item_id}}_row">
+            <td>
+              <div class="col-md-11" >
+                  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
+                                          <p id='domainId+{{enlink.url}}'>
+                          <script text="text/javascript">
+                            document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
+                          </script>
+                        </p>
+                  <p>{{ enlink.desc }}</p>
+              </div>
+
+            </td>
+          </tr> 
+  
+          {% endfor %}  
+
+        </tbody>
+      </table>
+      {% endif %}
+
+
+      <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+    </div>
+
+
+    {% endblock %}
+    
+  </body>
+</html>
+

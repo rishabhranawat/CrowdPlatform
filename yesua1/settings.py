@@ -88,13 +88,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "create_lesson_plan",
     "create_lesson_plan.apps",
-    
     #"create_lesson_plan.apps.CreateLessonPlanConfig",
 
     # theme
     "bootstrapform",
     "pinax_theme_bootstrap",
     "bootstrap3",
+    "jsonify",
 
     # external
     "account",
