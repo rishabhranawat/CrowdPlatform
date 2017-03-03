@@ -22,39 +22,21 @@
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-          <script type="text/javascript">
-            function extractDomain(url) {
-                        console.log("here!");
-                        var domain;
-                        if (url.indexOf("://") > -1) {
-                            domain = url.split('/')[2];
-                        }
-                        else {
-                            domain = url.split('/')[0];
-                        }
-                        //find & remove port number
-                        domain = domain.split(':')[0];
-                        return domain;
-            }
-          </script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script type="text/javascript">
+      function extractDomain(url) {
+          var domain;
+          if (url.indexOf("://") > -1) {domain = url.split('/')[2];}
+          else {domain = url.split('/')[0];}
+          
+          domain = domain.split(':')[0];
+          return domain;
+      }
+    </script>
 
     <!-- Our own CSS -->
     <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
-      <form action="{{save_lesson_plan_url}}" method="POST">      
-      
-      {% csrf_token %}
-    <div class="container lesson_plan_id" id='{{lesson_plan.id}}'>
-      <div id="debugArea" style="float: right">&nbsp;</div>
-       <input type="hidden" id="user_name" name="user_name" value="{{lesson_plan.user_name}}"/>
-        <input type="hidden" id="subject" name="subject" value="{{lesson_plan.subject}}"/>
-        <input type="hidden" id="course_name" name="course_name" value="{{lesson_plan.course_name}}"/>
-        <input type="hidden" id="lesson_title" name="lesson_title" value="{{lesson_plan.lesson_title}}"/>
-        <input type="hidden" id="grade" name="grade" value="{{lesson_plan.grade}}"/>
-        <input type="hidden" id="bullets" name="bullets" value="{{lesson_plan.bullest}}"/>
-        <input type="hidden" id="input_title" name="input_title" value="{{input_title}}"/>
-      
+    
       <!-- First Div -->
       {% if engage_urls %}
       <div class="container">
@@ -73,19 +55,28 @@
             <!-- <tr> -->
               <input type="hidden" id="engageurl_{{enlink.item_id}}" name="engageurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
               <input type="hidden" id="engagedesc_{{enlink.item_id}}" name="engagedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
+              <input type="hidden" id="engagetitle_{{enlink.item_id}}" name="engagetitle_{{enlink.item_id}}" value="{{enlink.title}}"/>
             <!--</tr> -->
             <tr id="engage_{{enlink.item_id}}_row">
               <td>
                   <div class="col-xs-12 col-md-11">
 
-                      <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
-                       <p id='domainId+{{enlink.url}}'>
+                        <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
+                        <p id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
                             document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
                           </script>
                         </p>
                         <p>{{ enlink.desc }}</p>  
                   </div>
+                  <div class="col-md-1">
+                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+            
+                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="delete()" width="15" height="15"/>
+               
+                  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
+               
+              </div>
                 </td>
             </tr> 
         {% endfor %}
@@ -94,6 +85,7 @@
       </div>
       {% endif %}
 
+      
       <!-- third div -->
       {% if evaluate_urls %}
       <table class="table table-hover" id="table3">
@@ -111,40 +103,77 @@
            <!--<tr> -->
             <input type="hidden" id="evaluateurl_{{enlink.item_id}}" name="evaluateurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
             <input type="hidden" id="evaluatedesc_{{enlink.item_id}}" name="evaluatedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
+            <input type="hidden" id="evaluatetitle_{{enlink.item_id}}" name="evaluatetitle_{{enlink.item_id}}" value="{{enlink.title}}"/>
           <!--</tr> -->
           <tr id="evaluate_{{enlink.item_id}}_row">
             <td>
               <div class="col-md-11" >
-                 <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
-                          <p id='domainId+{{enlink.url}}'>
+                  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
+                                          <p id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
                             document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
                           </script>
                         </p>
                   <p>{{ enlink.desc }}</p>
               </div>
+              <div class="col-md-1">
+                <input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+  
+                  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15"/>
+                
+                  <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
+              </div>
             </td>
           </tr> 
   
-          <!-- search result ends -->
           {% endfor %}  
-          {% endif %}
-
-          <!-- search result ends -->
-
-
-        </tbody>
-
-
 
         </tbody>
       </table>
-
-      </form>
+      {% endif %}
 
 
       <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+      <script type="text/javascript">
+         function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function delete(){
+          console.log("here!");
+          var csrf_token = getCookie('csrftoken');
+          var data = {'collection':collection , 'csrfmiddlewaretoken': csrf_token};
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: "/create_lesson_plan/generate_lesson_plan/",
+                  success: function(response) {
+
+                    alert("here!");
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
+
+      </script>
 
     </div>
 

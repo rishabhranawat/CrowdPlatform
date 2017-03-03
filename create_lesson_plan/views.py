@@ -194,6 +194,7 @@ class GenerateLessonPlan(View):
         return render(request, 'generate.html', {'form':self.form})
 
     def post(self, request, *args, **kwargs):
+          print("here!")
           ts = time.time()
           if 'input_title' in request.POST:
             subject_name = request.POST['subject_name']

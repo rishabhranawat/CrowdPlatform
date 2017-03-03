@@ -34,6 +34,27 @@
           domain = domain.split(':')[0];
           return domain;
       }
+
+      function delete(){
+          console.log("here!");
+          var csrf_token = getCookie('csrftoken');
+          var data = {'collection':collection , 'csrfmiddlewaretoken': csrf_token};
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: "/create_lesson_plan/generate_lesson_plan/",
+                  success: function(response) {
+
+                    alert("here!");
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
     </script>
 
     <!-- Our own CSS -->
@@ -74,7 +95,7 @@
                   <div class="col-md-1">
                 <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
             
-                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15"/>
+                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="delete()" width="15" height="15"/>
                
                   <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
                
@@ -135,10 +156,6 @@
       {% endif %}
 
 
-        </tbody>
-      </table>
-      {% endif %}
-
       <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
@@ -157,6 +174,9 @@
             }
             return cookieValue;
         }
+      </script>
+
+      <script type="text/javascript">
 
       </script>
 
