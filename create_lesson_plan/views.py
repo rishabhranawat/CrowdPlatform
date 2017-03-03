@@ -358,39 +358,54 @@ class UserLessonPlan(View):
                 return each
         return None
 
+    def get_next_highest_id(self, urls, item_id):
+        for each in urls:
+            print(each.item_id, item_id)
+        for i in range(0, len(urls), 1):
+            each = urls[i]
+            if(each.item_id != item_id and each.item_id > item_id):
+                return each
+        return None
+
+
     def reorder_links(self, request, pk):
         l, engage_urls, evaluate_urls = self.get_details(pk)
         url_type = request.POST["type"]
         item_id = int(request.POST['id'])
         up_down = request.POST["up_down"]
 
-        for each in engage_urls:
-            print(item_id, each.item_id)
         if(url_type=="engage"):
-            n = len(engage_urls)
-            rank = n-item_id+1
-            if(up_down == "up"):
-                move_link_up = self.get_link_with_item_id(engage_urls, item_id)
-                move_link_down = self.get_next_lowest_id(engage_urls, item_id)
+            urls = engage_urls
+        elif(url_type=="evaluate"):
+            urls = evaluate_urls
+        
+        if(up_down == "up"):
+            move_link_up = self.get_link_with_item_id(urls, item_id)
+            move_link_down = self.get_next_lowest_id(urls, item_id)
 
-                if(move_link_down != None):
-                    move_link_up.item_id=move_link_down.item_id
-                    move_link_up.save()
+            if(move_link_down != None):
+                move_link_up.item_id=move_link_down.item_id
+                move_link_up.save()
 
-                    move_link_down.item_id=item_id
-                    move_link_down.save()
-                    return HttpResponse("Okay")
-                else:
-                    return HttpResponse("Okay at top")
+                move_link_down.item_id=item_id
+                move_link_down.save()
+                return HttpResponse("Okay")
+            else:
+                return HttpResponse("Okay at top")
+        else:
+            move_link_down = self.get_link_with_item_id(urls, item_id)
+            move_link_up = self.get_next_highest_id(urls, item_id)
 
+            if(move_link_up != None):
+                move_link_down.item_id = move_link_up.item_id
+                move_link_down.save()
 
+                move_link_up.item_id = item_id
+                move_link_up.save()
 
-
-
-
-
-
-
+                return HttpResponse("Okay")
+            else:
+                return HttpResponse("At the Bottom anyway")
 
 # Landing page for search lesson plan, i.e. the html page shown when user
 # clicks on the "Search Lesson plan"
