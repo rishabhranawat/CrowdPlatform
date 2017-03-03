@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
     <h2>Generate a Lesson Plan</h2>
     <br></br>
-    <form enctype="multipart/form-data" action="{% url 'clp:generate_lesson_plan' %}" role="form" method = "post">
+    <form enctype="multipart/form-data" action="{% url 'clp:generate_lesson_plan' 1 %}" role="form" method = "post">
         {% csrf_token %}
         {% load bootstrap %}
         {{form|bootstrap}}

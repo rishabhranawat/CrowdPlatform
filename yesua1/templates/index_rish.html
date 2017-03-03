@@ -18,13 +18,11 @@
 
     {% block banner %}
 
-      <h2> Create a Lesson Plan </h2>
-      {% url "clp:save_lesson_plan" as save_lesson_plan_url %}
+      <h2>{{l.course_name}} <span> : {{l.lesson_title}}</h2>
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <script type="text/javascript">
       function extractDomain(url) {
           var domain;
@@ -34,27 +32,6 @@
           domain = domain.split(':')[0];
           return domain;
       }
-
-      function delete(){
-          console.log("here!");
-          var csrf_token = getCookie('csrftoken');
-          var data = {'collection':collection , 'csrfmiddlewaretoken': csrf_token};
-          if(data != null){
-              $.ajax({ 
-                  data: data ,
-                  type: "POST",
-                  url: "/create_lesson_plan/generate_lesson_plan/",
-                  success: function(response) {
-
-                    alert("here!");
-                  },
-                  error: function(e, x, r) {
-                      console.log("Failed!");
-                  }
-              });
-          }
-          return false;
-        }
     </script>
 
     <!-- Our own CSS -->
@@ -74,11 +51,6 @@
           <tbody>
             
             {% for enlink in engage_urls %}
-            <!--- search result -->
-            <!-- <tr> -->
-              <input type="hidden" id="engageurl_{{enlink.item_id}}" name="engageurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
-              <input type="hidden" id="engagedesc_{{enlink.item_id}}" name="engagedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
-              <input type="hidden" id="engagetitle_{{enlink.item_id}}" name="engagetitle_{{enlink.item_id}}" value="{{enlink.title}}"/>
             <!--</tr> -->
             <tr id="engage_{{enlink.item_id}}_row">
               <td>
@@ -93,11 +65,11 @@
                         <p>{{ enlink.desc }}</p>  
                   </div>
                   <div class="col-md-1">
-                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
             
-                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="delete()" width="15" height="15"/>
+                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
                
-                  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
+                  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'ḍown');" width="15" height="15"/>
                
               </div>
                 </td>
@@ -140,11 +112,11 @@
                   <p>{{ enlink.desc }}</p>
               </div>
               <div class="col-md-1">
-                <input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="return false;" width="20" height="20"/>
+                <input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'evaluate');" width="20" height="20"/>
   
-                  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="return false;" width="15" height="15"/>
+                  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'up');" width="15" height="15"/>
                 
-                  <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="return false;" width="15" height="15"/>
+                  <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'down');" width="15" height="15"/>
               </div>
             </td>
           </tr> 
@@ -174,9 +146,53 @@
             }
             return cookieValue;
         }
-      </script>
 
-      <script type="text/javascript">
+        function delete_url_collection(link_id, type, pk){
+          console.log(pk);
+          var up_down = up_down || null;
+          var csrf_token = getCookie('csrftoken');
+          console.log({{l.pk}});
+          var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token, 'pk':{{l.pk}}};
+
+          var url = "{% url 'clp:generate_lesson_plan' 2 %}";
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: url,
+                  success: function(response) {
+                    console.log(response);
+                    location.reload();
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
+
+        function reorder_collection(link_id, type, up_down){
+          var up_down = up_down || null;
+          var csrf_token = getCookie('csrftoken');
+          var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token, 'pk': {{l.pk}} };
+
+          var url = "{% url 'clp:generate_lesson_plan' 3 %}";
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: url,
+                  success: function(response) {
+                    window.location.replace("{% url 'clp:generate_lesson_plan' 1 %}");
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
 
       </script>
 

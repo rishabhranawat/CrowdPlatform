@@ -8,6 +8,7 @@ class lesson(models.Model):
 	lesson_title = models.CharField(max_length=400)
 	grade = models.CharField(max_length=100)
 	bullets = models.CharField(max_length=1200)
+	stage = models.IntegerField(default=0)
 
 class lesson_plan(models.Model):
 	lesson_fk = models.ForeignKey(lesson)
