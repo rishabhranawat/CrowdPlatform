@@ -302,7 +302,7 @@ class user_profile(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         user = User.objects.get(username=user)
-        lesson_plans = lesson.objects.filter(user_name=user)
+        lesson_plans = lesson.objects.filter(user_name=user, stage=1)
         context = {
             'user':user, 
             'lesson_plans':lesson_plans}
@@ -335,7 +335,7 @@ class UserLessonPlan(View):
             l = lesson.objects.get(pk = pk)
             l.stage = 1
             l.save()
-            return HttpResponse("Okay, saved!")
+            return redirect('/create_lesson_plan/profile/')
 
     def delete_link(self, request, pk):
         l, engage_urls, evaluate_urls = self.get_details(pk)
@@ -675,7 +675,7 @@ class SearchLessonPlans(View):
             lessons = lesson.objects.filter(Q(subject = subject, 
                 course_name__icontains=course_name,
                 lesson_title__icontains=input_title,
-                grade=input_grade))
+                grade=input_grade, stage=1))
             return render(request, 'search_results_terse.html', 
                 {'lessons':lessons})
 

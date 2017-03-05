@@ -14,11 +14,6 @@
 <!--         <li><a href="{% url 'account_settings' %}">Settings</a></li>
         <li><a href="{% url 'account_logout' %}">Logout</a></li> -->
     </ul>
-    {% else %}
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'account_login' %}">Login</a></li>
-        <li><a href="{% url 'account_signup' %}">Signup</a></li>
-    </ul>
     {% endif %}
 {% endblock %}
 
