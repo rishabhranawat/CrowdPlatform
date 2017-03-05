@@ -25,10 +25,13 @@
         {% csrf_token %}
         {% load bootstrap %}
         {{form|bootstrap}}
-        <input type="file" id="upload1" name="myfiles[]">
+        <input type="file" id="upload" name="myfiles[]">
         <div id="upload_prev"></div>
-        <button class="btn btn-primary" type="submit">{% trans "Upload Lesson Plan" %}</button>
+        <br></br>
+    <button class="btn btn-primary" type="submit">{% trans "Upload Lesson Plan" %}</button>
+
     </form>
+
 
     <!-- Script to display all files uploaded --> 
     <script type="text/javascript">

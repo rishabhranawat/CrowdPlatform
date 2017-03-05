@@ -282,13 +282,13 @@ class upload_lesson_plan(FormView):
       course_name = request.POST['course_name']
       title = request.POST['input_title'].lower().replace('+', ' ')
       grade = request.POST['input_grade']
-      bullets = request.POST['input_bullets']
+      bullets = request.POST['lesson_outline']
       files = request.FILES.getlist('myfiles[]')
       print(files)
 
       l = lesson(user_name=request.user.username,
         subject=subject_name, course_name=course_name,
-        lesson_title=title, grade=grade, bullets=bullets)
+        lesson_title=title, grade=grade, bullets=bullets, stage=1)
       l.save()
 
       for f in files:
@@ -335,7 +335,7 @@ class UserLessonPlan(View):
             l = lesson.objects.get(pk = pk)
             l.stage = 1
             l.save()
-            return redirect('/create_lesson_plan/profile/')
+            return HttpResponse("saved")
 
     def delete_link(self, request, pk):
         l, engage_urls, evaluate_urls = self.get_details(pk)
@@ -346,7 +346,7 @@ class UserLessonPlan(View):
             engage_urls = engage_urls.filter(item_id=item_id).delete()
         elif(url_type=="evaluate"):
             evaluate_urls = evaluate_urls.filter(item_id=item_id).delete()
-        return HttpResponse("okay!")
+        return HttpResponse("deleted")
 
     def get_link_with_item_id(self, urls, item_id):
         for each in urls:
