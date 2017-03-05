@@ -36,6 +36,24 @@
 
     <!-- Our own CSS -->
     <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+
+    <div class="modal fade" id="errorModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title" id="modal-header">Error!</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
     
       <!-- First Div -->
       {% if engage_urls %}
@@ -210,8 +228,17 @@
                   type: "POST",
                   url: url,
                   success: function(response) {
-                    console.log(response);
-                    location.reload();
+                    var modal_header = document.getElementById("modal-header");
+                    var modal_body = document.getElementById("modal-body");
+                    if(response == "saved"){
+                        modal_header.innerHTML = "Saved.";
+                        modal_body.innerHTML = "<a href=/create_lesson_plan/profile/> Go to your profile </a>"
+                        $("#errorModal").modal();
+                       //location.href="/create_lesson_plan/profile/";
+                    } else {
+                      console.log(response);
+                      location.reload();
+                    }
                   },
                   error: function(e, x, r) {
                       console.log("Failed!");
