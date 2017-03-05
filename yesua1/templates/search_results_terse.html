@@ -59,11 +59,12 @@
         </thead>
 
         <tbody>
+    {% if lessons %}
 	  {% for lesson in lessons %}
           <!--- search result -->
           <tr id="lesson_{{forloop.counter}}">
             <td>
-              <a href="{% url 'clp:search_lesson_plan' lesson.pk %} "><div class="col-md-12 clickable-link" id="{{ lesson.id }}">
+              <a href="{% url 'clp:search_lesson_plan' %} "><div class="col-md-12 clickable-link" id="{{ lesson.id }}">
                    <p>Course: {{ lesson.course_name }}</p>
                    <p>Title: {{ lesson.lesson_title }}</p>
                    <p>Author: {{ lesson.user_name }} </p>
@@ -73,6 +74,7 @@
           </tr> 
           <!-- search result ends -->
           {% endfor %}
+    {% endif %}
 
           
 

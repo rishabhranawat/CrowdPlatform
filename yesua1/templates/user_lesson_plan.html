@@ -18,7 +18,7 @@
 
     {% block banner %}
 
-      <h2>{{l.course_name}} <span> : {{l.lesson_title}}</h2>
+      <h2>{{l.course_name}} <span> : {{l.lesson_title}} <button class="btn btn-primary" value="Save Lesson Plan" onclick="save_lesson_plan();">Save Lesson Plan</button></h2> 
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -48,8 +48,10 @@
             </tr>
           </thead>
 
+
+
           <tbody>
-            
+
             {% for enlink in engage_urls %}
             <!--</tr> -->
             <tr id="engage_{{enlink.item_id}}_row">
@@ -125,6 +127,9 @@
 
         </tbody>
       </table>
+
+
+            
       {% endif %}
 
 
@@ -176,6 +181,29 @@
           var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
 
           var url = "{% url 'clp:user_lesson_plan' l.pk 3 %}";
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: url,
+                  success: function(response) {
+                    console.log(response);
+                    location.reload();
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
+
+        function save_lesson_plan(){
+          
+          var csrf_token = getCookie('csrftoken');
+          var data = {'csrfmiddlewaretoken': csrf_token};
+
+          var url = "{% url 'clp:user_lesson_plan' l.pk 4 %}";
           if(data != null){
               $.ajax({ 
                   data: data ,
