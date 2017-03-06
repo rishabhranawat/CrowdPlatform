@@ -31,6 +31,7 @@ def bing_search(query, search_type, limit, query_original):
      response = request_opener.open(request) 
      response_data = response.read()
      json_result = json.loads(response_data)
+     print(json_result)
      #summsrch.summ_search(query_original,json_result)
      result_list = []
      for result in json_result['d']['results']:

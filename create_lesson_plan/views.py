@@ -90,7 +90,7 @@ def processed(query, type1, type2, bullets):
             else: limit = 2
             
         elif type2 == 2:
-            query += " filetype:ppt site:edu "
+            query += "notes filetype:ppt site:edu "
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
@@ -100,19 +100,25 @@ def processed(query, type1, type2, bullets):
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
+
+        elif type2 == 4:
+            query += ""
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 2
+            else: limit = 3
     
     # evaluate phase
     elif type1 == 2:
         if type2 == 1:
-            query += "+homeworks+site:edu"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
+            query += " homeworks filetype:pdf"
+            if bullets == 3: limit = 4
+            if bullets == 2: limit = 5
             else: limit = 5
 
         elif type2 == 2:
-            query += " midterm+solutions site:edu"
-            if bullets == 3: limit = 2
-            elif bullets == 2: limit = 3
+            query += " midterm+final+practice filetype:pdf"
+            if bullets == 3: limit = 4
+            elif bullets == 2: limit = 5
             else: limit = 5
     return query, limit
 
@@ -120,7 +126,7 @@ def processed(query, type1, type2, bullets):
 def run_topic_search(duplicate_dict, query_set, type1):
     link_list = []
 
-    type2_range = [3, 2]
+    type2_range = [4, 2]
     new_link_list = []
     for query in query_set:
         query_results = {}
@@ -129,7 +135,7 @@ def run_topic_search(duplicate_dict, query_set, type1):
             # process and run each query
             processed_query, limit = processed(query, type1, type2, len(query_set))
             query2 = query
-
+            print(processed_query)
             results = bing.bing_search(processed_query, 'Web', limit, query2)
             
             valid_result = []
@@ -143,7 +149,6 @@ def run_topic_search(duplicate_dict, query_set, type1):
             
             for each_result in valid_result:
                 l = Links(each_result['Url'], each_result['Description'], -1, each_result['title'])
-                print(l.url)
                 new_link_list.append(l)
 
     output = {'dups': duplicate_dict, 'links': new_link_list}
