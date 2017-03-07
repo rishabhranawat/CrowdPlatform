@@ -85,8 +85,8 @@ def processed(query, type1, type2, bullets):
     if type1 == 1:
         if type2 == 1:
             query += "+site:wikipedia.org"
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 1
+            if bullets == 3: limit = 2
+            elif bullets == 2: limit = 2
             else: limit = 2
             
         elif type2 == 2:
@@ -97,7 +97,7 @@ def processed(query, type1, type2, bullets):
 
         elif type2 == 3:
             query += " concepts filetype:pdf site:edu "
-            if bullets == 3: limit = 1
+            if bullets == 3: limit = 2
             elif bullets == 2: limit = 2
             else: limit = 3
 
@@ -111,15 +111,15 @@ def processed(query, type1, type2, bullets):
     elif type1 == 2:
         if type2 == 1:
             query += " homeworks filetype:pdf"
-            if bullets == 3: limit = 4
-            if bullets == 2: limit = 5
-            else: limit = 5
+            if bullets == 3: limit = 2
+            if bullets == 2: limit = 3
+            else: limit = 6
 
         elif type2 == 2:
             query += " midterm+final+practice filetype:pdf"
-            if bullets == 3: limit = 4
-            elif bullets == 2: limit = 5
-            else: limit = 5
+            if bullets == 3: limit = 2
+            elif bullets == 2: limit = 3
+            else: limit = 6
     return query, limit
 
 
@@ -142,6 +142,7 @@ def run_topic_search(duplicate_dict, query_set, type1):
             for r in results:
                 if r['Url'] not in duplicate_dict and not isToBeFiltered(r['Url']):
                     valid_result.append(r)
+                print(r['Url'], duplicate_dict)
                 duplicate_dict[r['Url']] = 1
 
             if len(valid_result) == 0:
