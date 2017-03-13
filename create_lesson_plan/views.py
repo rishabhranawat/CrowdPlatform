@@ -37,7 +37,8 @@ grades = ['Undergraduate', 'Graduate']
 filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog']
 # list of type of uploads
 types = ['Document', 'Image']
-
+# list of universities
+universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
 
 class Links(object):
 
@@ -80,29 +81,48 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
 # ================================================================================
 # create search query based on type1 and type2
 
-def processed(query, type1, type2, bullets):
+def processed(query, type1, type2, bullets, input_title):
     # engage phase
+    limit=2
     if type1 == 1:
         if type2 == 1:
-            query += "+site:wikipedia.org"
+            query += " "+input_title+" +site:wikipedia.org"
             if bullets == 3: limit = 2
             elif bullets == 2: limit = 2
             else: limit = 2
-            
+
         elif type2 == 2:
-            query += "notes filetype:ppt site:edu "
+            query += " mit notes concepts "
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
 
         elif type2 == 3:
-            query += " concepts filetype:pdf site:edu "
+            query += " stanford notes concepts "
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 2
+            else: limit = 3
+            
+        elif type2 == 4:
+            query += "cmu notes concepts "
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 2
+            else: limit = 3
+
+        elif type2 == 2:
+            query += " "+input_title+" notes filetype:ppt site:edu "
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 2
+            else: limit = 3
+
+        elif type2 == 6:
+            query += " "+input_title+" concepts filetype:pdf site:edu "
             if bullets == 3: limit = 2
             elif bullets == 2: limit = 2
             else: limit = 3
 
-        elif type2 == 4:
-            query += ""
+        elif type2 == 7:
+            query += " applications examples"
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
@@ -110,48 +130,72 @@ def processed(query, type1, type2, bullets):
     # evaluate phase
     elif type1 == 2:
         if type2 == 1:
-            query += " homeworks filetype:pdf"
+            query += "mit homeworks filetype:pdf"
             if bullets == 3: limit = 2
             if bullets == 2: limit = 3
             else: limit = 6
 
         elif type2 == 2:
-            query += " midterm+final+practice filetype:pdf"
+            query += "cmu homeworks filetype:pdf"
+            if bullets == 3: limit = 2
+            if bullets == 2: limit = 3
+            else: limit = 6
+
+        elif type2 == 3:
+            query += "stanford homeworks filetype:pdf"
+            if bullets == 3: limit = 2
+            if bullets == 2: limit = 3
+            else: limit = 6
+
+        if type2 == 4:
+            query += " "+input_title+" homeworks filetype:pdf"
+            if bullets == 3: limit = 2
+            if bullets == 2: limit = 3
+            else: limit = 6
+
+        elif type2 == 5:
+            query += " "+input_title+" midterm+final+practice filetype:pdf"
             if bullets == 3: limit = 2
             elif bullets == 2: limit = 3
             else: limit = 6
+
     return query, limit
 
+def getProcessedQuery(query, type1,unType):
+    if(type1 == 1): query = query.replace("site:edu", universities[unType])
+    elif(type1 == 2): query = query+(" "+universities[unType])
+    return query
 
-def run_topic_search(duplicate_dict, query_set, type1):
-    link_list = []
+def generateDictAndLinksList(results, duplicate_dict, new_link_list):
+    valid_result = []
+    for r in results:
+        if r['Url'] not in duplicate_dict and not isToBeFiltered(r['Url']):
+            valid_result.append(r)
+        duplicate_dict[r['Url']] = 1
 
-    type2_range = [4, 2]
+    if len(valid_result) == 0:
+        return valid_result, duplicate_dict, new_link_list
+    
+    for each_result in valid_result:
+        l = Links(each_result['Url'], each_result['Description'], -1, each_result['title'])
+        new_link_list.append(l)
+
+    return valid_result, duplicate_dict, new_link_list
+
+def run_topic_search(duplicate_dict, query_set, type1, input_title):
+    
+    type2_range = [8, 6]
     new_link_list = []
     for query in query_set:
-        query_results = {}
-        output_links = Queue()
         for type2 in range(1, type2_range[type1 - 1]):
-            # process and run each query
-            processed_query, limit = processed(query, type1, type2, len(query_set))
-            query2 = query
+            processed_query, limit = processed(query, type1, type2, \
+                len(query_set), input_title)
             print(processed_query)
+            query2 = query
             results = bing.bing_search(processed_query, 'Web', limit, query2)
+            valid_result, duplicate_dict, new_link_list = \
+                generateDictAndLinksList(results, duplicate_dict, new_link_list)
             
-            valid_result = []
-            for r in results:
-                if r['Url'] not in duplicate_dict and not isToBeFiltered(r['Url']):
-                    valid_result.append(r)
-                print(r['Url'], duplicate_dict)
-                duplicate_dict[r['Url']] = 1
-
-            if len(valid_result) == 0:
-                continue
-            
-            for each_result in valid_result:
-                l = Links(each_result['Url'], each_result['Description'], -1, each_result['title'])
-                new_link_list.append(l)
-
     output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
 
@@ -214,10 +258,10 @@ class GenerateLessonPlan(View):
             for bullet in input_bullets:
                 bullet = bullet.strip()
                 bullet = string.replace(bullet, ' ', '+')
-                query_set.append(bullet + "+" + input_title)
+                query_set.append(bullet + "+")
             
             dups = {}
-            outputs = run_topic_search(dups, query_set, 1)
+            outputs = run_topic_search(dups, query_set, 1, input_title)
             # list of urls for the engage phase
             engage_urls = []
             engage_urls_length = []
@@ -233,7 +277,7 @@ class GenerateLessonPlan(View):
             
 
             # for evalaute phase, run query set (explain type1 = 3)
-            outputs = run_topic_search(dups, query_set, 2)
+            outputs = run_topic_search(dups, query_set, 2, input_title)
             evaluate_urls = []
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])

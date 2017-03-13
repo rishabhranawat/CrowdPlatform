@@ -8,6 +8,7 @@ import summsrch
 def bing_search(query, search_type, limit, query_original):
     key= 'U2Tlenujx3Z8Y3nxPiTkfirOrhfXtrcUk2jMz3xgGXA'
     query = urllib.quote_plus(query,safe='+') # cleaning up the query
+    print("bing "+query)
     # create credential for authentication
     user_agent = 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; FDM; .NET CLR 2.0.50727; InfoPath.2; .NET CLR 1.1.4322)'
     credentials = (':%s' % key).encode('base64')[:-1]
