@@ -34,7 +34,10 @@ subjects = ['Computer Science']
 # list of education levels
 grades = ['Undergraduate', 'Graduate']
 # filters used in web search results
-filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog']
+filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog',\
+            'course-outline', 'course structure', 'schedule', 'outline', \
+            'course page', 'course description', 'basic information', \
+            'course outcomes']
 # list of type of uploads
 types = ['Document', 'Image']
 # list of universities
@@ -51,11 +54,12 @@ class Links(object):
 # determine if a search result is to be filtered, just based on its URL
 
 
-def isToBeFiltered(url):
+def isToBeFiltered(url, description, title):
     if len(url) > 100:
         return True
     for temp in filters:
-        if temp in url.lower():
+        if temp in url.lower() or temp in description.lower()\
+            or temp in title.lower():
             return True
     return False
 
@@ -92,37 +96,31 @@ def processed(query, type1, type2, bullets, input_title):
             else: limit = 2
 
         elif type2 == 2:
-            query += " mit notes concepts "
+            query += " "+input_title+" notes site:mit.edu "
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
 
         elif type2 == 3:
-            query += " stanford notes concepts "
+            query += " "+input_title+" notes site:cmu.edu "
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
             
         elif type2 == 4:
-            query += "cmu notes concepts "
+            query += " "+input_title+" notes site:stanford.edu "
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
 
-        elif type2 == 2:
-            query += " "+input_title+" notes filetype:ppt site:edu "
+        elif type2 == 5:
+            query += " "+input_title+" notes site:edu "
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
 
         elif type2 == 6:
-            query += " "+input_title+" concepts filetype:pdf site:edu "
-            if bullets == 3: limit = 2
-            elif bullets == 2: limit = 2
-            else: limit = 3
-
-        elif type2 == 7:
-            query += " applications examples"
+            query += " "+input_title+" applications examples"
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
@@ -130,19 +128,19 @@ def processed(query, type1, type2, bullets, input_title):
     # evaluate phase
     elif type1 == 2:
         if type2 == 1:
-            query += "mit homeworks filetype:pdf"
+            query += " "+input_title+" homeworks site:mit.edu"
             if bullets == 3: limit = 2
             if bullets == 2: limit = 3
             else: limit = 6
 
         elif type2 == 2:
-            query += "cmu homeworks filetype:pdf"
+            query += " "+input_title+" homeworks site:cmu.edu"
             if bullets == 3: limit = 2
             if bullets == 2: limit = 3
             else: limit = 6
 
         elif type2 == 3:
-            query += "stanford homeworks filetype:pdf"
+            query += " "+input_title+" homeworks site:stanford.edu"
             if bullets == 3: limit = 2
             if bullets == 2: limit = 3
             else: limit = 6
@@ -169,7 +167,8 @@ def getProcessedQuery(query, type1,unType):
 def generateDictAndLinksList(results, duplicate_dict, new_link_list):
     valid_result = []
     for r in results:
-        if r['Url'] not in duplicate_dict and not isToBeFiltered(r['Url']):
+        if r['Url'] not in duplicate_dict and \
+            not isToBeFiltered(r['Url'], r['Description'], r['title']):
             valid_result.append(r)
         duplicate_dict[r['Url']] = 1
 
@@ -177,14 +176,15 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
         return valid_result, duplicate_dict, new_link_list
     
     for each_result in valid_result:
-        l = Links(each_result['Url'], each_result['Description'], -1, each_result['title'])
+        l = Links(each_result['Url'], each_result['Description'], -1,
+         each_result['title'])
         new_link_list.append(l)
 
     return valid_result, duplicate_dict, new_link_list
 
 def run_topic_search(duplicate_dict, query_set, type1, input_title):
     
-    type2_range = [8, 6]
+    type2_range = [7 , 6]
     new_link_list = []
     for query in query_set:
         for type2 in range(1, type2_range[type1 - 1]):
@@ -223,7 +223,7 @@ class GenerateLessonPlan(View):
         return render(request, 'generate.html', {'form':self.form})
 
     def post(self, request, todo,*args, **kwargs):
-       
+        ts = time.time()
         if(todo == '1'):
           if 'input_title' in request.POST:
             subject_name = request.POST['subject_name']
@@ -289,6 +289,8 @@ class GenerateLessonPlan(View):
                 evaluate_urls.append(e)
                 i = i + 1
             pk = l.pk
+
+            print(time.time() - ts)
             return redirect('/create_lesson_plan/'+str(pk)+'/user_lesson_plan/1')
           else:
               return HttpResponse('input_title not found')
