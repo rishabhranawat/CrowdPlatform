@@ -25,7 +25,7 @@
         {% csrf_token %}
         {% load bootstrap %}
         {{form|bootstrap}}
-        <input type="file" id="upload" name="myfiles[]">
+        <input type="file" id="upload" name="myfiles[]" multiple>
         <div id="upload_prev"></div>
         <br></br>
     <button class="btn btn-primary" type="submit">{% trans "Upload Lesson Plan" %}</button>
@@ -34,16 +34,16 @@
 
 
     <!-- Script to display all files uploaded --> 
-    <script type="text/javascript">
+<!--     <script type="text/javascript">
         $(document).ready(function () {
             $("#upload").change(function() { 
                 var files = $('#upload')[0].files;
                 for (var i = 0; i < files.length; i++) {
-                    $("#upload_prev").append(files[i].name);
+                    $("#upload_prev").append("<p>"+files[i].name+"</p>");
                 }
             });
         });
-    </script>
+    </script> -->
 {% endblock %}
   </body>
 </html>
