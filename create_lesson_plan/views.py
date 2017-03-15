@@ -354,10 +354,22 @@ class user_profile(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         user = User.objects.get(username=user)
-        lesson_plans = lesson.objects.filter(user_name=user, stage=1)
+        lesson_plans = list(lesson.objects.filter(user_name=user, stage=1).order_by('course_name'))
+
+        plans = []
+        c = lesson_plans[0].course_name
+        cl = []    
+        for lp in lesson_plans:
+            if(lp.course_name == c): cl.append(lp)
+            else: 
+                plans.append(cl)
+                cl = []
+                c = lp.course_name
+                cl.append(lp)
+       
         context = {
             'user':user, 
-            'lesson_plans':lesson_plans}
+            'lesson_plans':plans}
         return render(request, 'profile.html', context)
 
 
