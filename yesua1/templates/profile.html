@@ -26,7 +26,7 @@
                     <h4><strong>{{ l.0.course_name }}</strong></h4>
                     {% for lp in l %}
                         <div class="col-md-4 col-sm-6">
-                            <h4><i class="glyphicon glyphicon-plus-sign"></i><a href="{% url 'clp:user_lesson_plan' lp.pk 1 %}">{{lp.grade}} : {{lp.course_name}} </a></h4>
+                            <h4><i class="glyphicon glyphicon-plus-sign"></i><a href="{% url 'clp:user_lesson_plan' lp.pk 1 %}">{{lp.grade}}</a></h4>
                             <div class="col-md-12 col-sm-12" style="background-color: white;">
                                 <p><strong>Course:<strong></p>
                                 <p>{{lp.lesson_title}}</p>

@@ -104,6 +104,7 @@ INSTALLED_APPS = [
 
     # project
     "yesua1",
+    "vote",
 ]
 
 MIDDLEWARE_CLASSES = [
