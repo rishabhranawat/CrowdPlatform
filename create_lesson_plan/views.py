@@ -400,6 +400,28 @@ class UserLessonPlan(View):
             l.stage = 1
             l.save()
             return HttpResponse("saved")
+        elif(todo == '5'):
+            return self.move_link_phase(request, pk)
+
+    def move_link_phase(self, requet, pk):
+        if(todo == 'evaluate'):
+            return HttpResponse("place holder")
+
+    def save_new_link(self, request, pk):
+        link = request.POST['url']
+        desc = request.POST['desc']
+        title = request.POST['title']
+        typ = request.POST['type']
+        l = lesson.objects.get(pk=pk)
+        if(typ == 'evaluate'):  
+            e = Evaluate_Urls(lesson_fk=l, item_id=i,
+                                  url=link, desc=url.desc, title=url.title)
+            e.save()
+        else:
+            e = Engage_Urls(lesson_fk=l, item_id=i,
+                                  url=link, desc=url.desc, title=url.title)
+            e.save()
+        return HttpResponse("Okay!")
 
     def delete_link(self, request, pk):
         l, engage_urls, evaluate_urls = self.get_details(pk)
