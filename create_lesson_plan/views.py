@@ -740,6 +740,7 @@ class SearchLessonPlans(View):
                 course_name__icontains=course_name,
                 lesson_title__icontains=input_title,
                 grade=input_grade, stage=1))
+            
             return render(request, 'search_results_terse.html', 
                 {'lessons':lessons})
 
@@ -751,9 +752,22 @@ class DisplaySearchLessonPlan(View):
         engage_urls = Engage_Urls.objects.filter(lesson_fk=l)
         evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
 
-        return render(request, 'display_search_lesson_plan.html', {'l':l, 
-            'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+        documents = Document.objects.filter(lesson_fk=l)
 
+        return render(request, 'display_search_lesson_plan.html', {'l':l, 
+            'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls,
+             'documents':documents, 'count': l.votes.count()})
+    def post(self, request, pk, *args, **kwargs):
+      
+        typ = request.POST['type']
+        l = lesson.objects.get(pk=pk)
+        if(typ == '1'):
+            l.votes.up(request.user.id)
+            l.save()
+        else:
+            l.votes.down(request.user.id)
+            l.save()
+        return HttpResponse("OKay!")
 # =================================================
 # FUNCTIONS FOR HANDLING QUESTIONS, NO LONGER USED
 # =================================================

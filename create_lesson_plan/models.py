@@ -1,7 +1,9 @@
 from django.db import models
 
+from vote.managers import VotableManager
+from vote.models import VoteModel
 # Create your models here.
-class lesson(models.Model):
+class lesson(VoteModel, models.Model):
 	user_name = models.CharField(max_length=400)
 	subject = models.CharField(max_length=400)
 	course_name = models.CharField(max_length=400)
