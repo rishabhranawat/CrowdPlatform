@@ -384,9 +384,9 @@ class UserLessonPlan(View):
     def get(self, request, pk, todo, *args, **kwargs):
         if(todo == '1'):
             l, engage_urls, evaluate_urls = self.get_details(pk)
-
+            form = ManualLinkAddition()
             return render(request, 'user_lesson_plan.html', {'l':l, 
-                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls})
+                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls, 'form':form})
 
     def post(self, request, pk, todo, *args, **kwargs):
         if(todo == '1'):
@@ -402,24 +402,50 @@ class UserLessonPlan(View):
             return HttpResponse("saved")
         elif(todo == '5'):
             return self.move_link_phase(request, pk)
+        elif(todo == '6'):
+            return self.save_new_link(request, pk)
 
-    def move_link_phase(self, requet, pk):
-        if(todo == 'evaluate'):
+    def move_link_phase(self, request, pk):
+        link_id = request.POST['id']
+        print(link_id)
+        typ = request.POST['type']
+        change_to = request.POST['change_to']
+        l = lesson.objects.get(pk=int(request.POST['pk']))
+        if(typ == 'engage'):
+            i = Engage_Urls.objects.latest('item_id').item_id
+            url = Engage_Urls.objects.get(pk=int(link_id))
+            e = Evaluate_Urls(lesson_fk=l, item_id=i+1,
+                                  url=url.url, desc=url.desc, title=url.title)
+            e.save()
+            url.delete()           
             return HttpResponse("place holder")
+        elif(typ == 'evaluate'):
+            i = Evaluate_Urls.objects.latest('item_id').item_id
+            url = Evaluate_Urls.objects.get(pk=int(link_id))
+            e = Engage_Urls(lesson_fk=l, item_id=i+1,
+                                  url=url.url, desc=url.desc, title=url.title)
+            e.save()  
+            url.delete()         
+            return HttpResponse("place holder")
+        return HttpResponse("Error")
+
 
     def save_new_link(self, request, pk):
-        link = request.POST['url']
-        desc = request.POST['desc']
-        title = request.POST['title']
-        typ = request.POST['type']
+        print(request.POST)
+        link = request.POST["fd[link]"]
+        desc = request.POST["fd[link_desc]"]
+        title = request.POST["fd[link_title]"]
+        typ = request.POST["fd[link_type]"]
         l = lesson.objects.get(pk=pk)
-        if(typ == 'evaluate'):  
+        if(typ == 'Evaluate'):  
+            i = Evaluate_Urls.objects.latest('item_id').item_id + 1
             e = Evaluate_Urls(lesson_fk=l, item_id=i,
-                                  url=link, desc=url.desc, title=url.title)
+                                  url=link, desc=desc, title=title)
             e.save()
         else:
+            i = Engage_Urls.objects.latest('item_id').item_id + 1
             e = Engage_Urls(lesson_fk=l, item_id=i,
-                                  url=link, desc=url.desc, title=url.title)
+                                  url=link, desc=desc, title=title)
             e.save()
         return HttpResponse("Okay!")
 

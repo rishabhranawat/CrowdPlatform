@@ -109,6 +109,11 @@
                   <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
                
                   <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+              <button onclick="reorder_phase({{enlink.pk}}, 'engage', 'evaluate');" type="button" class="btn btn-default">
+                  Move to Evaluate
+              </button>
                
               </div>
                 </td>
@@ -165,6 +170,10 @@
                   <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'up');" width="15" height="15"/>
                 
                   <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'down');" width="15" height="15"/>
+
+
+              <button onclick="reorder_phase({{enlink.pk}}, 'evaluate', 'engage');" type="button" class="btn btn-default">Move to Engage
+              </button>
               </div>
             </td>
           </tr> 
@@ -173,11 +182,15 @@
 
         </tbody>
       </table>
-
-
-            
+   
       {% endif %}
-
+      <h4>Add A Link</h4>
+          <form  id="newlink" enctype="multipart/form-data" onsubmit="add_new_link()" role="form" method = "post">
+        {% csrf_token %}
+        {% load bootstrap %}
+        {{form|bootstrap}}
+        <button class="btn btn-primary" type="submit">{% trans "Add to your Lesson Plan" %}</button>
+    </form>
 
       <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -196,6 +209,35 @@
                 }
             }
             return cookieValue;
+        }
+
+        function objectifyForm(formArray) {//serialize data function
+          var returnArray = {};
+          for (var i = 0; i < formArray.length; i++){
+            returnArray[formArray[i]['name']] = formArray[i]['value'];
+          }
+          return returnArray;
+        }
+        function add_new_link(){
+          var fd = ($('#newlink').serializeArray());
+          var csrf_token = getCookie('csrftoken');
+          var data = {'csrfmiddlewaretoken': csrf_token, 'fd': objectifyForm(fd)};
+
+          var url = "{% url 'clp:user_lesson_plan' l.pk 6 %}";
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: url,
+                  success: function(response) {
+                    location.reload();
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
         }
 
         function delete_url_collection(link_id, type, up_down){
@@ -275,6 +317,29 @@
           }
           return false;
         }
+
+        function reorder_phase(link_id, type, change_to){
+          var csrf_token = getCookie('csrftoken');
+          var data = {'id':link_id , 'type': type , 'change_to':change_to, 'csrfmiddlewaretoken': csrf_token, 'pk': {{l.pk}} };
+
+          var url = "{% url 'clp:user_lesson_plan' l.pk 5 %}";
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: url,
+                  success: function(response) {
+                    location.reload();
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
+
+
 
       </script>
 

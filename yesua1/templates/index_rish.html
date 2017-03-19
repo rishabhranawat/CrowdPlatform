@@ -65,11 +65,17 @@
                         <p>{{ enlink.desc }}</p>  
                   </div>
                   <div class="col-md-1">
-                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
+                <input id = "engage_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
             
-                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
+                  <input id = "engage_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
                
-                  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'ḍown');" width="15" height="15"/>
+                  <input id = "engage_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+              <button onclick="reorder_phase({{enlink.item_id}}, 'engage', 'evaluate');" type="button" class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-thumbs-up"></span>
+              </button>
+
                
               </div>
                 </td>
@@ -185,6 +191,27 @@
                   url: url,
                   success: function(response) {
                     window.location.replace("{% url 'clp:generate_lesson_plan' 1 %}");
+                  },
+                  error: function(e, x, r) {
+                      console.log("Failed!");
+                  }
+              });
+          }
+          return false;
+        }
+
+        function reorder_phase(link_id, type, change_to){
+          var csrf_token = getCookie('csrftoken');
+          var data = {'id':link_id , 'type': type , 'change_to':change_to, 'csrfmiddlewaretoken': csrf_token, 'pk': {{l.pk}} };
+
+          var url = "{% url 'clp:generate_lesson_plan' 3 %}";
+          if(data != null){
+              $.ajax({ 
+                  data: data ,
+                  type: "POST",
+                  url: url,
+                  success: function(response) {
+                    window.location.replace("{% url 'clp:generate_lesson_plan' 5 %}");
                   },
                   error: function(e, x, r) {
                       console.log("Failed!");
