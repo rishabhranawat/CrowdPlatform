@@ -8,19 +8,17 @@ from .models import lesson
 connections.create_connection()
 
 class lessonIndex(DocType):
-	user_name = String()
-	subject = String()
- 	course_name = String()
-	lesson_title = String()
-	grade = String()
-	bullets = String()
+	user_name = Text()
+	subject = Text()
+ 	course_name = Text()
+	# lesson_title = Text()
+	grade = Text()
+	bullets = Text()
 	stage = Integer()
 
-	class Meta:
-		index = 'lesson'
 
 def bulk_indexing():
-	lessonIndex.init()
+	lessonIndex.init(index='lesson')
 	es = Elasticsearch()
 	bulk(client=es, actions=(b.indexing for b in lesson.objects.all().iterator()))
 
