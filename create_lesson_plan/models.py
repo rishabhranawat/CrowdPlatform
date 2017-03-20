@@ -23,7 +23,7 @@ class lesson(VoteModel, models.Model):
 			bullets = self.bullets,
 			stage = self.stage
 		)
-		obj.save()
+		obj.save(index='lesson')
 		return obj.to_dict(include_meta=True)
 
 
