@@ -12,6 +12,21 @@ class lesson(VoteModel, models.Model):
 	bullets = models.CharField(max_length=1200)
 	stage = models.IntegerField(default=0)
 
+	def indexing(self):
+		obj = lessonIndex(
+			meta = {'id': self.id},
+			user_name = self.user_name,
+			subject = self.subject,
+			course_name = self.course_name,
+			lesson_title = self.lesson_title,
+			grade = self.grade,
+			bullets = self.bullets,
+			stage = self.stage
+		)
+		obj.save()
+		return obj.to_dict(include_meta=True)
+
+
 class lesson_plan(models.Model):
 	lesson_fk = models.ForeignKey(lesson)
 	lesson_title = models.CharField(max_length=400)
