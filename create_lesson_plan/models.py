@@ -2,6 +2,11 @@ from django.db import models
 
 from vote.managers import VotableManager
 from vote.models import VoteModel
+
+import django.db.models.options as options
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
+	'es_index_name', 'es_type_name', 'es_mapping'
+)
 # Create your models here.
 class lesson(VoteModel, models.Model):
 	user_name = models.CharField(max_length=400)
@@ -13,19 +18,15 @@ class lesson(VoteModel, models.Model):
 	stage = models.IntegerField(default=0)
 	score = models.IntegerField()
 
-	def indexing(self):
-		obj = lessonIndex(
-			meta = {'id': self.id},
-			user_name = self.user_name,
-			subject = self.subject,
-			course_name = self.course_name,
-			lesson_title = self.lesson_title,
-			grade = self.grade,
-			bullets = self.bullets,
-			stage = self.stage
-		)
-		obj.save(index='lesson')
-		return obj.to_dict(include_meta=True)
+	class Meta:
+		es_index_name = 'create_lesson_plan'
+		es_type_name = 'lesson'
+		es_mapping = {
+			'properties': {
+				'user_name' : {'type': 'string', 'index':'not_analyzed'},
+			},
+		}
+	
 
 
 class lesson_plan(models.Model):
