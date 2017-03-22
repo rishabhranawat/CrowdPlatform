@@ -43,9 +43,9 @@ alpha = re.compile('[A-Za-z0-9]')
 extras = ["forgot","email","edit","login"]
 #print stops
 #dict = corpora.Dictionary.load('dictionary')
-avg = []
-var = []
-page_p = []
+avg = [[] for x in range(3)]
+var = [[] for x in range(3)]
+page_p = [[] for x in range(3)]
 #qry = ''
 form = cgi.FieldStorage()
 
@@ -59,7 +59,7 @@ qry = 'sample space definition probability math'
 
 manager = Manager()
 
-resultpages = manager.dict({})
+resultpages = [manager.dict({}) for x in range(3)]
 
 def accept(x):
     if x in stops:
@@ -83,9 +83,9 @@ def extractParagraphsFromWebpages(url):
     return parsePDF(url)
   #p=[]
   for i in range(1,6):
-  	para= extractText(url,i)
-  	if len(para)>0:
-  		p+=para
+    para= extractText(url,i)
+    if len(para)>0:
+      p+=para
 
   return p
   #return parseHtml(url)
@@ -116,93 +116,93 @@ def parseHtml(url):
     return cleanhtml.encode("utf-8").replace("\r\n","\n").split("\n\n")
 
   except Exception:
-  	#print "cleanhtml exception"
-  	return []
+    #print "cleanhtml exception"
+    return []
 
 def extractText(url,n):
     #print "No Error"
-	try: 
-		path='//'
-		if n==1:
-			path+='div/text()'
-		elif n==2:
-			path+='p/text()'
-		elif n==3:
-			path+='td/text()'
-		elif n==4:
-			path+='span/text()'
-		elif n==5:
-		  path+='a/text()'
+  try: 
+    path='//'
+    if n==1:
+      path+='div/text()'
+    elif n==2:
+      path+='p/text()'
+    elif n==3:
+      path+='td/text()'
+    elif n==4:
+      path+='span/text()'
+    elif n==5:
+      path+='a/text()'
 
-		p = lxml.html.parse(url).xpath(path)
-		#print "Para"
-		return p
-	except Exception:
-		#print "Exception Error"
-		return []
+    p = lxml.html.parse(url).xpath(path)
+    #print "Para"
+    return p
+  except Exception:
+    #print "Exception Error"
+    return []
 
 #define a wikipedia page parser function
 def parsewiki(url):
   
-	try:
-	  #print "Hello"
-	  url= url.split("/")[-1]
-	  #print "URL %s"%url
-	  url = url.replace("_"," ")
-	  # regex = re.compile('[^a-zA-Z ]')
-	  # url = regex.sub("",url)
-	  #print url
-	  x = wikipedia.page(url).content.split("\n\n")
-	  return x
-	  
-	except Exception:
-		#print "Exception wiki"
-		return []
+  try:
+    #print "Hello"
+    url= url.split("/")[-1]
+    #print "URL %s"%url
+    url = url.replace("_"," ")
+    # regex = re.compile('[^a-zA-Z ]')
+    # url = regex.sub("",url)
+    #print url
+    x = wikipedia.page(url).content.split("\n\n")
+    return x
+    
+  except Exception:
+    #print "Exception wiki"
+    return []
 
 #define a pdf parser function
 def parsePDF(url):
   #url= "http://math.buffalostate.edu/%7Eit/projects/Gallagher.pdf"
   # Open the url provided as an argument to the function and read the content
-	try:
-	  #print "pdf"
-	  f = urllib2.urlopen(Request(url)).read()
-	  #print "read"
-	  # Cast to StringIO object
-	  from StringIO import StringIO
-	  memory_file = StringIO(f)
-	  # Create a PDF parser object associated with the StringIO object
-	  parser = PDFParser(memory_file)
+  try:
+    #print "pdf"
+    f = urllib2.urlopen(Request(url)).read()
+    #print "read"
+    # Cast to StringIO object
+    from StringIO import StringIO
+    memory_file = StringIO(f)
+    # Create a PDF parser object associated with the StringIO object
+    parser = PDFParser(memory_file)
 
-	      # Create a PDF document object that stores the document structure
-	  document = PDFDocument(parser)
-	  #print "parser"
+        # Create a PDF document object that stores the document structure
+    document = PDFDocument(parser)
+    #print "parser"
 
-	      # Define parameters to the PDF device objet 
-	  rsrcmgr = PDFResourceManager()
-	  retstr = StringIO()
-	  laparams = LAParams()
-	  codec = 'utf-8'
+        # Define parameters to the PDF device objet 
+    rsrcmgr = PDFResourceManager()
+    retstr = StringIO()
+    laparams = LAParams()
+    codec = 'utf-8'
 
-	      # Create a PDF device object
-	  device = TextConverter(rsrcmgr, retstr, codec = codec, laparams = laparams)
-	  #print "laparams"
+        # Create a PDF device object
+    device = TextConverter(rsrcmgr, retstr, codec = codec, laparams = laparams)
+    #print "laparams"
 
-	      # Create a PDF interpreter object
-	  interpreter = PDFPageInterpreter(rsrcmgr, device)
+        # Create a PDF interpreter object
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
 
-	      # Process each page contained in the document
-	  for page in PDFPage.create_pages(document):
-	    interpreter.process_page(page)
-	    #data =  retstr.getvalue()
-	  #print "done"
-	  #print data.encode(utf-8).split("\n\n")
-	  #return retstr.getvalue().encode("utf-8").split("\n\n")
-	  return retstr.getvalue().split("\n\n")
-	except Exception:
-		return []
+        # Process each page contained in the document
+    for page in PDFPage.create_pages(document):
+      interpreter.process_page(page)
+      #data =  retstr.getvalue()
+    #print "done"
+    #print data.encode(utf-8).split("\n\n")
+    #return retstr.getvalue().encode("utf-8").split("\n\n")
+    return retstr.getvalue().split("\n\n")
+  except Exception:
+    return []
 
 #downloads all the pages
-def pages(results):
+def pages(results,index):
   docs = []
   titles = []
   urls = []
@@ -212,9 +212,9 @@ def pages(results):
   #print "Hello World"
   print "number of links summ_search %d"%len(results)
   for r in results:
-    threads.append(Process(target=download,args=(r,sq)))
+    threads.append(Process(target=download,args=(r,sq,index)))
     #print "Hello 1"
-    threads[-1].start();
+    threads[-1].start()
     #print "Hello 2"
     sq+=1
     
@@ -225,7 +225,7 @@ def pages(results):
   return docs,titles,urls
 
 
-def download(r,seqno):
+def download(r,seqno,i):
     #print "download %d"%seqno
     try:
         global resultpages
@@ -235,7 +235,7 @@ def download(r,seqno):
         paragraphs = extractParagraphsFromWebpages(r['Url'])
         #print r['Url']
         if paragraphs==None or len(paragraphs)==0:
-        	paragraphs = [r['Description'].encode("utf-8","ignore")]
+          paragraphs = [r['Description'].encode("utf-8","ignore")]
 
         docs = [k.strip() for k in paragraphs if len(k.split())>2]
         #if len(docs)==0:
@@ -243,7 +243,7 @@ def download(r,seqno):
         urls = r['Url']
         #temp = (docs,titles,urls,seqno)
         temp = (docs,r,seqno)
-        resultpages[seqno] = temp
+        resultpages[i][seqno] = temp
     except AttributeError:
       errmssg= 'couldn\'t load'+ r['Url']
       print errmssg
@@ -287,7 +287,7 @@ def similar_terms(model,text,kws):
   return kws
 
 # calculate similarity score of each page
-def getRelevantParas(model,kws,paras):
+def getRelevantParas(model,kws,paras,index):
   rel_paras = []
   global avg, var, page_p
   for i,para in enumerate(paras):
@@ -312,12 +312,12 @@ def getRelevantParas(model,kws,paras):
   # ASHWIN: I changed the formula here..
   page_sem = stats.sem(rel_paras, nan_policy='omit')
   #page_var = np.var(rel_paras)
-  avg.append(page_avg)
-  var.append(page_sem)
+  avg[index].append(page_avg)
+  var[index].append(page_sem)
   ## similarity score of the page calaculated from average and variance of all the paragraphs
   #p = abs(page_avg-10*page_var)
   p = page_sem/page_avg
-  page_p.append(p)
+  page_p[index].append(p)
   # print "Average %f"%page_avg
   # print "Variance %f"%page_var
   # print "Prob %f"%p
@@ -326,49 +326,49 @@ def getRelevantParas(model,kws,paras):
 
 # Define a PDF parser function
 
-def summ_search(qry,results):
+def summ_search(qry,results,index):
     global resultpages
-    resultpages.clear()
+    resultpages[index].clear()
     global avg, var, page_p
-    avg =[]
-    var = []
-    page_p =[]
+    avg[index] =[]
+    var[index] = []
+    page_p[index] =[]
 
     #print "Search"
     #print qry
     qry = qry.replace("+"," ")
 
-    rawdocs,titles,urls = pages(results)
+    rawdocs,titles,urls = pages(results,index)
     #print "Result Pages %d"%len(resultpages)
     #mid = dt.datetime.now()
     rawdocs =[]
     titles=[]
     urls=[]
     result_sorted = []
-    for iter in sorted(resultpages.keys()):
-      rawdocs.append(resultpages[iter][0])
+    for iter in sorted(resultpages[index].keys()):
+      rawdocs.append(resultpages[index][iter][0])
       #titles.append(resultpages[iter][1])
-      result_sorted.append(resultpages[iter][1])
+      result_sorted.append(resultpages[index][iter][1])
     
     docs = []
     for paragraphs in rawdocs:
-    		#print "Para %d"%len(paragraphs)
-    		docs.append([nltk.wordpunct_tokenize(para.lower()) for para in paragraphs if len(para.split())>2])
+        #print "Para %d"%len(paragraphs)
+        docs.append([nltk.wordpunct_tokenize(para.lower()) for para in paragraphs if len(para.split())>2])
   
     model,kws = d2v(qry,docs)
     result_list =[]
     for i,doc in enumerate(docs):
         #print urls[i]
         print result_sorted[i]['Url']
-        p = getRelevantParas(model,kws,doc)
+        p = getRelevantParas(model,kws,doc,index)
         result_list.append({'title': result_sorted[i]['title'], 'Url': result_sorted[i]['Url'], 'Description': result_sorted[i]['Description'], 'Value': p})
         #print p
         #similscores+=p
     #print "Constant c"
     #print len(avg)
     #comparator = (0.5*np.percentile(avg,90)+0.5*np.percentile(var,75))
-    comparator = np.nanpercentile(page_p,50)
-    print 'Values: %s and Comparator value: %.4f' % (page_p, comparator)
+    comparator = np.nanpercentile(page_p[index],75)
+    print 'Values: %s and Comparator value: %.4f' % (page_p[index], comparator)
     result_list_filtered =[]
     for r in result_list:
       if r['Value'] < comparator:

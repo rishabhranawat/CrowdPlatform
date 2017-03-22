@@ -26,7 +26,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Crowdsourced Lesson Plans</title>
+    <title>CollectiveTeach</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -57,7 +57,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="panel panel-primary">
                         
-                        <a href="{{ create_lesson_plan_url}}">
+                        <a href="{% url 'clp:generate_lesson_plan' 0 %}">
                         <div class="panel-heading">
                             <div class="row" style="background-image: url(../site_media/static/images/updown2.png); background-size:30px 30px; background-repeat: no-repeat; background-position: left; cursor: move;margin-left:10px">
                                 <div class="col-xs-3" >
@@ -75,7 +75,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="panel panel-primary">
-                        <a href="{{ upload_url }}">
+                        <a href="{% url 'clp:upload_lesson_plan' %}">
                         <div class="panel-heading">
                             <div class="row" style="background-image: url(../site_media/static/images/updown2.png); background-size:30px 30px; background-repeat: no-repeat; background-position: left; cursor: move;margin-left:10px">
                                 <div class="col-xs-3">
@@ -171,7 +171,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Crowdsourced Lesson Plans</title>
+    <title>CollectiveTeach</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -181,12 +181,12 @@
 
         {% url "account_login" as login_url %}
         {% url "account_signup" as signup_url %}
-         <h1>{% trans "Welcome to CrowdLP" %}</h1>
+         <h1>{% trans "Welcome to CollectiveTeach" %}</h1>
     <p>
         {% blocktrans %}
-        <b>CrowdLP</b> is a crowdsourced learning platform aimed at 
+        <b>CollectiveTeach</b> is a crowdsourced learning platform aimed at 
     augmenting your teaching and learning experience. By
-        using CrowdLP, you can make your teaching magical!
+        using CollectiveTeach, you can make your teaching magical!
         Are you ready?
     {% endblocktrans %}
     </p>

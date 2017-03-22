@@ -1,0 +1,48 @@
+<html>
+ {% extends "banner_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block head_title %}{% trans "Generate Lesson Plan" %}{% endblock %}
+
+<!-- Don't know the purpose of the following line -->
+{% block body_class %}home{% endblock %}
+
+
+{% block banner %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <!-- Our own CSS -->
+    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+
+    <div class="modal fade" id="errorModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title" id="modal-header">Error!</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    <h2>Generate a Lesson Plan</h2>
+    <br></br>
+    <form enctype="multipart/form-data" action="{% url 'clp:generate_lesson_plan' 1 %}" role="form" method = "post">
+        {% csrf_token %}
+        {% load bootstrap %}
+        {{form|bootstrap}}
+        <button class="btn btn-primary" type="submit">{% trans "Generate A Lesson Plan" %}</button>
+    </form>
+{% endblock %}
+</html>

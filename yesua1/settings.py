@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "sslserver",
     "create_lesson_plan",
     "create_lesson_plan.apps",
     #"create_lesson_plan.apps.CreateLessonPlanConfig",
@@ -94,6 +95,7 @@ INSTALLED_APPS = [
     "bootstrapform",
     "pinax_theme_bootstrap",
     "bootstrap3",
+    "jsonify",
 
     # external
     "account",
@@ -102,6 +104,7 @@ INSTALLED_APPS = [
 
     # project
     "yesua1",
+    "vote",
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -115,6 +118,8 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'account.middleware.LocaleMiddleware',
     'account.middleware.TimezoneMiddleware',
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler",
 ]
 
 ROOT_URLCONF = 'yesua1.urls'
