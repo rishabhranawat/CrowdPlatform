@@ -7,14 +7,22 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
+{% block nav %}
+<!-- {% block site_brand %}<a class="navbar-brand" href="{% url "home" %}">CollectiveTeach</a>{% endblock %} -->
+    {% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'clp:profile' %}">Profile</a></li>
+<!--         <li><a href="{% url 'account_settings' %}">Settings</a></li>
+        <li><a href="{% url 'account_logout' %}">Logout</a></li> -->
+    </ul>
+    {% endif %}
+{% endblock %}
+
 {% block style_base %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-
-
     <link href="{% static "pinax/css/theme.css" %}" rel="stylesheet">
     <link href="{% static "css/site.css" %}" rel="stylesheet">
     {% block extra_style %}{% endblock %}
@@ -38,6 +46,7 @@
 
 
 {% block script_base %}
+    <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
     <script src="{% block jquery_src %}{% static "jquery/js/jquery-2.1.1.min.js" %}{% endblock %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
     <script src="{% static "pinax/js/theme.js" %}"></script>

@@ -1,13 +1,32 @@
 from django.db import models
 
+from vote.managers import VotableManager
+from vote.models import VoteModel
 # Create your models here.
-class lesson(models.Model):
+class lesson(VoteModel, models.Model):
 	user_name = models.CharField(max_length=400)
 	subject = models.CharField(max_length=400)
 	course_name = models.CharField(max_length=400)
 	lesson_title = models.CharField(max_length=400)
 	grade = models.CharField(max_length=100)
 	bullets = models.CharField(max_length=1200)
+	stage = models.IntegerField(default=0)
+	score = models.IntegerField()
+
+	def indexing(self):
+		obj = lessonIndex(
+			meta = {'id': self.id},
+			user_name = self.user_name,
+			subject = self.subject,
+			course_name = self.course_name,
+			lesson_title = self.lesson_title,
+			grade = self.grade,
+			bullets = self.bullets,
+			stage = self.stage
+		)
+		obj.save(index='lesson')
+		return obj.to_dict(include_meta=True)
+
 
 class lesson_plan(models.Model):
 	lesson_fk = models.ForeignKey(lesson)
@@ -26,18 +45,21 @@ class lesson_plan(models.Model):
 	evaluate_img1 = models.CharField(max_length=600)
 
 class Engage_Urls(models.Model):
+	title = models.CharField(max_length=600, blank=True)
 	lesson_fk = models.ForeignKey(lesson)
 	item_id = models.IntegerField()
 	url = models.CharField(max_length=600)
 	desc = models.CharField(max_length=600)
 
 class Explain_Urls(models.Model):
+	title = models.CharField(max_length=600, blank=True)
 	lesson_fk = models.ForeignKey(lesson)
 	item_id = models.IntegerField()
 	url = models.CharField(max_length=600)
 	desc = models.CharField(max_length=600)
 
 class Evaluate_Urls(models.Model):
+	title = models.CharField(max_length=600, blank=True)
 	lesson_fk = models.ForeignKey(lesson)
 	item_id = models.IntegerField()
 	url = models.CharField(max_length=600)

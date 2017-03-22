@@ -3,9 +3,15 @@ from django.conf.urls import url
 from create_lesson_plan import views
 
 urlpatterns = [
-    url(r'^$', views.create_lesson_plan, name="create_lesson_plan"),
-    url(r"^show_lesson_plan/",views.show_lesson_plan, name="show_lesson_plan"),
+    url(r'^generate_lesson_plan/(?P<todo>[-\w]+)', views.GenerateLessonPlan.as_view(), name="generate_lesson_plan"),
+    url(r'^profile/', views.user_profile.as_view(), name="profile"),
     url(r"^remove_from_lp/",views.remove_from_lp, name="remove_from_lp"),
-    #url(r"^show_temp_lesson_plan/",views.show_temp_lesson_plan, name="show_temp_lesson_plan"),
+
     url(r"^save_lesson_plan/",views.save_lesson_plan,name="save_lesson_plan"),
+    url(r'^upload_lesson_plan/', views.upload_lesson_plan.as_view(), name="upload_lesson_plan"),
+    url(r'^(?P<pk>\d+)/user_lesson_plan/(?P<todo>[-\w]+)', views.UserLessonPlan.as_view(), name='user_lesson_plan'),
+    url(r'^(?P<pk>\d+)/display_search_lesson_plan/', views.DisplaySearchLessonPlan.as_view(), 
+    	name='display_search_lesson_plan'),
+
 ]
+
