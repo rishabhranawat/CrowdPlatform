@@ -16,7 +16,7 @@ class lesson(VoteModel, models.Model):
 	grade = models.CharField(max_length=100)
 	bullets = models.CharField(max_length=1200)
 	stage = models.IntegerField(default=0)
-	score = models.IntegerField()
+	score = models.IntegerField(default=0)
 
 	class Meta:
 		es_index_name = 'create_lesson_plan'
