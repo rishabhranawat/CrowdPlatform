@@ -1,38 +1,31 @@
 import scrapy
+from scrapy.item import Item, Field
+from scrapy.crawler import CrawlerProcess
 
+
+class LinkObject(Item):
+    link = Field()
+    content = Field()
+
+link_objs = []
 class WikipediaSpider(scrapy.Spider):
 	name = 'wikipediaspider'
 	start_urls = ['https://en.wikipedia.org/wiki/Portal:Computer_science']
-	
 	def parse(self, response):
-		links = response.css('a')
-		links_urls = []
-		for each in links:
-			print(each)
-			links_urls.append(each.xpath('@href').extract_first())
-		print("\n \n \n")
-		next_page = "https://en.wikipedia.org/wiki/Poisson_distribution"
-		if next_page is not None:
-			yield scrapy.Request(next_page, callback=self.parse)
-
-# import scrapy
+		for url in response.css('a'):
+			link_obj = LinkObject()
+			link_obj['link'] = url.xpath('@href').extract_first()
+			link_obj['content'] = response.text
+			link_objs.append(link_obj)
 
 
-# class QuotesSpider(scrapy.Spider):
-#     name = "quotes"
-#     start_urls = [
-#         'http://quotes.toscrape.com/page/1/',
-#     ]
+class Level1Spider(scrapy)
+	name = "level1spider"
+	start_urls =[]
 
-#     def parse(self, response):
-#         # for quote in response.css('div.quote'):
-#         #     yield {
-#         #         'text': quote.css('span.text::text').extract_first(),
-#         #         'author': quote.css('small.author::text').extract_first(),
-#         #         'tags': quote.css('div.tags a.tag::text').extract(),
-#         #     }
+process = CrawlerProcess({
+    'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+})
 
-#         next_page = response.css('li.next a::attr(href)').extract_first()
-#         if next_page is not None:
-#             next_page = response.urljoin(next_page)
-#             yield scrapy.Request(next_page, callback=self.parse)
+process.crawl(WikipediaSpider)
+process.start()
