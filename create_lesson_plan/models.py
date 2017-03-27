@@ -28,9 +28,6 @@ class lesson(VoteModel, models.Model):
 		}
 	
 
-
-
-
 class lesson_plan(models.Model):
 	lesson_fk = models.ForeignKey(lesson)
 	lesson_title = models.CharField(max_length=400)
