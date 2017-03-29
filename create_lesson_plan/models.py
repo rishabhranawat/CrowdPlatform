@@ -104,3 +104,44 @@ class Document(models.Model):
 class Image(models.Model):
 	lesson_fk=models.ForeignKey(lesson)
 	docfile=models.FileField(upload_to='images')
+
+class OfflineDocument(models.Model):
+	link = models.CharField(max_length=600)
+	content = models.TextField()
+	date_scraped = models.DateTimeField()
+	source = models.TextField()
+
+from django.models import Model
+from elasticutils.contrib.django import Indexable, MappingType
+
+class OfflineDocumentMapping(MappingType, Indexable):
+	@classmethod
+	def get_model(cls):
+		return OfflineDocument
+	
+	@classmethod
+	def get_mapping(cls):
+		return {
+			'properties': {
+				'id': {'type':'integer'},
+				'link' : {'type':'string', 'index': 'not_analyzed'},
+				'content': {'type':'string', 'analyzer': 'snowball'},
+				'date_scraped': {'type':'date', 'analyzer':'not_analyzed'},
+				'source': {'type':'text', 'analyzer': 'not_analyzed'}
+			}
+		}
+	
+	@classmethod
+	def extract_document(cls, obj_id, obj=None):
+		if obj is None:
+			obj = cls.get_model().objects.get(pk=obj_id)
+		return {
+			'id': obj.id,
+			'link': obj.link,
+			'content': obj.content,
+			'date_scraped': obj.date_scraped,
+			'source': obj.source
+		}
+
+
+	
