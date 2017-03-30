@@ -1,9 +1,12 @@
 from django.db import models
+import django.db.models.options as options
+from django.db.models.signals import post_save, pre_delete
 
 from vote.managers import VotableManager
 from vote.models import VoteModel
 
-import django.db.models.options as options
+from search import OfflineDocument as OfflineDoc
+
 
 
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
@@ -107,40 +110,31 @@ class Image(models.Model):
 	lesson_fk=models.ForeignKey(lesson)
 	docfile=models.FileField(upload_to='images')
 
+##############################################
+#		Offline Database Models 			 #
+##############################################
 class OfflineDocument(models.Model):
-	link = models.CharField(max_length=600)
-	content = models.TextField()
-	date_scraped = models.DateTimeField()
-	source = models.TextField()
-
-# class OfflineDocumentMapping(MappingType, Indexable):
-# 	@classmethod
-# 	def get_model(cls):
-# 		return OfflineDocument
-	
-# 	@classmethod
-# 	def get_mapping(cls):
-# 		return {
-# 			'properties': {
-# 				'id': {'type':'integer'},
-# 				'link' : {'type':'string', 'index': 'not_analyzed'},
-# 				'content': {'type':'string', 'analyzer': 'snowball'},
-# 				'date_scraped': {'type':'date', 'analyzer':'not_analyzed'},
-# 				'source': {'type':'text', 'analyzer': 'not_analyzed'}
-# 			}
-# 		}
-	
-# 	@classmethod
-# 	def extract_document(cls, obj_id, obj=None):
-# 		if obj is None:
-# 			obj = cls.get_model().objects.get(pk=obj_id)
-# 		return {
-# 			'id': obj.id,
-# 			'link': obj.link,
-# 			'content': obj.content,
-# 			'date_scraped': obj.date_scraped,
-# 			'source': obj.source
-# 		}
+    link = models.CharField(max_length=600)
+    content = models.TextField()
+    date_scraped = models.DateTimeField()
+    source = models.TextField()
 
 
+    def to_search(self):
+    	data =  {
+    		'link': self.link,
+    		'content':self.content,
+    		'date_scraped': self.date_scraped,
+    		'source': self.source,
+    	}
+    	return OfflineDoc(data)
+
+def update_search(instance, **kwargs):
+	instance.to_search().save()
+
+def remove_from_search(instance, **kwargs):
+	instance.to_search().delete()
+
+post_save.connect(update_search, sender=OfflineDocument)
+pre_delete.connect(remove_from_search, sender=OfflineDocument)
 	
