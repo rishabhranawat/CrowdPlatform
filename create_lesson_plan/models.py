@@ -113,28 +113,35 @@ class Image(models.Model):
 ##############################################
 #		Offline Database Models 			 #
 ##############################################
+from elasticsearch.client import IndicesClient
+from django.conf import settings
+from elasticsearch import Elasticsearch
+
 class OfflineDocument(models.Model):
+	
     link = models.CharField(max_length=600)
     content = models.TextField()
-    date_scraped = models.DateTimeField()
     source = models.TextField()
 
-
+    class Meta:
+		es_index_name = 'create_lesson_plan'
+		es_type_name = 'offline_doc'
+    
     def to_search(self):
-    	data =  {
-    		'link': self.link,
-    		'content':self.content,
-    		'date_scraped': self.date_scraped,
-    		'source': self.source,
+    	es = Elasticsearch()
+    	doc = {
+    		'link':self.link,
+    		'content':self.content
     	}
-    	return OfflineDoc(data)
+    	res = es.index(index=self._meta.es_index_name, \
+    		doc_type=self._meta.es_type_name, id=self.id, body=doc)
 
 def update_search(instance, **kwargs):
-	instance.to_search().save()
+	instance.to_search()
 
-def remove_from_search(instance, **kwargs):
-	instance.to_search().delete()
+# def remove_from_search(instance, **kwargs):
+# 	instance.to_search().delete()
 
 post_save.connect(update_search, sender=OfflineDocument)
-pre_delete.connect(remove_from_search, sender=OfflineDocument)
+# pre_delete.connect(remove_from_search, sender=OfflineDocument)
 	

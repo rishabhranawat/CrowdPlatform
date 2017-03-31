@@ -1,11 +1,11 @@
 from django.conf import settings
 
-from elasticsearch import connections
+from elasticsearch import Elasticsearch
 from elasticsearch_dsl import DocType, Date, String, \
 Nested, Object, Index, MetaField, analyzer, FacetedSearch, \
-Q, TermsFacet, DateHistogramFacet, SF, Text
+Q, TermsFacet, DateHistogramFacet, SF, Text, connections
 
-connections.create_connection(hosts=['localhost'])
+connections.connections.create_connection(hosts=['localhost'])
 
 html_strip = analyzer('html_strip',
     tokenizer="standard", 
@@ -14,7 +14,6 @@ html_strip = analyzer('html_strip',
 )
 
 class OfflineDocument(DocType):
-    date_scraped = Date()
     content = Text(analyzer='snowball')
     link = Text()
     source = Text()
