@@ -122,6 +122,11 @@ class OfflineDocument(models.Model):
     link = models.CharField(max_length=600)
     content = models.TextField()
     source = models.TextField()
+    title = models.TextField()
+    subject = models.TextField()
+    meta_tags = models.TextField()
+    summary = models.TextField()
+    date_scraped = models.DateTimeField()
 
     class Meta:
 		es_index_name = 'create_lesson_plan'
