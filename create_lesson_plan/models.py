@@ -116,17 +116,19 @@ class Image(models.Model):
 from elasticsearch.client import IndicesClient
 from django.conf import settings
 from elasticsearch import Elasticsearch
+from datetime import datetime
+
 
 class OfflineDocument(models.Model):
 	
     link = models.CharField(max_length=600)
     content = models.TextField()
     source = models.TextField()
-    title = models.TextField()
-    subject = models.TextField()
-    meta_tags = models.TextField()
-    summary = models.TextField()
-    date_scraped = models.DateTimeField()
+    title = models.TextField(null=True, blank=True)
+    subject = models.TextField(null=True, blank=True)
+    meta_tags = models.TextField(null=True, blank=True)
+    summary = models.TextField(null=True, blank=True)
+    date_scraped = models.DateTimeField(default=datetime.now(), blank=True)
 
     class Meta:
 		es_index_name = 'create_lesson_plan'
