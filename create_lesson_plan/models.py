@@ -112,6 +112,9 @@ class Image(models.Model):
 
 ##############################################
 #		Offline Database Models 			 #
+#		Todo - create mappings structure	 #
+#		and then put to the index instead 	 #
+#		instead of randomly putting it 		 #
 ##############################################
 from elasticsearch.client import IndicesClient
 from django.conf import settings
@@ -146,9 +149,5 @@ class OfflineDocument(models.Model):
 def update_search(instance, **kwargs):
 	instance.to_search()
 
-# def remove_from_search(instance, **kwargs):
-# 	instance.to_search().delete()
-
 post_save.connect(update_search, sender=OfflineDocument)
-# pre_delete.connect(remove_from_search, sender=OfflineDocument)
 	
