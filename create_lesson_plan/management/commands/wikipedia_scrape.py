@@ -33,8 +33,8 @@ class Level1Spider(scrapy.Spider):
 	name = "level1spider"
 	start_urls = []
 
-	def __init__(self):
-		for link_obj in link_objs:
+	def __init__(self, higher_link_objs):
+		for link_obj in higher_link_objs:
 			url = link_obj['link']
 			if(url is not None):
 				self.start_urls.append(link_obj['link'])
@@ -62,4 +62,5 @@ class Command(BaseCommand, scrapy.Spider):
 		yield self.runner.crawl(WikipediaSpider)
 		yield self.runner.crawl(Level1Spider)
 		reactor.stop()
+
 
