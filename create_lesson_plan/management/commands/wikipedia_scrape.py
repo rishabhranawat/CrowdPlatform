@@ -15,13 +15,16 @@ class LinkObject(Item):
 link_objs = []
 class WikipediaSpider(scrapy.Spider):
 	name = 'wikipediaspider'
-	start_urls = ['https://en.wikipedia.org/wiki/Portal:Computer_science']
+	start_urls = ['https://en.wikipedia.org/wiki/Operating_system']
 	count = 0
 	def parse(self, response):
-		off_doc = OfflineDocument(link=response.url,\
-			content=strip_tags(response.text),\
-			source='wikipedia')
-		off_doc.save()
+		print("\n \n here \n \n"+response.css('title').extract()[0])
+		if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
+			off_doc = OfflineDocument(link=response.url,\
+				content=strip_tags(response.text),\
+				title=response.css('title').extract()[0],\
+				source='wikipedia')
+			off_doc.save()
 		for url in response.css('a'):
 			self.count +=1 
 			link_obj = LinkObject()
@@ -33,22 +36,24 @@ class Level1Spider(scrapy.Spider):
 	name = "level1spider"
 	start_urls = []
 
-	def __init__(self, higher_link_objs):
-		for link_obj in higher_link_objs:
+	def __init__(self):
+		for link_obj in link_objs:
 			url = link_obj['link']
 			if(url is not None):
 				self.start_urls.append(link_obj['link'])
 
 	def parse(self, response):
-		off_doc = OfflineDocument(link=response.url,\
-			content=strip_tags(response.text),\
-			source='wikipedia')
-		off_doc.save()
-		for url in response.css('a'):
-			link_obj = LinkObject()
-			link_obj['link'] = url.xpath('@href').extract_first()
-			link_objs.append(link_obj)
-		return link_objs
+		if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
+			off_doc = OfflineDocument(link=response.url,\
+				content=strip_tags(response.text),\
+				title=response.css('title').extract()[0],\
+				source='wikipedia')
+			off_doc.save()
+#		for url in response.css('a'):
+#			link_obj = LinkObject()
+#			link_obj['link'] = url.xpath('@href').extract_first()
+#			link_objs.append(link_obj)
+#		return link_objs
 
 class Command(BaseCommand, scrapy.Spider):
 	runner = CrawlerRunner()
