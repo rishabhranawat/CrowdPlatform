@@ -134,14 +134,16 @@ class OfflineDocument(models.Model):
     date_scraped = models.DateTimeField(default=datetime.now(), blank=True)
 
     class Meta:
-		es_index_name = 'create_lesson_plan'
+		es_index_name = 'new_trial_index'
 		es_type_name = 'offline_doc'
     
     def to_search(self):
     	es = Elasticsearch()
     	doc = {
     		'link':self.link,
-    		'content':self.content
+    		'content':self.content,
+		'title': self.title,
+		'source': self.source,
     	}
     	res = es.index(index=self._meta.es_index_name, \
     		doc_type=self._meta.es_type_name, id=self.id, body=doc)
