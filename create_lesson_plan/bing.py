@@ -6,7 +6,8 @@ import json
 import summsrch
  
 def bing_search(query, search_type, limit, query_original):
-    key= 'U2Tlenujx3Z8Y3nxPiTkfirOrhfXtrcUk2jMz3xgGXA'
+    #key= 'U2Tlenujx3Z8Y3nxPiTkfirOrhfXtrcUk2jMz3xgGXA'
+    key='8d06ebb959e54714bb2b5a8089704244'
     query = urllib.quote_plus(query,safe='+') # cleaning up the query
     print("bing "+query)
     # create credential for authentication
