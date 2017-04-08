@@ -27,7 +27,7 @@ from create_lesson_plan.models import FITB, Engage_Images, Explain_Images
 from create_lesson_plan.models import Evaluate_Images, Document, Image
 from create_lesson_plan.forms import *
 
-import bing
+from create_lesson_plan.pyms_cog import bing_search 
 
 # list of subjects
 subjects = ['Computer Science']
@@ -192,7 +192,7 @@ def run_topic_search(duplicate_dict, query_set, type1, input_title):
                 len(query_set), input_title)
             print(processed_query)
             query2 = query
-            results = bing.bing_search(processed_query, 'Web', limit, query2)
+            results = bing_search(processed_query, limit)
             valid_result, duplicate_dict, new_link_list = \
                 generateDictAndLinksList(results, duplicate_dict, new_link_list)
             
