@@ -10,11 +10,13 @@ def bing_search(query, limit):
 		response = search_service.search(
 			limit=limit, 
 			format='json')
+		print(query)
 		for link in response:
 			details = link.json
+			print(details)
 			link_details = {
 				'title': details['name'],
-				'Url': details['url'],
+				'Url': details['displayUrl'],
 				'Description': details['snippet']
 			}
 			all_links.append(link_details)

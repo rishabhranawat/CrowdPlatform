@@ -86,41 +86,22 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
 # create search query based on type1 and type2
 
 def processed(query, type1, type2, bullets, input_title):
-    # engage phase
     limit=2
     if type1 == 1:
         if type2 == 1:
-            query += " "+input_title+" +site:wikipedia.org"
+            query += " "+input_title+" wikipedia"
             if bullets == 3: limit = 2
             elif bullets == 2: limit = 2
             else: limit = 2
 
         elif type2 == 2:
-            query += " "+input_title+" notes site:mit.edu "
+            query += " "+input_title+" Notas site:edu.ni "
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
 
         elif type2 == 3:
-            query += " "+input_title+" notes site:cmu.edu "
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-            
-        elif type2 == 4:
-            query += " "+input_title+" notes site:stanford.edu "
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-
-        elif type2 == 5:
-            query += " "+input_title+" notes site:edu "
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-
-        elif type2 == 6:
-            query += " "+input_title+" applications examples"
+            query += " "+input_title+" Aplicaciones Ejemplos"
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 2
             else: limit = 3
@@ -128,36 +109,19 @@ def processed(query, type1, type2, bullets, input_title):
     # evaluate phase
     elif type1 == 2:
         if type2 == 1:
-            query += " "+input_title+" homeworks site:mit.edu"
+            query += " "+input_title+" deberes filetype:pdf"
             if bullets == 3: limit = 2
             if bullets == 2: limit = 3
             else: limit = 6
 
         elif type2 == 2:
-            query += " "+input_title+" homeworks site:cmu.edu"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
-            else: limit = 6
-
-        elif type2 == 3:
-            query += " "+input_title+" homeworks site:stanford.edu"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
-            else: limit = 6
-
-        if type2 == 4:
-            query += " "+input_title+" homeworks filetype:pdf"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
-            else: limit = 6
-
-        elif type2 == 5:
-            query += " "+input_title+" midterm+final+practice filetype:pdf"
+            query += " "+input_title+" examen filetype:pdf"
             if bullets == 3: limit = 2
             elif bullets == 2: limit = 3
             else: limit = 6
 
     return query, limit
+
 
 def getProcessedQuery(query, type1,unType):
     if(type1 == 1): query = query.replace("site:edu", universities[unType])
@@ -166,6 +130,8 @@ def getProcessedQuery(query, type1,unType):
 
 def generateDictAndLinksList(results, duplicate_dict, new_link_list):
     valid_result = []
+    print("\n \n here ")
+    print(results)
     for r in results:
         if r['Url'] not in duplicate_dict and \
             not isToBeFiltered(r['Url'], r['Description'], r['title']):
@@ -179,23 +145,22 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
         l = Links(each_result['Url'], each_result['Description'], -1,
          each_result['title'])
         new_link_list.append(l)
+  
 
     return valid_result, duplicate_dict, new_link_list
 
 def run_topic_search(duplicate_dict, query_set, type1, input_title):
-    
-    type2_range = [7 , 6]
+    type2_range = [4 , 3]
     new_link_list = []
     for query in query_set:
         for type2 in range(1, type2_range[type1 - 1]):
             processed_query, limit = processed(query, type1, type2, \
                 len(query_set), input_title)
-            print(processed_query)
             query2 = query
             results = bing_search(processed_query, limit)
             valid_result, duplicate_dict, new_link_list = \
                 generateDictAndLinksList(results, duplicate_dict, new_link_list)
-            
+
     output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
 
@@ -222,8 +187,7 @@ class GenerateLessonPlan(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})
 
-    def post(self, request, todo,*args, **kwargs):
-        ts = time.time()
+    def post(self, request, todo, *args, **kwargs):
         if(todo == '1'):
           if 'input_title' in request.POST:
             subject_name = request.POST['subject_name']
@@ -245,53 +209,38 @@ class GenerateLessonPlan(View):
             input_bullets = input_bullets.lower()
             input_bullets = input_bullets.split('\n')
             query_set = []
-            subject_name = string.replace(subject_name, ' ', '+')
-            subject_name = subject_name.lower()
-            subject_list = subject_name.split('+')
-            course_name = string.replace(course_name, ' ', '+')
-            course_name = course_name.lower()
-            course_list = course_name.split('+')
-            input_title = string.replace(input_title, ' ', '+')
-            input_title = input_title.lower()
-            input_list = input_title.split('+')
-            
             for bullet in input_bullets:
                 bullet = bullet.strip()
-                bullet = string.replace(bullet, ' ', '+')
-                query_set.append(bullet + "+")
+                query_set.append(bullet)
             
             dups = {}
             outputs = run_topic_search(dups, query_set, 1, input_title)
-            # list of urls for the engage phase
+            
             engage_urls = []
             engage_urls_length = []
             dups = outputs['dups']
-
-            i = 0
+            item_id = 0
             for url in outputs['links']:
-                e = Engage_Urls(lesson_fk=l, item_id=i, url=url.url,
+                e = Engage_Urls(lesson_fk=l, item_id=item_id, url=url.url,
                                 desc=url.desc, title=url.title)
                 e.save()
                 engage_urls.append(e)
-                i = i + 1
+                item_id += 1
             
-
             # for evalaute phase, run query set (explain type1 = 3)
             outputs = run_topic_search(dups, query_set, 2, input_title)
             evaluate_urls = []
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])
-            i = 0
+            item_id = 0
             for url in outputs['links']:
-                e = Evaluate_Urls(lesson_fk=l, item_id=i,
+                e = Evaluate_Urls(lesson_fk=l, item_id=item_id,
                                   url=url.url, desc=url.desc, title=url.title)
                 e.save()
                 evaluate_urls.append(e)
-                i = i + 1
-            pk = l.pk
-
-            print(time.time() - ts)
-            return redirect('/create_lesson_plan/'+str(pk)+'/user_lesson_plan/1')
+                item_id += 1
+            lesson_pk = l.pk
+            return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
           else:
               return HttpResponse('input_title not found')
 
@@ -357,15 +306,16 @@ class user_profile(View):
         lesson_plans = list(lesson.objects.filter(user_name=user, stage=1).order_by('course_name'))
 
         plans = []
-        c = lesson_plans[0].course_name
-        cl = []    
-        for lp in lesson_plans:
-            if(lp.course_name == c): cl.append(lp)
-            else: 
-                plans.append(cl)
-                cl = []
-                c = lp.course_name
-                cl.append(lp)
+        if(len(lesson_plans) > 0):
+            c = lesson_plans[0].course_name
+            cl = []    
+            for lp in lesson_plans:
+                if(lp.course_name == c): cl.append(lp)
+                else: 
+                    plans.append(cl)
+                    cl = []
+                    c = lp.course_name
+                    cl.append(lp)
        
         context = {
             'user':user, 
