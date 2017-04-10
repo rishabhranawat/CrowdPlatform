@@ -132,9 +132,10 @@ class OfflineDocument(models.Model):
     meta_tags = models.TextField(null=True, blank=True)
     summary = models.TextField(null=True, blank=True)
     date_scraped = models.DateTimeField(default=datetime.now(), blank=True)
+    index_name = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
-		es_index_name = 'nicaragua_wiki_2'
+		es_index_name = 'nicaragua_wiki_3'
 		es_type_name = 'offline_doc'
     
     def to_search(self):

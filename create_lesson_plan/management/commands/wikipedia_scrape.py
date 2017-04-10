@@ -15,6 +15,7 @@ class LinkObject(Item):
     link = Field()
 
 link_objs = [] # global variable that stores all links to be crawld
+INDEX = "nicaragua_wiki_3"
 
 # Initial Starter Spider
 class WikipediaSpider(scrapy.Spider):
@@ -22,16 +23,17 @@ class WikipediaSpider(scrapy.Spider):
 	start_urls = ['https://es.wikipedia.org/wiki/Ingenier%C3%ADa_de_sistemas']
 	def parse(self, response):
 		print("\n \n here \n \n"+response.css('title').extract()[0])
-		if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
+		if(len(OfflineDocument.objects.filter(link=response.url, , index_name=INDEX)) == 0):
 			off_doc = OfflineDocument(link=response.url,\
 				content=strip_tags(response.text),\
 				title=response.css('title').extract()[0],\
-				source='wikipedia')
+				source='wikipedia', index_name=INDEX)
 			off_doc.save()
 		for url in response.css('a'):
-			if(len(OfflineDocument.objects.filter(link=url)) == 0):
+			new_link = response.urljoin(url.xpath('@href').extract_first())
+			if(len(OfflineDocument.objects.filter(link=new_link, , index_name=INDEX)) == 0):
 				link_obj = LinkObject()
-				link_obj['link'] = response.urljoin(url.xpath('@href').extract_first())
+				link_obj['link'] = new_link
 				link_objs.append(link_obj)
 		return link_objs
 
@@ -49,16 +51,18 @@ class Level1Spider(scrapy.Spider):
 		link_objs = []
 
 	def parse(self, response):
-		if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
+		if(len(OfflineDocument.objects.filter(link=response.url, index_name=INDEX)) == 0):
 			off_doc = OfflineDocument(link=response.url,\
 				content=strip_tags(response.text),\
 				title=response.css('title').extract()[0],\
-				source='wikipedia')
+				source='wikipedia', index_name=INDEX)
 			off_doc.save()
+
 		for url in response.css('a'):
-			if(len(OfflineDocument.objects.filter(link=url)) == 0):
+			new_link = response.urljoin(url.xpath('@href').extract_first())
+			if(len(OfflineDocument.objects.filter(link=new_link, , index_name=INDEX)) == 0):
 				link_obj = LinkObject()
-				link_obj['link'] = url.xpath('@href').extract_first()
+				link_obj['link'] = new_link
 				link_objs.append(link_obj)
 		return link_objs
 
@@ -76,11 +80,11 @@ class Level2Spider(scrapy.Spider):
 		link_objs = []
 
 	def parse(self, response):
-		if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
+		if(len(OfflineDocument.objects.filter(link=response.url, index_name=INDEX)) == 0):
 			off_doc = OfflineDocument(link=url,\
 				content=strip_tags(response.text),\
 				title=response.css('title').extract()[0],\
-				source='wikipedia')
+				source='wikipedia', index_name=INDEX)
 			off_doc.save()
 		return link_objs
 
