@@ -28,6 +28,7 @@ from create_lesson_plan.models import Evaluate_Images, Document, Image
 from create_lesson_plan.forms import *
 
 from create_lesson_plan.pyms_cog import bing_search 
+from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 
 # list of subjects
 subjects = ['Computer Science']
@@ -130,8 +131,6 @@ def getProcessedQuery(query, type1,unType):
 
 def generateDictAndLinksList(results, duplicate_dict, new_link_list):
     valid_result = []
-    print("\n \n here ")
-    print(results)
     for r in results:
         if r['Url'] not in duplicate_dict and \
             not isToBeFiltered(r['Url'], r['Description'], r['title']):

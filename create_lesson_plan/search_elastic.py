@@ -4,7 +4,7 @@ from elasticsearch_dsl import Search, Q
 client = Elasticsearch()
 
 class ElasticsearchOfflineDocuments():
-	def generate_search_urls(self, input_title, lesson_outline):
+	def generate_search_urls(self, input_title, lesson_outline, limit):
 		s = Search(using=client, index="create_lesson_plan")
 		q_input_title = Q('match', content=input_title)
 		q_lesson_outline = []
@@ -13,6 +13,14 @@ class ElasticsearchOfflineDocuments():
 		q = Q('bool', should=q_lesson_outline, minimum_should_match=1)
 		res = s.query(q_input_title).query(q)
 		hits = res.execute()
-		for hit in hits:
-			print(hit.meta.score, hit.link)
+		
+		all_links = []
+		for i in range(0, limit, 1):
+			link_details = {
+				'title' = hits.title,
+				'Url' = hit.link,
+				'Description' = ''
+			}
+
+		return all_links
 
