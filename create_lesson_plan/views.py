@@ -89,7 +89,10 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
 def processed(query, type1, type2, bullets, input_title):
     limit=2
     if type1 == 1:
-        if type2 == 1:
+        if type2 == 0:
+            query = "es"
+            limit = 2
+        elif type2 == 1:
             query += " "+input_title+" wikipedia"
             if bullets == 3: limit = 2
             elif bullets == 2: limit = 2
@@ -109,7 +112,10 @@ def processed(query, type1, type2, bullets, input_title):
     
     # evaluate phase
     elif type1 == 2:
-        if type2 == 1:
+        if type2 == 0:
+            query = "es"
+            limit = 2
+        elif type2 == 1:
             query += " "+input_title+" deberes filetype:pdf"
             if bullets == 3: limit = 2
             if bullets == 2: limit = 3
@@ -151,12 +157,16 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 def run_topic_search(duplicate_dict, query_set, type1, input_title):
     type2_range = [4 , 3]
     new_link_list = []
+    es = ElasticsearchOfflineDocuments()
     for query in query_set:
-        for type2 in range(1, type2_range[type1 - 1]):
+        for type2 in range(0, type2_range[type1 - 1]):
             processed_query, limit = processed(query, type1, type2, \
                 len(query_set), input_title)
             query2 = query
-            results = bing_search(processed_query, limit)
+            if("es" in processed_query):
+                results = es.generate_search_urls(input_title, query, limit)
+            else:
+                results = bing_search(processed_query, limit)
             valid_result, duplicate_dict, new_link_list = \
                 generateDictAndLinksList(results, duplicate_dict, new_link_list)
 

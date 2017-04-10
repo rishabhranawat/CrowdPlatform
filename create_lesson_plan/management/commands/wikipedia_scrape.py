@@ -23,7 +23,7 @@ class WikipediaSpider(scrapy.Spider):
 	start_urls = ['https://es.wikipedia.org/wiki/Ingenier%C3%ADa_de_sistemas']
 	def parse(self, response):
 		print("\n \n here \n \n"+response.css('title').extract()[0])
-		if(len(OfflineDocument.objects.filter(link=response.url, , index_name=INDEX)) == 0):
+		if(len(OfflineDocument.objects.filter(link=response.url,index_name=INDEX)) == 0):
 			off_doc = OfflineDocument(link=response.url,\
 				content=strip_tags(response.text),\
 				title=response.css('title').extract()[0],\
@@ -31,7 +31,7 @@ class WikipediaSpider(scrapy.Spider):
 			off_doc.save()
 		for url in response.css('a'):
 			new_link = response.urljoin(url.xpath('@href').extract_first())
-			if(len(OfflineDocument.objects.filter(link=new_link, , index_name=INDEX)) == 0):
+			if(len(OfflineDocument.objects.filter(link=new_link,index_name=INDEX)) == 0):
 				link_obj = LinkObject()
 				link_obj['link'] = new_link
 				link_objs.append(link_obj)
@@ -60,7 +60,7 @@ class Level1Spider(scrapy.Spider):
 
 		for url in response.css('a'):
 			new_link = response.urljoin(url.xpath('@href').extract_first())
-			if(len(OfflineDocument.objects.filter(link=new_link, , index_name=INDEX)) == 0):
+			if(len(OfflineDocument.objects.filter(link=new_link,index_name=INDEX)) == 0):
 				link_obj = LinkObject()
 				link_obj['link'] = new_link
 				link_objs.append(link_obj)
