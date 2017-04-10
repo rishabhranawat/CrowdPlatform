@@ -29,7 +29,7 @@ class WikipediaSpider(scrapy.Spider):
 				source='wikipedia')
 			off_doc.save()
 		for url in response.css('a'):
-			if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
+			if(len(OfflineDocument.objects.filter(link=url)) == 0):
 				link_obj = LinkObject()
 				link_obj['link'] = response.urljoin(url.xpath('@href').extract_first())
 				link_objs.append(link_obj)
@@ -41,6 +41,7 @@ class Level1Spider(scrapy.Spider):
 	start_urls = []
 
 	def __init__(self):
+		global link_objs
 		for link_obj in link_objs:
 			url = link_obj['link']
 			if(url is not None):
@@ -55,7 +56,7 @@ class Level1Spider(scrapy.Spider):
 				source='wikipedia')
 			off_doc.save()
 		for url in response.css('a'):
-			if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
+			if(len(OfflineDocument.objects.filter(link=url)) == 0):
 				link_obj = LinkObject()
 				link_obj['link'] = url.xpath('@href').extract_first()
 				link_objs.append(link_obj)
@@ -67,6 +68,7 @@ class Level2Spider(scrapy.Spider):
 	start_urls = []
 
 	def __init__(self):
+		global link_objs
 		for link_obj in link_objs:
 			url = link_obj['link']
 			if(url is not None):
@@ -75,7 +77,7 @@ class Level2Spider(scrapy.Spider):
 
 	def parse(self, response):
 		if(len(OfflineDocument.objects.filter(link=response.url)) == 0):
-			off_doc = OfflineDocument(link=response.url,\
+			off_doc = OfflineDocument(link=url,\
 				content=strip_tags(response.text),\
 				title=response.css('title').extract()[0],\
 				source='wikipedia')
