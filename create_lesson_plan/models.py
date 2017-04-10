@@ -134,7 +134,7 @@ class OfflineDocument(models.Model):
     date_scraped = models.DateTimeField(default=datetime.now(), blank=True)
 
     class Meta:
-		es_index_name = 'new_trial_index'
+		es_index_name = 'nicaragua_wiki'
 		es_type_name = 'offline_doc'
     
     def to_search(self):
