@@ -37,9 +37,9 @@
         url = url.substr(1 + url.lastIndexOf('/'));
         url = url.split('?')[0];
         fileType = url.split('#')[0].split('.')[1];
-        // if(fileType.indexOf("html") > -1){
-        //   return null;
-        // }
+        if(fileType == null){
+          fileType = "web";
+        }
         return fileType;
       }
     </script>
@@ -87,17 +87,17 @@
                   <div class="col-xs-12 col-md-11">
 
                         <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
-                        <span style="color:black;" id='domainId+{{enlink.url}}'>
+                        <span style="color:black;" id='domainId+{{enlink.display_url}}'>
                           <script text="text/javascript">
-                            document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.display_url}}');
+                            document.getElementById('domainId+'+'{{enlink.display_url}}').innerHTML = extractDomain('{{enlink.display_url}}');
                           </script>
                         </span>
-                        <span style="color:red;" id ='fileType+{{enlink.url}}'> 
+                        <span style="color:red;" id ='fileType+{{enlink.display_url}}'> 
                           <script text="text/javascript">
                             // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
                             var fileType = (extractFileType('{{enlink.display_url}}'));
                             if(fileType != null){
-                              document.getElementById('fileType+'+'{{enlink.url}}').innerHTML="("+fileType+")";
+                              document.getElementById('fileType+'+'{{enlink.display_url}}').innerHTML="("+fileType+")";
                             }
                           </script>
                         </span >
@@ -148,17 +148,17 @@
             <td>
               <div class="col-md-11" >
                   <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
-                        <span style="color:black;" id='domainId+{{enlink.url}}'>
+                        <span style="color:black;" id='domainId+{{enlink.display_url}}'>
                           <script text="text/javascript">
-                            document.getElementById('domainId+{{enlink.url}}').innerHTML = extractDomain('{{enlink.display_url}}');
+                            document.getElementById('domainId+{{enlink.display_url}}').innerHTML = extractDomain('{{enlink.display_url}}');
                           </script>
                         </span>
-                        <span style="color:red;" id ='fileType+{{enlink.url}}'> 
+                        <span style="color:red;" id ='fileType+{{enlink.display_url}}'> 
                           <script text="text/javascript">
                             // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
                             var fileType = (extractFileType('{{enlink.display_url}}'));
                             if(fileType != null){
-                              document.getElementById('fileType+'+'{{enlink.url}}').innerHTML="("+fileType+")";
+                              document.getElementById('fileType+'+'{{enlink.display_url}}').innerHTML="("+fileType+")";
                             }
                           </script>
                         </span >
