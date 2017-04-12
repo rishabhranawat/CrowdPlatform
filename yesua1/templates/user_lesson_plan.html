@@ -89,13 +89,13 @@
                         <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
                         <span style="color:black;" id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
-                            document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
+                            document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.display_url}}');
                           </script>
                         </span>
                         <span style="color:red;" id ='fileType+{{enlink.url}}'> 
                           <script text="text/javascript">
                             // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
-                            var fileType = (extractFileType('{{enlink.url}}'));
+                            var fileType = (extractFileType('{{enlink.display_url}}'));
                             if(fileType != null){
                               document.getElementById('fileType+'+'{{enlink.url}}').innerHTML="("+fileType+")";
                             }
@@ -150,13 +150,13 @@
                   <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
                         <span style="color:black;" id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
-                            document.getElementById('domainId+{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
+                            document.getElementById('domainId+{{enlink.url}}').innerHTML = extractDomain('{{enlink.display_url}}');
                           </script>
                         </span>
                         <span style="color:red;" id ='fileType+{{enlink.url}}'> 
                           <script text="text/javascript">
                             // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
-                            var fileType = (extractFileType('{{enlink.url}}'));
+                            var fileType = (extractFileType('{{enlink.display_url}}'));
                             if(fileType != null){
                               document.getElementById('fileType+'+'{{enlink.url}}').innerHTML="("+fileType+")";
                             }
