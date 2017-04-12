@@ -46,18 +46,17 @@ universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
 
 class Links(object):
 
-    def __init__(self, url, desc, value, title):
+    def __init__(self, url, display_url, desc, value, title):
         self.url = url
         self.desc = desc
         self.value = value
         self.title = title
+        self.display_url = display_url
 
 # determine if a search result is to be filtered, just based on its URL
 
 
 def isToBeFiltered(url, description, title):
-    if len(url) > 100:
-        return True
     for temp in filters:
         if temp in url.lower() or temp in description.lower()\
             or temp in title.lower():
@@ -130,6 +129,7 @@ def processed(query, type1, type2, bullets, input_title):
     return query, limit
 
 
+
 def getProcessedQuery(query, type1,unType):
     if(type1 == 1): query = query.replace("site:edu", universities[unType])
     elif(type1 == 2): query = query+(" "+universities[unType])
@@ -147,10 +147,11 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
         return valid_result, duplicate_dict, new_link_list
     
     for each_result in valid_result:
-        l = Links(each_result['Url'], each_result['Description'], -1,
+        l = Links(each_result['Url'], each_result['display_url'], each_result['Description'], -1,
          each_result['title'])
         new_link_list.append(l)
   
+    print("VALID RESULTS \n \n", valid_result)
 
     return valid_result, duplicate_dict, new_link_list
 
@@ -178,7 +179,7 @@ def get_relevant_links(query, results, query_type, output):
     result_filtered = summsrch.summ_search(query, results, query_type)
     link_list = []
     for r in result_filtered:
-        link = Links(r['Url'], r['Description'], r['Value'], r['title'])
+        link = Links(r['Url'], each_result['display_url'],r['Description'], r['Value'], r['title'])
         link_list.append(link)
     output.put(link_list)
 
@@ -231,10 +232,11 @@ class GenerateLessonPlan(View):
             item_id = 0
             for url in outputs['links']:
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=url.url,
-                                desc=url.desc, title=url.title)
+                                desc=url.desc, title=url.title, display_url=url.display_url)
                 e.save()
                 engage_urls.append(e)
                 item_id += 1
+                print(url.url)
             
             # for evalaute phase, run query set (explain type1 = 3)
             outputs = run_topic_search(dups, query_set, 2, input_title)
@@ -244,10 +246,11 @@ class GenerateLessonPlan(View):
             item_id = 0
             for url in outputs['links']:
                 e = Evaluate_Urls(lesson_fk=l, item_id=item_id,
-                                  url=url.url, desc=url.desc, title=url.title)
+                                  url=url.url, desc=url.desc, title=url.title, display_url=url.display_url)
                 e.save()
                 evaluate_urls.append(e)
                 item_id += 1
+                print(url.url)
             lesson_pk = l.pk
             return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
           else:
