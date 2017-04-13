@@ -29,14 +29,13 @@ def get_all_courses_links(courses):
 			try:
 				content = requests.get(COURSES_CS_WASHU_COURSE_INDEX).content
 				course_past_courses[COURSES_CS_WASHU_COURSE_INDEX] = []
-
 				course_index = BeautifulSoup(content, 'html.parser')    
 				past_course_index = course_index.find('div',
 				 attrs={'id':'block-menu-menu-news-and-events'})
 				past_course_links = past_course_index.findAll('a')
 				for past_course_link in past_course_links:
 					pcl = past_course_link.get('href')
-					if(is_abs(pcl)):
+					if(not is_abs(pcl)):
 						course_past_courses[COURSES_CS_WASHU_COURSE_INDEX].append(\
 							get_relative_path(
 								COURSES_CS_WASHU_COURSE_INDEX, pcl))
