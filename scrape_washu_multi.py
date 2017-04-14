@@ -1,3 +1,4 @@
+from multiprocessing import Pool
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -5,14 +6,11 @@ import urlparse
 import json
 import time
 
-# TO DO: Download related files
-# TO DO: MAKE THIS MULTITHREADED
-
 # Utils
 def is_abs(url):
 	return bool(urlparse.urlparse(url).netloc)
 
-def check_url(url, host_url, all_course_pages):
+def check_url(url, host_url):
 	if(host_url == url or url in all_course_pages):
 		return ["circle", False]
 	if(host_url in url and host_url != url):
@@ -29,16 +27,8 @@ def check_if_pdf(response):
 	return response.headers['content-type']=='application/pdf'
 		
 
-# Getting all link_to_addnks from washu_index
-all_course_pages = []
-with open("wash_links.json") as f:
-	d = json.load(f)
-	for course_index, pages in d.items():
-		all_course_pages.extend(pages)
-
-ts = time.time()
-# Getting all the course_home_page stuff
-for course_home_page_url in all_course_pages[:10]:
+# Getting the fro_links
+def get_fro_links(course_home_page_url):
 	# Soup Boiler Plate
 	course_home_page_response = requests.get(course_home_page_url)	
 	course_home_page = course_home_page_response.content
@@ -52,7 +42,7 @@ for course_home_page_url in all_course_pages[:10]:
 			link_fro_course_home = link_fro_course_home.get("href")
 			link_fro_course_home = link_fro_course_home.lstrip()
 
-			typ, cond = check_url(link_fro_course_home, course_home_page_url, all_course_pages)
+			typ, cond = check_url(link_fro_course_home, course_home_page_url)
 			if(cond):
 				link_to_add = link_fro_course_home
 				if(typ == "rel"):
@@ -62,5 +52,18 @@ for course_home_page_url in all_course_pages[:10]:
 					course_home_page_fro_links.add(link_to_add)
 		except:
 			pass
-print(time.time() - ts)
 
+	return course_home_page_fro_links
+
+
+# Getting all link_to_addnks from washu_index
+all_course_pages = []
+with open("wash_links.json") as f:
+	d = json.load(f)
+	for course_index, pages in d.items():
+		all_course_pages.extend(pages)
+
+ts = time.time()
+p = Pool(4)
+print(p.map(get_fro_links, all_course_pages[:10])) 
+print(time.time()-ts)
