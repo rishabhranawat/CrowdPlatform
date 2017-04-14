@@ -7,19 +7,17 @@ Q, TermsFacet, DateHistogramFacet, SF, Text, connections
 
 connections.connections.create_connection(hosts=['localhost'])
 
-html_strip = analyzer('html_strip',
-    tokenizer="standard", 
-    filter=["standard", "lowercase", "stop", "snowball"],
-    char_filter=["html_strip"]
-)
-
 class OfflineDocument(DocType):
-    content = Text(analyzer='snowball')
-    link = Text()
-    source = Text()
+	link = Text()
+	source = Text()
+	title = Text()
+	subject = Text()
+	phase = Text()
 
+	content = Text(analyzer='snowball')
+	summary = Text(analyzer='snowball')
 
-index = Index(settings.ES_CLIENT)
+index = Index(settings.ES_INDEX)
 index.settings(number_of_shards=1, number_of_replicas=0)
 index.doc_type(OfflineDocument)
 

@@ -123,33 +123,46 @@ from datetime import datetime
 
 
 class OfflineDocument(models.Model):
-	
-    link = models.CharField(max_length=600)
-    content = models.TextField()
-    source = models.TextField()
-    title = models.TextField(null=True, blank=True)
-    subject = models.TextField(null=True, blank=True)
-    meta_tags = models.TextField(null=True, blank=True)
-    summary = models.TextField(null=True, blank=True)
-    date_scraped = models.DateTimeField(default=datetime.now(), blank=True)
+	PHASE_CHOICES = (
+			('EN', 'Engage'),
+			('EV', 'Evaluate'),
+	)
 
-    class Meta:
-		es_index_name = 'new_trial_index'
-		es_type_name = 'offline_doc'
+	link = models.CharField(max_length=600)
+	source = models.TextField()
+	title = models.TextField(null=True, blank=True)
+
+	content = models.TextField()
+
+	subject = models.TextField(null=True, blank=True)
+	phase = models.CharField(max_length=2, choices=PHASE_CHOICES)
+
+	summary = models.TextField(null=True, blank=True)
+	meta_tags = models.TextField(null=True, blank=True)
+
+	date_scraped = models.DateTimeField(default=datetime.now(), blank=True)
     
-    def to_search(self):
-    	es = Elasticsearch()
-    	doc = {
-    		'link':self.link,
-    		'content':self.content,
-		'title': self.title,
-		'source': self.source,
-    	}
-    	res = es.index(index=self._meta.es_index_name, \
-    		doc_type=self._meta.es_type_name, id=self.id, body=doc)
 
-def update_search(instance, **kwargs):
+	def to_search(self):
+		doc = {
+			'link':self.link,
+			'source': self.source,
+			'title': self.title,
+			'subject': self.subject,
+			'phase': self.phase,
+
+			'content':self.content,
+			'summary': self.summary,
+		}
+		return OfflineDoc(**doc)
+
+
+def add_to_search(instance, **kwargs):
 	instance.to_search()
 
-post_save.connect(update_search, sender=OfflineDocument)
+def remove_fro_search(instance, **kwargs):
+	instance.to_search().delete()
+
+post_save.connect(add_to_search, sender=OfflineDocument)
+pre_delete.connect(remove_fro_search, sender=OfflineDocument)
 	
