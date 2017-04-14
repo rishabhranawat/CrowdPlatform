@@ -217,6 +217,8 @@ USE_L10N = True
 USE_TZ = True
 
 from elasticsearch import Elasticsearch, RequestsHttpConnection
+
+ES_INDEX = 'offline_content'
 ES_CLIENT = Elasticsearch(
     ['http://127.0.0.1:9200/'],
     connection_class=RequestsHttpConnection

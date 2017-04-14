@@ -55,6 +55,13 @@ def get_fro_links(course_home_page_url):
 
 	return course_home_page_fro_links
 
+def get_files_links(final_page_url):
+	page_response = requests.get(final_page_url)
+	page_content = page_response.content
+	page_soup = BeautifulSoup(page_content, 'html.parser')
+
+	
+
 
 # Getting all link_to_addnks from washu_index
 all_course_pages = []
@@ -63,7 +70,19 @@ with open("wash_links.json") as f:
 	for course_index, pages in d.items():
 		all_course_pages.extend(pages)
 
-ts = time.time()
-p = Pool(4)
-print(p.map(get_fro_links, all_course_pages[:10])) 
-print(time.time()-ts)
+
+p = Pool(8)
+all_for_links = list(p.map(get_fro_links, all_course_pages[:10]))
+ll = set()
+for each in all_for_links:
+	ll = ll | each
+
+
+
+
+
+
+
+
+
+
