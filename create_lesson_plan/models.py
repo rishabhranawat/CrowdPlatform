@@ -128,7 +128,7 @@ class OfflineDocument(models.Model):
 			('EV', 'Evaluate'),
 	)
 
-	link = models.CharField(max_length=600)
+	link = models.CharField(max_length=600, unique=True)
 	source = models.TextField()
 	title = models.TextField(null=True, blank=True)
 
@@ -158,7 +158,8 @@ class OfflineDocument(models.Model):
 
 
 def add_to_search(instance, **kwargs):
-	instance.to_search()
+	print("here here!")
+	instance.to_search().save()
 
 def remove_fro_search(instance, **kwargs):
 	instance.to_search().delete()
