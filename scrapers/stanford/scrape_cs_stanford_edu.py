@@ -10,12 +10,14 @@ import time
 
 
 # Gets per quarter course_links
+course_names = []
 def get_course_links(URL):
 	course_pages = set()
 	content = requests.get(URL).content
 	soup = BeautifulSoup(content, 'html.parser')
 	anchors = soup.findAll('a', attrs={'href':re.compile(".Stanford\.EDU$")})
 	for anchor in anchors:
+		course_names.append(anchor.text)
 		course_pages.add(anchor.get('href'))
 	return course_pages
 
@@ -34,11 +36,27 @@ def get_stanford_course_page_links():
 	return course_pages
 
 
+all_course_pages = list(get_stanford_course_page_links())
+course_names = set()
+for course_page_url in all_course_pages:
+	course_page_name = course_page_url.replace("http://", "")
+	course_page_name = course_page_name.replace(".Stanford.EDU", "")
+	course_names.add(course_page_name)
+
+web_stanford_pages = set()
+for course_name in course_names:
+	web_stanford_pages.add("web.stanford.edu/class/"+course_name)
+
 # Utils
 def is_abs(url):
 	return bool(urlparse.urlparse(url).netloc)
 
+def check_web_stanford_page(url):
+	for each in web_stanford_pages:
+		if(each in url): True
 def check_url(url, host_url):
+	if(check_web_stanford_page(url)):
+		return ["web_stanford", True]
 	if(host_url == url or url in all_course_pages):
 		return ["circle", False]
 	if(host_url in url and host_url != url):
@@ -55,7 +73,8 @@ def check_if_pdf(response):
 	return response.headers['content-type']=='application/pdf'
 		
 
-# Getting the fro_links
+
+
 def get_fro_links(course_home_page_url):
 	# Soup Boiler Plate
 	course_home_page_response = requests.get(course_home_page_url)	
@@ -77,15 +96,19 @@ def get_fro_links(course_home_page_url):
 					link_to_add = get_absolute_path(course_home_page_url, 
 						link_fro_course_home)
 				if(course_home_page_url != link_to_add):
+
 					course_home_page_fro_links.add(link_to_add)
 		except:
 			pass
 
 	return course_home_page_fro_links
 
-all_course_pages = list(get_stanford_course_page_links())
+
 p = Pool(8)
 all_for_links = list(p.map(get_fro_links, all_course_pages[:10]))
 ll = set()
 for each in all_for_links:
 	ll = ll | each
+
+for each in ll:
+	print(each)
