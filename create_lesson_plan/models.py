@@ -1,6 +1,7 @@
 from django.db import models
 import django.db.models.options as options
 from django.db.models.signals import post_save, pre_delete
+from django.utils import timezone
 
 from vote.managers import VotableManager
 from vote.models import VoteModel
@@ -140,7 +141,7 @@ class OfflineDocument(models.Model):
 	summary = models.TextField(null=True, blank=True)
 	meta_tags = models.TextField(null=True, blank=True)
 
-	date_scraped = models.DateTimeField(default=datetime.now(), blank=True)
+	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
     
 
 	def to_search(self):
@@ -158,7 +159,6 @@ class OfflineDocument(models.Model):
 
 
 def add_to_search(instance, **kwargs):
-	print("here here!")
 	instance.to_search().save()
 
 def remove_fro_search(instance, **kwargs):
