@@ -35,4 +35,8 @@ def get_all_sub_level_1():
 	ll = set()
 	for each in all_sub_level_1_links:
 		ll = ll | each
-	
+
+	for each in ll:
+		print(each)
+
+get_all_sub_level_1()
