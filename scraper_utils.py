@@ -7,6 +7,8 @@ import json
 import time
 import hashlib
 
+WASHU_STOP_URLS = "http://courses.cs.washington.edu/"
+
 def get_file_type(url, response):
 	return response.headers['content-type']
 
@@ -17,6 +19,8 @@ def is_abs(url):
 	return bool(urlparse.urlparse(url).netloc)
 
 def check_url(url, host_url, all_course_pages):
+	if(WASHU_STOP_URLS in url or url == "/"):
+		return ["circle", False]
 	if(host_url == url or url in all_course_pages):
 		return ["circle", False]
 	if(host_url in url and host_url != url):
