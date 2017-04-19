@@ -142,8 +142,8 @@ class OfflineDocument(models.Model):
 	meta_tags = models.TextField(null=True, blank=True)
 
 	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
+	attachment = models.FileField(blank=True, null=True,upload_to='documents')
     
-
 	def to_search(self):
 		doc = {
 			'link':self.link,
@@ -154,6 +154,7 @@ class OfflineDocument(models.Model):
 
 			'content':self.content,
 			'summary': self.summary,
+			'attachment': self.attachment,
 		}
 		return OfflineDoc(**doc)
 

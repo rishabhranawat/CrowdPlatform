@@ -14,7 +14,6 @@ from scrape_washu_multi import get_all_content_urls
 
 FILE_TYPES = ["application/pdf"]
 
- 
 def download_files_load_es(all_course_pages, level, content_page_url):
 	content_page_response = requests.get(content_page_url)
 	content_page = content_page_response.content
