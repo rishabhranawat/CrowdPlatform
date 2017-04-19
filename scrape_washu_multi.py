@@ -28,7 +28,7 @@ def get_all_content_urls():
 	all_course_pages = get_all_course_pages()
 	p = Pool(8)
 	func = partial(get_fro_links, all_course_pages)
-	all_for_links = list(p.map(func, all_course_pages[:10]))
+	all_for_links = list(p.map(func, all_course_pages[:1]))
 	ll = set()
 	for each in all_for_links:
 		ll = ll | each

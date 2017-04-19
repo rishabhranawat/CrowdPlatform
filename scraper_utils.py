@@ -1,6 +1,7 @@
 from multiprocessing import Pool
 import requests
 from bs4 import BeautifulSoup
+import urllib2
 import re
 import urlparse
 import json
@@ -8,6 +9,14 @@ import time
 import hashlib
 
 WASHU_STOP_URLS = ["http://courses.cs.washington.edu/", "/"]
+
+
+def download_pdf_file(download_url, name):
+    response = urllib2.urlopen(download_url)
+    file = open(name, 'w')
+    file.write(response.read())
+    file.close()
+    print("Completed")
 
 def get_file_type(url, response):
 	return response.headers['content-type']
