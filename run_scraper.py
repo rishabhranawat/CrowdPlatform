@@ -8,7 +8,7 @@ import time
 from functools import partial
 import hashlib
 
-from scraper_utils import get_file_type, get_sha_encoding, get_fro_links
+from scraper_utils import get_file_type, get_sha_encoding, get_fro_links, download_pdf_file
 from scrape_washu_multi import get_all_content_urls
 # from create_lesson_plan.models import OfflineDocument
 
@@ -23,7 +23,7 @@ def download_files_load_es(all_course_pages, level, content_page_url):
 	
 	# TO:DO -- Download
 	if(file_type in FILE_TYPES):
-		print(content_page_url)
+		download_pdf_file(content_page_url, content_page_url.split("/")[-1])
 		return set()
 	elif(file_type not in FILE_TYPES and level == 1):
 		return get_fro_links(all_course_pages, content_page_url)
