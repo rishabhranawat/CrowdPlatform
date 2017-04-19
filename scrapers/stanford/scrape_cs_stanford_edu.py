@@ -53,7 +53,7 @@ def is_abs(url):
 
 def check_web_stanford_page(url):
 	for each in web_stanford_pages:
-		if(each in url): True
+		if(each in url): return True
 def check_url(url, host_url):
 	if(check_web_stanford_page(url)):
 		return ["web_stanford", True]
@@ -72,43 +72,49 @@ def get_absolute_path(host, rel):
 def check_if_pdf(response):
 	return response.headers['content-type']=='application/pdf'
 		
-
+def clean_link(url):
+	url = url.lstrip()
+	return url
 
 
 def get_fro_links(course_home_page_url):
 	# Soup Boiler Plate
-	course_home_page_response = requests.get(course_home_page_url)	
-	course_home_page = course_home_page_response.content
-	course_home_page_soup = BeautifulSoup(course_home_page, 'html.parser')
-	course_home_page_links = course_home_page_soup.findAll('a')
+	try:
+		course_home_page_response = requests.get(course_home_page_url)	
+		course_home_page = course_home_page_response.content
+		course_home_page_soup = BeautifulSoup(course_home_page, 'html.parser')
+		course_home_page_links = course_home_page_soup.findAll('a')
+		
+		# Getting the links from course_home_page
+		course_home_page_fro_links = set()
+		for link_fro_course_home in course_home_page_links:
+			try:
+				link_fro_course_home = link_fro_course_home.get("href")
+				link_fro_course_home = clean_link(link_fro_course_home)
+
+				typ, cond = check_url(link_fro_course_home, course_home_page_url)
+				# print(link_fro_course_home, typ, cond)
+				if(cond):
+					link_to_add = link_fro_course_home
+					if(typ == "rel"):
+						link_to_add = get_absolute_path(course_home_page_url, 
+							link_fro_course_home)
+					if(course_home_page_url != link_to_add):
+
+						course_home_page_fro_links.add(link_to_add)
+			except:
+				pass
+		return course_home_page_fro_links
+	except:
+		return set()
 	
-	# Getting the links from course_home_page
-	course_home_page_fro_links = set()
-	for link_fro_course_home in course_home_page_links:
-		try:
-			link_fro_course_home = link_fro_course_home.get("href")
-			link_fro_course_home = link_fro_course_home.lstrip()
-
-			typ, cond = check_url(link_fro_course_home, course_home_page_url)
-			if(cond):
-				link_to_add = link_fro_course_home
-				if(typ == "rel"):
-					link_to_add = get_absolute_path(course_home_page_url, 
-						link_fro_course_home)
-				if(course_home_page_url != link_to_add):
-
-					course_home_page_fro_links.add(link_to_add)
-		except:
-			pass
-
-	return course_home_page_fro_links
 
 
 p = Pool(8)
-all_for_links = list(p.map(get_fro_links, all_course_pages[:10]))
+all_for_links = list(p.map(get_fro_links, all_course_pages))
 ll = set()
 for each in all_for_links:
 	ll = ll | each
 
-for each in ll:
+for each in all_for_links:
 	print(each)

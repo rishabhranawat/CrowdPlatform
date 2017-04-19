@@ -5,6 +5,7 @@ import re
 import urlparse
 import json
 import time
+import scraper_utils
 
 # Utils
 def is_abs(url):
@@ -62,25 +63,25 @@ def get_fro_links(course_home_page_url):
 
 	
 # Getting all link_to_addnks from washu_index
-all_course_pages = []
-with open("wash_links.json") as f:
-	d = json.load(f)
-	for course_index, pages in d.items():
-		all_course_pages.extend(pages)
+def get_all_course_pages():
+	all_course_pages = []
+	with open("wash_links.json") as f:
+		d = json.load(f)
+		for course_index, pages in d.items():
+			all_course_pages.extend(pages)
+	return all_course_pages
 
+all_course_pages = get_all_course_pages()
+def get_all_content_urls():
+	
+	p = Pool(8)
+	all_for_links = list(p.map(get_fro_links, all_course_pages[:30]))
+	ll = set()
+	for each in all_for_links:
+		ll = ll | each
+	return ll
 
+content_urls = get_all_content_urls()
 p = Pool(8)
-all_for_links = list(p.map(get_fro_links, all_course_pages[:10]))
-ll = set()
-for each in all_for_links:
-	ll = ll | each
-
-
-
-
-
-
-
-
-
+p.map(scraper_utils.download_files_load_es, content_urls)
 
