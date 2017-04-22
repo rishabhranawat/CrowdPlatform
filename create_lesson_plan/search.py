@@ -23,22 +23,22 @@ index.doc_type(OfflineDocument)
 
 
 
-es.indices.delete('offline_content')
-with open("16au_hw1.pdf") as f:
-	d = f.read()
-data = base64.b64encode(d)
-body = {
-	'link' : 'go.com',
-	'source': 'my source', 
-	'subject' : 'computer science',
-	'phase': 'A',
-	'pk': 10,
-	'content': 'content',
-	'summary': 'summary',
-	'data': data
-}
-body = json.dumps(body)
-es.index(index='offline_content', doc_type="offline_document", pipeline="attachment",body=body)
+# es.indices.delete('offline_content')
+# with open("16au_hw1.pdf") as f:
+# 	d = f.read()
+# data = base64.b64encode(d)
+# body = {
+# 	'link' : 'go.com',
+# 	'source': 'my source', 
+# 	'subject' : 'computer science',
+# 	'phase': 'A',
+# 	'pk': 10,
+# 	'content': 'content',
+# 	'summary': 'summary',
+# 	'data': data
+# }
+# body = json.dumps(body)
+# es.index(index='offline_content', doc_type="offline_document", pipeline="attachment",body=body)
 
 
 
