@@ -145,35 +145,37 @@ class OfflineDocument(models.Model):
 	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
 	attachment = models.FileField(blank=True, null=True,upload_to='documents')
 
-
-    
 	def to_search(self):
-		with open("16au_hw1.pdf") as f:
-			d = f.read()
-		data = base64.b64encode(d)
-		print(data)
+		es = Elasticsearch()
+		if(self.attachment != None):
+			with open(self.attachment.file) as f:
+				d = f.read()
+			data = base64.b64encode(d)
+		else:
+			data = None
 
-		doc = {
-			'link':self.link,
+		body = {
+			'link' : self.link,
 			'source': self.source,
-			'title': self.title,
-			'subject': self.subject,
+			'subject' : self.subject,
 			'phase': self.phase,
 			'pk': self.pk,
-
-			'content':self.content,
+			'content': self.content,
 			'summary': self.summary,
-			'attachment': data,
+			'data': data,
 		}
-		return OfflineDoc(**doc)
-
-
+		body = json.dumps(body)
+		es.index(index='offline_content', 
+			doc_type="offline_document", 
+			ipeline="attachment",
+			body=body)
+		
 def add_to_search(instance, **kwargs):
-	instance.to_search().save()
+	instance.to_search()
 
 def remove_fro_search(instance, **kwargs):
 	instance.to_search().delete()
 
 post_save.connect(add_to_search, sender=OfflineDocument)
-pre_delete.connect(remove_fro_search, sender=OfflineDocument)
+# pre_delete.connect(remove_fro_search, sender=OfflineDocument)
 	
