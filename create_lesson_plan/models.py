@@ -117,10 +117,11 @@ class Image(models.Model):
 #		and then put to the index instead 	 #
 #		instead of randomly putting it 		 #
 ##############################################
-from elasticsearch.client import IndicesClient
+from elasticsearch.client import IndicesClient, IngestClient
 from django.conf import settings
 from elasticsearch import Elasticsearch
 from datetime import datetime
+import base64
 
 
 class OfflineDocument(models.Model):
@@ -143,18 +144,26 @@ class OfflineDocument(models.Model):
 
 	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
 	attachment = models.FileField(blank=True, null=True,upload_to='documents')
+
+
     
 	def to_search(self):
+		with open("16au_hw1.pdf") as f:
+			d = f.read()
+		data = base64.b64encode(d)
+		print(data)
+
 		doc = {
 			'link':self.link,
 			'source': self.source,
 			'title': self.title,
 			'subject': self.subject,
 			'phase': self.phase,
+			'pk': self.pk,
 
 			'content':self.content,
 			'summary': self.summary,
-			'attachment': self.attachment,
+			'attachment': data,
 		}
 		return OfflineDoc(**doc)
 
