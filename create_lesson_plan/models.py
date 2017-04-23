@@ -167,13 +167,27 @@ class OfflineDocument(models.Model):
 			doc_type="offline_document", 
 			pipeline="attachment",
 			body=body)
+
+	def to_delete():
+		es = Elasticsearch()
+		body = {
+		  "query": { 
+		    "match": {
+		      "pk": 42
+		    }
+		  }
+		}
+		body = json.dumps(body)
+		es.delete_by_query(index='offline_content', 
+			doc_type='offline_document',
+			body=body)
 		
 def add_to_search(instance, **kwargs):
 	instance.to_search()
 
 def remove_fro_search(instance, **kwargs):
-	instance.to_search().delete()
+	instance.to_delete()
 
 post_save.connect(add_to_search, sender=OfflineDocument)
-# pre_delete.connect(remove_fro_search, sender=OfflineDocument)
+pre_delete.connect(remove_fro_search, sender=OfflineDocument)
 	

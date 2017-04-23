@@ -16,3 +16,12 @@ class ElasticsearchOfflineDocuments():
 		for hit in hits:
 			print(hit.meta.score, hit.link)
 
+
+
+{
+  "query": { 
+    "match": {
+      "pk": 42
+    }
+  }
+}
