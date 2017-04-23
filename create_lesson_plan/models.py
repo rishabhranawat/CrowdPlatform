@@ -122,6 +122,7 @@ from django.conf import settings
 from elasticsearch import Elasticsearch
 from datetime import datetime
 import base64
+import json
 
 
 class OfflineDocument(models.Model):
@@ -148,12 +149,9 @@ class OfflineDocument(models.Model):
 	def to_search(self):
 		es = Elasticsearch()
 		if(self.attachment != None):
-			with open(self.attachment.file) as f:
-				d = f.read()
-			data = base64.b64encode(d)
+			data = base64.b64encode(self.attachment.file.read())
 		else:
 			data = None
-
 		body = {
 			'link' : self.link,
 			'source': self.source,
@@ -162,12 +160,12 @@ class OfflineDocument(models.Model):
 			'pk': self.pk,
 			'content': self.content,
 			'summary': self.summary,
-			'data': data,
+			'data': data
 		}
 		body = json.dumps(body)
 		es.index(index='offline_content', 
 			doc_type="offline_document", 
-			ipeline="attachment",
+			pipeline="attachment",
 			body=body)
 		
 def add_to_search(instance, **kwargs):
