@@ -18,14 +18,17 @@ from create_lesson_plan.models import OfflineDocument
 FILE_TYPES = ["application/pdf"]
 
 def create_offline_document_object(content_page_url, content, f=None, file_name=None):
-	off_doc = OfflineDocument(link=content_page_url, 
-		source='University of Washington', 
-		subject='Computer Science', 
-		content=content)
-	if(f): off_doc.attachment.save(file_name, File(open(file_name, 'r')))
-	off_doc.save()
-	print(str(off_doc.pk)+" "+off_doc.link)
-	return True
+	try:
+		off_doc = OfflineDocument(link=content_page_url, 
+			source='University of Washington', 
+			subject='Computer Science', 
+			content=content)
+		if(f): off_doc.attachment.save(file_name, File(open(file_name, 'r')))
+		off_doc.save()
+		print(str(off_doc.pk)+" "+off_doc.link)
+		eturn True
+	except:
+		return False
 
 def download_files_load_es(all_course_pages, level, content_page_url):
 	content_page_response = requests.get(content_page_url)
