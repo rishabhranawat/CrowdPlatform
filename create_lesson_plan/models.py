@@ -151,7 +151,7 @@ class OfflineDocument(models.Model):
 		if(self.attachment != None):
 			data = base64.b64encode(self.attachment.file.read())
 		else:
-			data = None
+			data = ''
 		body = {
 			'link' : self.link,
 			'source': self.source,

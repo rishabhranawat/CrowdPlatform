@@ -17,10 +17,14 @@ from create_lesson_plan.models import OfflineDocument
 
 FILE_TYPES = ["application/pdf"]
 
-def create_offline_document_object(content_page_url, content, f, file_name):
-	off_doc = OfflineDocument(link=content_page_url, source='University of Washington', subject='Computer Science', content=content)
+def create_offline_document_object(content_page_url, content, f=None, file_name=None):
+	off_doc = OfflineDocument(link=content_page_url, 
+		source='University of Washington', 
+		subject='Computer Science', 
+		content=content)
 	if(f): off_doc.attachment.save(file_name, File(open(file_name, 'r')))
 	off_doc.save()
+	print(str(off_doc.pk)+" "+off_doc.link)
 	return True
 
 def download_files_load_es(all_course_pages, level, content_page_url):
@@ -32,13 +36,14 @@ def download_files_load_es(all_course_pages, level, content_page_url):
 	
 	# TO:DO -- Download
 	if(file_type in FILE_TYPES):
-		f = download_pdf_file(content_page_url, content_page_url.split("/")[-1])
-
+		file_name = content_page_url.split("/")[-1]
+		f = download_pdf_file(content_page_url, file_name)
+		create_offline_document_object(content_page_url, f.read(), f, file_name)
 		return set()
 	elif(file_type not in FILE_TYPES and level == 1):
 		return get_fro_links(all_course_pages, content_page_url)
 	elif(file_type not in FILE_TYPES and level == 2):
-		
+		create_offline_document_object(content_page_url, content_page_soup.content)
 
 def get_all_sub_level(content_page_urls, all_course_pages, typ):
 	p = Pool(8)
