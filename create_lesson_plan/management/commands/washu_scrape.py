@@ -22,7 +22,7 @@ def create_offline_document_object(content_page_url, content, f=None, file_name=
 		source='University of Washington', 
 		subject='Computer Science', 
 		content=content)
-	if(f): off_doc.attachment.save(file_name, File(open(file_name, 'r')))
+	if(f): off_doc.attachment.save(file_name, File(f))
 	off_doc.save()
 	print(str(off_doc.pk)+" "+off_doc.link)
 	return True
@@ -37,8 +37,8 @@ def download_files_load_es(all_course_pages, level, content_page_url):
 	# TO:DO -- Download
 	if(file_type in FILE_TYPES):
 		file_name = content_page_url.split("/")[-1]
-		f = download_pdf_file(content_page_url, file_name)
-		create_offline_document_object(content_page_url, f.read(), f, file_name)
+		f, response  = download_pdf_file(content_page_url, file_name)
+		create_offline_document_object(content_page_url, response.read(), f, file_name)
 		return set()
 	elif(file_type not in FILE_TYPES and level == 1):
 		return get_fro_links(all_course_pages, content_page_url)
