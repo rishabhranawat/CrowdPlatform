@@ -14,6 +14,7 @@ def download_pdf_file(download_url, name):
     response = urllib2.urlopen(download_url)
     file = open(name, 'w')
     file.write(response.read())
+    file.close()
     return file, response
 
 def get_file_type(url, response):
