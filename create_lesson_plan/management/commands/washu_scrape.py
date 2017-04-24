@@ -22,7 +22,7 @@ def create_offline_document_object(content_page_url, content, f=None, file_name=
 		source='University of Washington', 
 		subject='Computer Science', 
 		content=content)
-	if(f): off_doc.attachment.save(file_name, File(open(f, 'r')))
+	if(f): off_doc.attachment.save(file_name, File(open(file_name, 'r')))
 	off_doc.save()
 	print(str(off_doc.pk)+" "+off_doc.link)
 	return True
