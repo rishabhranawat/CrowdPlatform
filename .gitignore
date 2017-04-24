@@ -11,8 +11,8 @@ dev.db
 .Python
 env/
 build/
-yesua1/media/documens/
-pdfBin/
+yesua1/media/*
+pdfBin/*
 develop-eggs/
 dist/
 downloads/

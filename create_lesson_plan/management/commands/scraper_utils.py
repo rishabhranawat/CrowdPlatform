@@ -6,6 +6,7 @@ import re
 import urlparse
 import json
 import time
+from time import sleep
 import hashlib
 
 WASHU_STOP_URLS = ["http://courses.cs.washington.edu/", "/"]
@@ -22,6 +23,18 @@ def get_file_type(url, response):
 
 def get_sha_encoding(content):
 	return 1
+
+def get_page_content_response(url):
+	counter = 0
+	page_response = None
+	while(counter <=5 or page_response == None):
+		try:
+			page_response = requests.get(url)
+		except:
+			sleep(5)
+			counter += 1
+			continue
+	return page_response
 
 def is_abs(url):
 	return bool(urlparse.urlparse(url).netloc)
@@ -46,27 +59,32 @@ def check_if_pdf(response):
 		
 def get_fro_links(all_course_pages, course_home_page_url):
 	# Soup Boiler Plate
-	course_home_page_response = requests.get(course_home_page_url)	
-	course_home_page = course_home_page_response.content
-	course_home_page_soup = BeautifulSoup(course_home_page, 'html.parser')
-	course_home_page_links = course_home_page_soup.findAll('a')
 	
-	# Getting the links from course_home_page
-	course_home_page_fro_links = set()
-	for link_fro_course_home in course_home_page_links:
-		try:
-			link_fro_course_home = link_fro_course_home.get("href")
-			link_fro_course_home = link_fro_course_home.lstrip()
+	course_home_page_response = get_page_content_response(course_home_page_url)	
+	if(course_home_page_response != None):
 
-			typ, cond = check_url(link_fro_course_home, course_home_page_url, all_course_pages)
-			if(cond):
-				link_to_add = link_fro_course_home
-				if(typ == "rel"):
-					link_to_add = get_absolute_path(course_home_page_url, 
-						link_fro_course_home)
-				if(course_home_page_url != link_to_add):
-					course_home_page_fro_links.add(link_to_add)
-		except:
-			pass
+		course_home_page = course_home_page_response.content
+		course_home_page_soup = BeautifulSoup(course_home_page, 'html.parser')
+		course_home_page_links = course_home_page_soup.findAll('a')
+		
+		# Getting the links from course_home_page
+		course_home_page_fro_links = set()
+		for link_fro_course_home in course_home_page_links:
+			try:
+				link_fro_course_home = link_fro_course_home.get("href")
+				link_fro_course_home = link_fro_course_home.lstrip()
 
-	return course_home_page_fro_links
+				typ, cond = check_url(link_fro_course_home, course_home_page_url, all_course_pages)
+				if(cond):
+					link_to_add = link_fro_course_home
+					if(typ == "rel"):
+						link_to_add = get_absolute_path(course_home_page_url, 
+							link_fro_course_home)
+					if(course_home_page_url != link_to_add):
+						course_home_page_fro_links.add(link_to_add)
+			except:
+				pass
+
+		return course_home_page_fro_links
+	else:
+		return set()
