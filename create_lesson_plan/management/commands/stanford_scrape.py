@@ -20,8 +20,7 @@ from create_lesson_plan.models import OfflineDocument
 
 def get_all_sub_level(content_page_urls, all_course_pages, typ):
 	p = Pool(8)
-	func = partial(download_files_load_es, all_course_pages, typ, 
-		"Stanford University", "Computer Science")
+	func = partial(download_files_load_es, all_course_pages, typ, "Stanford University", "Computer Science")
 
 	if(typ == 1):
 		all_sub_level_1_links = list(p.map(func, content_page_urls)) 
@@ -37,5 +36,5 @@ class Command(BaseCommand):
 		content_page_url = "http://www.scs.stanford.edu/17wi-cs140/"
 		course_page = "http://www.scs.stanford.edu/17wi-cs140/"
 
-		content_page_urls = download_files_load_es(course_page, 1, content_page_url)
-		content_page_urls_2 = get_all_sub_level(content_page_url, course_page, 2)
+		content_page_urls = get_all_sub_level([content_page_url], [course_page], 1)
+		content_page_urls_2 = get_all_sub_level([content_page_urls], [course_page], 2)
