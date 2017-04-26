@@ -45,19 +45,17 @@ def download_files_load_es(all_course_pages, level, university,subject,content_p
 
 def create_offline_document_object(content_page_url, content, univeristy, subject, 
 	f=None, file_name=None):
-	try:
-		off_doc = OfflineDocument(link=content_page_url, 
-			source=univeristy, 
-			subject=subject, 
-			content=content)
-		if(f): 
-			off_doc.attachment.save(file_name, File(open(file_name, 'r')))
-			os.remove(file_name)		
-		off_doc.save()
-		print(str(off_doc.pk)+" "+off_doc.link)
-		return True
-	except:
-		return False
+	
+	off_doc = OfflineDocument(link=content_page_url, 
+		source=univeristy, 
+		subject=subject, 
+		content=content)
+	if(f): 
+		off_doc.attachment.save(file_name, File(open(file_name, 'r')))
+		os.remove(file_name)		
+	off_doc.save()
+	print(str(off_doc.pk)+" "+off_doc.link)
+	return True
 
 
 def download_pdf_file(download_url, name):
