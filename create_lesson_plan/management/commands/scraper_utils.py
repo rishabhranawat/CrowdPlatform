@@ -77,11 +77,11 @@ def get_page_content_response(url):
 	print(url)
 	counter = 0
 	page_response = None
-	while(counter <=5 or page_response == None):
+	while(counter <=5 and page_response == None):
+		print(page_response)
 		counter += 1
 		try:
 			page_response = requests.get(url)
-			
 		except:
 			sleep(1)
 			continue
