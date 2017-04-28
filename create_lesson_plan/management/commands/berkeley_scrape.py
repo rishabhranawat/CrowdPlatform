@@ -18,21 +18,6 @@ from scraper_utils import get_page_content_response, download_files_load_es
 from create_lesson_plan.models import OfflineDocument
 
 
-def get_all_sub_level(content_page_urls, all_course_pages, typ):
-	p = Pool(8)
-	func = partial(download_files_load_es, all_course_pages, typ, 
-		"Stanford University", "Computer Science")
-
-	if(typ == 1):
-		all_sub_level_1_links = list(p.map(func, content_page_urls)) 
-		ll = set()
-		for each in all_sub_level_1_links:
-			ll = ll | each
-		return ll
-	else:
-		p.map(func, content_page_urls)
-
-
 def get_sub_level(all_course_pages, level, university, subject, content_page_url):
 	new_links_or_none = download_files_load_es(all_course_pages, level, university, subject, content_page_url)
 	return new_links_or_none
@@ -52,7 +37,7 @@ def download_level_1_links(content_page_url, course_page):
 	all_level_1_links = set()
 	for each_url in home_page_urls:
 		new_links = get_sub_level([course_page], 1, 
-			"Stanford Universiy", "Computer Science", each_url)
+			"UC Berkeley", "Computer Science", each_url)
 		time.sleep(2)
 
 		if(new_links != None):
@@ -62,19 +47,20 @@ def download_level_1_links(content_page_url, course_page):
 	write_to_file(all_level_1_links)
 
 def get_level_1_links():
-	f = open('stanford_links.txt', 'r')
+	f = open('berkeley_links.txt', 'r')
 	links = f.read().splitlines()
 	return links
 
 class Command(BaseCommand):
 	def handle(self, *args, **kwargs):
-		content_page_url = "http://www.scs.stanford.edu/17wi-cs140/"
-		course_page = "http://www.scs.stanford.edu/17wi-cs140/"
+		content_page_url = "https://cs162.eecs.berkeley.edu/"
+		course_page = "https://cs162.eecs.berkeley.edu/"
 
-		all_level_1_links = (get_level_1_links())
-		for final_depth_url in all_level_1_links:
-			if(not OfflineDocument.objects.filter(link=final_depth_url).exists()):
-				print("Request ", final_depth_url)
-				get_sub_level([course_page], 2, 
-					"Stanford University", "Computer Science", final_depth_url)
-				time.sleep(2)
+		download_level_1_links(content_page_url, course_page)
+		# all_level_1_links = (get_level_1_links())
+		# for final_depth_url in all_level_1_links:
+		# 	if(not OfflineDocument.objects.filter(link=final_depth_url).exists()):
+		# 		print("Request ", final_depth_url)
+		# 		get_sub_level([course_page], 2, 
+		# 			"UC Berkeley", "Computer Science", final_depth_url)
+		# 		time.sleep(2)

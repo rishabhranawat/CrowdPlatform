@@ -189,5 +189,5 @@ def remove_fro_search(instance, **kwargs):
 	instance.to_delete()
 
 post_save.connect(add_to_search, sender=OfflineDocument)
-pre_delete.connect(remove_fro_search, sender=OfflineDocument)
+# pre_delete.connect(remove_fro_search, sender=OfflineDocument)
 	
