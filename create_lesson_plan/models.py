@@ -50,7 +50,10 @@ class lesson_plan(models.Model):
 	evaluate_url3 = models.CharField(max_length=600)
 	evaluate_img1 = models.CharField(max_length=600)
 
+
 class Engage_Urls(models.Model):
+	url = models.TextField()
+	display_url = models.TextField(default="blank")
 	title = models.CharField(max_length=600, blank=True)
 	lesson_fk = models.ForeignKey(lesson)
 	item_id = models.IntegerField()
@@ -58,17 +61,19 @@ class Engage_Urls(models.Model):
 	desc = models.CharField(max_length=600)
 
 class Explain_Urls(models.Model):
+	url = models.TextField()
+	display_url = models.TextField(default="blank")
 	title = models.CharField(max_length=600, blank=True)
 	lesson_fk = models.ForeignKey(lesson)
 	item_id = models.IntegerField()
-	url = models.CharField(max_length=600)
 	desc = models.CharField(max_length=600)
 
 class Evaluate_Urls(models.Model):
+	url = models.TextField()
+	display_url = models.TextField(default="blank")
 	title = models.CharField(max_length=600, blank=True)
 	lesson_fk = models.ForeignKey(lesson)
 	item_id = models.IntegerField()
-	url = models.CharField(max_length=600)
 	desc = models.CharField(max_length=600)
 
 class Engage_Images(models.Model):

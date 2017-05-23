@@ -45,18 +45,17 @@ universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
 
 class Links(object):
 
-    def __init__(self, url, desc, value, title):
+    def __init__(self, url, display_url, desc, value, title):
         self.url = url
         self.desc = desc
         self.value = value
         self.title = title
+        self.display_url = display_url
 
 # determine if a search result is to be filtered, just based on its URL
 
 
 def isToBeFiltered(url, description, title):
-    if len(url) > 100:
-        return True
     for temp in filters:
         if temp in url.lower() or temp in description.lower()\
             or temp in title.lower():
@@ -159,6 +158,8 @@ def processed(query, type1, type2, bullets, input_title):
 
     return query, limit
 
+
+
 def getProcessedQuery(query, type1,unType):
     if(type1 == 1): query = query.replace("site:edu", universities[unType])
     elif(type1 == 2): query = query+(" "+universities[unType])
@@ -166,6 +167,7 @@ def getProcessedQuery(query, type1,unType):
 
 def generateDictAndLinksList(results, duplicate_dict, new_link_list):
     valid_result = []
+    print(results)
     for r in results:
         if r['Url'] not in duplicate_dict and \
             not isToBeFiltered(r['Url'], r['Description'], r['title']):
@@ -176,26 +178,27 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
         return valid_result, duplicate_dict, new_link_list
     
     for each_result in valid_result:
-        l = Links(each_result['Url'], each_result['Description'], -1,
+        l = Links(each_result['Url'], each_result['display_url'], each_result['Description'], -1,
          each_result['title'])
         new_link_list.append(l)
+  
+    print("VALID RESULTS \n \n", valid_result)
+
 
     return valid_result, duplicate_dict, new_link_list
 
 def run_topic_search(duplicate_dict, query_set, type1, input_title):
-    
-    type2_range = [7 , 6]
+    type2_range = [7, 6]
     new_link_list = []
     for query in query_set:
         for type2 in range(1, type2_range[type1 - 1]):
             processed_query, limit = processed(query, type1, type2, \
                 len(query_set), input_title)
-            print(processed_query)
             query2 = query
             results = bing_search(processed_query, limit)
             valid_result, duplicate_dict, new_link_list = \
                 generateDictAndLinksList(results, duplicate_dict, new_link_list)
-            
+
     output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
 
@@ -204,7 +207,7 @@ def get_relevant_links(query, results, query_type, output):
     result_filtered = summsrch.summ_search(query, results, query_type)
     link_list = []
     for r in result_filtered:
-        link = Links(r['Url'], r['Description'], r['Value'], r['title'])
+        link = Links(r['Url'], each_result['display_url'],r['Description'], r['Value'], r['title'])
         link_list.append(link)
     output.put(link_list)
 
@@ -222,8 +225,7 @@ class GenerateLessonPlan(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})
 
-    def post(self, request, todo,*args, **kwargs):
-        ts = time.time()
+    def post(self, request, todo, *args, **kwargs):
         if(todo == '1'):
           if 'input_title' in request.POST:
             subject_name = request.POST['subject_name']
@@ -245,53 +247,40 @@ class GenerateLessonPlan(View):
             input_bullets = input_bullets.lower()
             input_bullets = input_bullets.split('\n')
             query_set = []
-            subject_name = string.replace(subject_name, ' ', '+')
-            subject_name = subject_name.lower()
-            subject_list = subject_name.split('+')
-            course_name = string.replace(course_name, ' ', '+')
-            course_name = course_name.lower()
-            course_list = course_name.split('+')
-            input_title = string.replace(input_title, ' ', '+')
-            input_title = input_title.lower()
-            input_list = input_title.split('+')
-            
             for bullet in input_bullets:
                 bullet = bullet.strip()
-                bullet = string.replace(bullet, ' ', '+')
-                query_set.append(bullet + "+")
+                query_set.append(bullet)
             
             dups = {}
             outputs = run_topic_search(dups, query_set, 1, input_title)
-            # list of urls for the engage phase
+            
             engage_urls = []
             engage_urls_length = []
             dups = outputs['dups']
-
-            i = 0
+            item_id = 0
             for url in outputs['links']:
-                e = Engage_Urls(lesson_fk=l, item_id=i, url=url.url,
-                                desc=url.desc, title=url.title)
+                e = Engage_Urls(lesson_fk=l, item_id=item_id, url=url.url,
+                                desc=url.desc, title=url.title, display_url=url.display_url)
                 e.save()
                 engage_urls.append(e)
-                i = i + 1
+                item_id += 1
+                print(url.url)
             
-
             # for evalaute phase, run query set (explain type1 = 3)
             outputs = run_topic_search(dups, query_set, 2, input_title)
             evaluate_urls = []
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])
-            i = 0
+            item_id = 0
             for url in outputs['links']:
-                e = Evaluate_Urls(lesson_fk=l, item_id=i,
-                                  url=url.url, desc=url.desc, title=url.title)
+                e = Evaluate_Urls(lesson_fk=l, item_id=item_id,
+                                  url=url.url, desc=url.desc, title=url.title, display_url=url.display_url)
                 e.save()
                 evaluate_urls.append(e)
-                i = i + 1
-            pk = l.pk
-
-            print(time.time() - ts)
-            return redirect('/create_lesson_plan/'+str(pk)+'/user_lesson_plan/1')
+                item_id += 1
+                print(url.url)
+            lesson_pk = l.pk
+            return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
           else:
               return HttpResponse('input_title not found')
 
@@ -357,15 +346,16 @@ class user_profile(View):
         lesson_plans = list(lesson.objects.filter(user_name=user, stage=1).order_by('course_name'))
 
         plans = []
-        c = lesson_plans[0].course_name
-        cl = []    
-        for lp in lesson_plans:
-            if(lp.course_name == c): cl.append(lp)
-            else: 
-                plans.append(cl)
-                cl = []
-                c = lp.course_name
-                cl.append(lp)
+        if(len(lesson_plans) > 0):
+            c = lesson_plans[0].course_name
+            cl = []    
+            for lp in lesson_plans:
+                if(lp.course_name == c): cl.append(lp)
+                else: 
+                    plans.append(cl)
+                    cl = []
+                    c = lp.course_name
+                    cl.append(lp)
        
         context = {
             'user':user, 
