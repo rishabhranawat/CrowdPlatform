@@ -12,9 +12,10 @@ from create_lesson_plan.models import OfflineDocument
 from django.core.files import File
 
 
-FILE_TYPES = ["application/pdf"]
+FILE_TYPES = ["application/pdf", "pdf"]
 WASHU_STOP_URLS = ["http://courses.cs.washington.edu/", "/", 
-"http://cs.stanford.edu/academics/courses"]
+"http://cs.stanford.edu/academics/courses", 
+"https://ocw.mit.edu/courses/", "https://ocw.mit.edu/"]
 
 
 def create_offline_document_object(content_page_url, content, univeristy, subject, 
@@ -31,37 +32,38 @@ def create_offline_document_object(content_page_url, content, univeristy, subjec
 	return True
 
 def download_files_load_es(all_course_pages, level, university,subject,content_page_url):
-	content_page_response = get_page_content_response(content_page_url)
-	if(content_page_response != None):
-		try:
-			content_page = content_page_response.content
-			file_type = get_file_type(content_page_url, content_page_response)
-
-			if(file_type in FILE_TYPES):
-				file_name = content_page_url.split("/")[-1]
-				
-				f = download_pdf_file(content_page_url, file_name, 
-					content_page_response)
-				print(f)
-				create_offline_document_object(content_page_url, 
-					content_page_response.content, 
-					university, subject, 
-					f, file_name)
+	try:
+		content_page_response = requests.get(content_page_url)
+		if(content_page_response != None):
+			try:
+				content_page = content_page_response.content
+				ext_type, file_type = get_file_type(content_page_url, content_page_response)
+				if(ext_type in FILE_TYPES):	
+					file_name = content_page_url.split("/")[-1]
+					f = download_pdf_file(content_page_url, file_name, 
+						content_page_response)
+					create_offline_document_object(content_page_url, 
+						'pdf attached', 
+						university, subject, 
+						f, file_name)
+					return set()
+				elif(ext_type not in FILE_TYPES and level == 1):
+					return get_fro_links(all_course_pages, content_page_url, content_page_response)
+				elif(file_type not in FILE_TYPES 
+					and ext_type not in FILE_TYPES and level == 2 and "text/html" in file_type):
+					create_offline_document_object(content_page_url, content_page_response.content, 
+						university, subject)
+			except Exception as e:
+				print(e)
+				print("Error: ", content_page_url)
 				return set()
-			elif(file_type not in FILE_TYPES and level == 1):
-				return get_fro_links(all_course_pages, content_page_url, content_page_response)
-			elif(file_type not in FILE_TYPES and level == 2 and "text/html" in file_type):
-				content_page_soup = BeautifulSoup(content_page, 'html.parser')
-				create_offline_document_object(content_page_url, content_page_soup.content, 
-					university, subject)
-		except:
-			print(content_page_url)
-			return set()
 
-	else:
+		else:
+			if(level == 1): return set()
+			if(level == 2): pass
+	except:
 		if(level == 1): return set()
 		if(level == 2): pass
-
 def download_pdf_file(download_url, name, response):
 	response = urllib2.urlopen(download_url)
 	file = open(name, 'w')
@@ -70,7 +72,7 @@ def download_pdf_file(download_url, name, response):
 	return file
 
 def get_file_type(url, response):
-	return response.headers['content-type']
+	return url.split('.')[-1].replace(" ", ""), response.headers['content-type']
 
 def get_sha_encoding(content):
 	return 1
