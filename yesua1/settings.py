@@ -164,7 +164,7 @@ WSGI_APPLICATION = 'yesua1.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "dev.db",
+        "NAME": "/home/yesua/CrowdPlatform/dev.db",
     }
 }
 
