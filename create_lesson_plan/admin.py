@@ -1,6 +1,5 @@
 from django.contrib import admin
-from create_lesson_plan.models import lesson, lesson_plan, Evaluate_Urls, Engage_Urls, Explain_Urls, MCQ, Engage_Images, Explain_Images, Evaluate_Images, FITB, Document, Image
-
+from create_lesson_plan.models import *
 # Register your models here.
 admin.site.register(lesson)
 admin.site.register(lesson_plan)
@@ -14,3 +13,4 @@ admin.site.register(Explain_Images)
 admin.site.register(Evaluate_Images)
 admin.site.register(Document)
 admin.site.register(Image)
+admin.site.register(TestScore)
