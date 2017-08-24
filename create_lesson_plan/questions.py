@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.core import serializers
 
 
-from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls
+from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls, TestScore
 from create_lesson_plan.models import Explain_Urls, Evaluate_Urls, MCQ
 from create_lesson_plan.models import FITB, Engage_Images, Explain_Images
 from create_lesson_plan.models import Evaluate_Images, Document, Image
@@ -50,10 +50,32 @@ class AddQuestions(View):
 class AnswerQuestions(View):
 	
 	def get(self, request, pk, *args, **kwargs):
-		print(pk)
-		return render(request, 'answer_questions.html', {'form':f})
+		l = lesson.objects.get(pk=pk)
+		questions = MCQ.objects.filter(lesson=l)
+		forms = []
+		for each in questions:
+			initial = {
+				'question':each.question, 
+				'question_pk':each.pk,
+				'option_a':each.optiona,
+				'option_b':each.optionb,
+				'option_c':each.optionc,
+				'option_d':each.optiond
+				}
+			forms.append(AnswerQuestionsForm(initial=initial))
+		return render(request, 'answer_questions.html', {'forms':forms, 'lesson':l})
 
 	def post(self, request, pk, *args, **kwargs):
-		return redirect('/create_lesson_plan/'+pk+'display_search_lesson_plan/')
+		pks = request.POST['question_pk']
+		answers = request.POST['answer']
+
+		score = 0
+		for i in range(0, len(pks), 1):
+			q = MCQ.objects.get(pk=int(pks[i]))
+			if(answers[i]==q.correct_answer): score += 1
+
+		ts = TestScore(lesson=lesson.objects.get(pk=pk), test_score=score)
+		ts.save()
+		return redirect('/create_lesson_plan/'+pk+'/display_search_lesson_plan/')
 
 

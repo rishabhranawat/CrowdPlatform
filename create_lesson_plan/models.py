@@ -114,6 +114,10 @@ class Image(models.Model):
 	lesson_fk=models.ForeignKey(lesson)
 	docfile=models.FileField(upload_to='images')
 
+class TestScore(models.Model):
+	test_score = models.IntegerField(default=0, null=False, blank=False)
+	lesson = models.ForeignKey(lesson)
+
 ##############################################
 #		Offline Database Models 			 #
 #		Todo - create mappings structure	 #

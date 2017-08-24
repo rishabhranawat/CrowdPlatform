@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/user_lesson_plan/(?P<todo>[-\w]+)', views.UserLessonPlan.as_view(), name='user_lesson_plan'),
     url(r'^(?P<pk>\d+)/display_search_lesson_plan/', views.DisplaySearchLessonPlan.as_view(), 
     	name='display_search_lesson_plan'),
+    url(r'^(?P<pk>\d+)/answer_questions/', questions.AnswerQuestions.as_view(), name="answer_questions"),
 
 ]
 

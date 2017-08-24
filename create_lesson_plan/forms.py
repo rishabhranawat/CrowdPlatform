@@ -62,3 +62,21 @@ class AddMCQQuestions(forms.Form):
 		('d', 'D')
 	)
 	answer = forms.ChoiceField(label='Correct Answer', choices=ANSWER_CHOICES, required=True)
+
+class AnswerQuestionsForm(forms.Form):
+	question = forms.CharField(required=True, label='Question',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+	question_pk = forms.IntegerField(required=True, widget=forms.HiddenInput(attrs={'readonly':'readonly'}))
+	option_a = forms.CharField(required=True, label='Option A',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+	option_b = forms.CharField(required=True, label='Option B',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+	option_c = forms.CharField(required=True, label='Option C',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+	option_d = forms.CharField(required=True, label='Option D',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+	ANSWER_CHOICES = (
+		('a', 'A'),
+		('b', 'B'),
+		('c', 'C'),
+		('d', 'D')
+	)
+	answer = forms.ChoiceField(label='Your Answer', choices=ANSWER_CHOICES, required=True)
+
+
+
