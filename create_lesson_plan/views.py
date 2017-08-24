@@ -760,12 +760,6 @@ def save_lesson_plan(request):
     
     return redirect('/create_lesson_plan/profile/')
 
-class AddQuestions(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'question_entry.html', {})
-
-    def post(self, request, *args, **kwargs):
-        return render(request, 'question_entry.html', {})
 
 # search existing lesson plans from the database based on user's request
 class SearchLessonPlans(View):

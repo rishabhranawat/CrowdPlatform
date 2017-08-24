@@ -20,110 +20,19 @@
 
   <body>
 {% block banner %}
-    <div class="form-group">
-      <label for="selectQuestionType">Question Type</label>
-      <select class="form-control" id="type" name="type" onChange="handleSelection(value)">
-        <option selected>---</option>
-        <option value = "mcq">MCQ</option>
-        <option value = "fitb">Fill in the Blank</option>
-      </select>
-    </div>
+{% for each in questions%}
+<p>{{each.question}}</p>
+{% endfor %}
+    <h2>{{lesson.lesson_title}}</h2>
 
-    {% url "submitted_question" as submitted_question_url %}
-    <form role="form" action = "{{submitted_question_url}} " method = "POST" id="mcq" style="display:none;">
+    <a href="/create_lesson_plan/{{lesson.pk}}/user_lesson_plan/1">Go to lesson plan</a>
+    <form role="form" action = "/create_lesson_plan/{{lesson.pk}}/add_questions/" method = "POST" id="mcq" >
       {% csrf_token %}
-      <input type="hidden" id="type" name="type" value="mcq"/>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Course Name</label>
-        <input type="text" class="form-control" name="course_name" placeholder="Course Name">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Lesson Title</label>
-        <input type="text" class="form-control" name="lesson_title" placeholder="Lesson Title">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Grade Level</label>
-        <input type="text" class="form-control" name="grade" placeholder="Grade">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Question</label>
-        <input type="text" class="form-control" name="question" placeholder="Question?">
-      </div>
-      
-
-      <div class="form-group">
-        <label for="exampleInputPassword1">Option A</label>
-        <input type="text" class="form-control" name="optA" placeholder="Option A"/>
-      </div>
-
-      <div class="form-group">
-        <label for="exampleInputPassword1">Option B</label>
-        <input type="text" class="form-control" name="optB" placeholder="Option B"/>
-      </div>
-
-      <div class="form-group">
-        <label for="exampleInputPassword1">Option C</label>
-        <input type="text" class="form-control" name="optC" placeholder="Option C"/>
-      </div>
-
-      <div class="form-group">
-        <label for="exampleInputPassword1">Option D</label>
-        <input type="text" class="form-control" name="optD" placeholder="Option D"/>
-      </div>
-
-      <div class="form-group">
-        <label for="exampleInputPassword1">Correct Answer</label>
-        <select class="form-control" name="correct">
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
-          <option>D</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-default">Submit</button>
+        {% load bootstrap %}
+        {{form|bootstrap}}
+      <button type="submit" name="submit" class="btn btn-default">Add More</button>
     </form>
-    
-    <form role="form" action = "{{submitted_question_url}} " method = "POST" id="fitb" style="display:none;">
-    {% csrf_token %}
-    <input type="hidden" id="type" name="type" value="fitb"/>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Course Name</label>
-        <input type="text" class="form-control" name="course_name" placeholder="Course Name">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Lesson Title</label>
-        <input type="text" class="form-control" name="lesson_title" placeholder="Lesson Title">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Grade Level</label>
-        <input type="text" class="form-control" name="grade" placeholder="Grade">
-      </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Question</label>
-        <input type="text" class="form-control" id="question1" name="question1" placeholder="Use '_' to specify blank."/>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Answer</label>
-        <input type="text" class="form-control" id="answer1" name="answer1" placeholder="Answer"/>
-      </div>
 
-      <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-
-      <script>
-      function handleSelection(choice) {
-      
-      if (choice=="mcq") {
-        document.getElementById('mcq').style.display = 'block';
-        document.getElementById('fitb').style.display = 'none';
-      }
-      else if (choice=="fitb") {
-        document.getElementById('mcq').style.display = 'none';
-        document.getElementById('fitb').style.display = 'block';    
-      }
-    }
-    </script>
 {% endblock %}
   </body>
 

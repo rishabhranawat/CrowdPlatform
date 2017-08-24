@@ -24,71 +24,36 @@ from create_lesson_plan.forms import *
 
 from create_lesson_plan.pyms_cog import bing_search 
 
+
+
 class AddQuestions(View):
     def get(self, request, pk, *args, **kwargs):
-    	print(pk)
-        return render(request, 'question_entry.html', {})
+    	questions = MCQ.objects.filter(lesson=lesson.objects.get(pk=pk))
+    	l = lesson.objects.get(pk=pk)
+    	f = AddMCQQuestions()
+        return render(request, 'question_entry.html', {'lesson':l, 'form':f, 'questions':questions})
 
     def post(self, request, pk, *args, **kwargs):
-        return render(request, 'question_entry.html', {})
+    	if('submit' in request.POST):
+    		option_a = request.POST['option_a']
+    		option_b = request.POST['option_b']
+    		option_c = request.POST['option_c']
+    		option_d = request.POST['option_d']
+    		answer = request.POST['answer']
+    		question = request.POST['question']
+
+    		mcq = MCQ(lesson=lesson.objects.get(pk=pk), question=question,correct_answer=answer,
+    			optiona=option_a, optionb=option_b, optionc=option_c, optiond=option_d)
+    		mcq.save()
+    		return redirect('/create_lesson_plan/'+pk+'/add_questions/')
+
+class AnswerQuestions(View):
+	
+	def get(self, request, pk, *args, **kwargs):
+		print(pk)
+		return render(request, 'answer_questions.html', {'form':f})
+
+	def post(self, request, pk, *args, **kwargs):
+		return redirect('/create_lesson_plan/'+pk+'display_search_lesson_plan/')
 
 
-# =================================================
-# FUNCTIONS FOR HANDLING QUESTIONS, NO LONGER USED
-# =================================================
-
-
-# def search_q_results(request):
-#     if 'quest' in request.POST:
-#         query = request.POST['quest']
-#         # find mcq questions
-#         m = MCQ.objects.filter(Q(lesson_title__icontains=query))
-#         # find fill in the blank questions
-#         f = FITB.objects.filter(Q(lesson_title__icontains=query))
-#         return render(request, 'search_q_results.html', {'m': m, 'f': f, 'quest': query})
-#     else:
-#         return HttpResponse('query not found')
-
-
-# def generate_qp_results(request):
-#     if 'quest' in request.POST:
-#         query = request.POST['quest']
-#         # find mcq questions
-#         m = MCQ.objects.filter(Q(course_name__icontains=query))
-#         # find fill in the blank questions
-#         f = FITB.objects.filter(Q(course_name__icontains=query))
-#         return render(request, 'generate_qp_results.html', {'m': m, 'f': f, 'quest': query})
-#     else:
-#         return HttpResponse('query not found')
-
-# # Search for questions
-
-
-# def search_que(request):
-#     return render(request, 'search_questions.html')
-
-
-# def generate_q_paper(request):
-#     return render(request, 'generate_q_paper.html')
-
-
-# def submit_question(request):
-#     return render(request, 'question_entry.html')
-
-
-# def search_results(request):
-#     if 'query' in request.POST:
-#         query = request.POST['query']
-#         l = lesson.objects.filter(Q(lesson_title__icontains=query))
-#         en = Engage_Urls.objects.filter(lesson_fk=l[0])
-#         ex = Explain_Urls.objects.filter(lesson_fk=l[0])
-#         ev = Evaluate_Urls.objects.filter(lesson_fk=l[0])
-#         doc = Document.objects.filter(lesson_fk=l[0])
-#         pic = Image.objects.filter(lesson_fk=l[0])
-#         return render(request, 'search_results.html', {'lesson_title': l[0].lesson_title, 'en': en, 'ex': ex, 'ev': ev, 'doc': doc, 'pic': pic})
-#     else:
-#         return HttpResponse('query not found')
-
-
-# def show_temp_lesson_plan(request):
-#     return render(request, 'index.html')
