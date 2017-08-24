@@ -93,6 +93,7 @@ class MCQ(models.Model):
 	course_name = models.CharField(max_length=400)
 	lesson_title = models.CharField(max_length=400)
 	grade = models.CharField(max_length=100)
+	lesson = models.ForeignKey(lesson, null=True)
 	question = models.CharField(max_length=1600)
 	optiona = models.CharField(max_length=600)
 	optionb = models.CharField(max_length=600)

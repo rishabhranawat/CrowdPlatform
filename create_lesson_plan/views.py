@@ -128,32 +128,32 @@ def processed(query, type1, type2, bullets, input_title):
     elif type1 == 2:
         if type2 == 1:
             query += " "+input_title+" homeworks site:mit.edu"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
+            if bullets == 3: limit = 1
+            if bullets == 2: limit = 1
             else: limit = 6
 
         elif type2 == 2:
             query += " "+input_title+" homeworks site:cmu.edu"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
+            if bullets == 3: limit = 1
+            if bullets == 2: limit = 1
             else: limit = 6
 
         elif type2 == 3:
             query += " "+input_title+" homeworks site:stanford.edu"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
+            if bullets == 3: limit = 1
+            if bullets == 2: limit = 1
             else: limit = 6
 
         if type2 == 4:
             query += " "+input_title+" homeworks filetype:pdf"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
+            if bullets == 3: limit = 1
+            if bullets == 2: limit = 1
             else: limit = 6
 
         elif type2 == 5:
             query += " "+input_title+" midterm+final+practice filetype:pdf"
-            if bullets == 3: limit = 2
-            elif bullets == 2: limit = 3
+            if bullets == 3: limit = 1
+            elif bullets == 2: limit = 1
             else: limit = 6
 
     return query, limit
@@ -759,8 +759,15 @@ def save_lesson_plan(request):
         random = "exceeded"
     
     return redirect('/create_lesson_plan/profile/')
-# search existing lesson plans from the database based on user's request
 
+class AddQuestions(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'question_entry.html', {})
+
+    def post(self, request, *args, **kwargs):
+        return render(request, 'question_entry.html', {})
+
+# search existing lesson plans from the database based on user's request
 class SearchLessonPlans(View):
     form = SearchResultsForm()
 
@@ -810,62 +817,3 @@ class DisplaySearchLessonPlan(View):
                 l.score -=1
             l.save()
         return HttpResponse("OKay!")
-# =================================================
-# FUNCTIONS FOR HANDLING QUESTIONS, NO LONGER USED
-# =================================================
-
-
-def search_q_results(request):
-    if 'quest' in request.POST:
-        query = request.POST['quest']
-        # find mcq questions
-        m = MCQ.objects.filter(Q(lesson_title__icontains=query))
-        # find fill in the blank questions
-        f = FITB.objects.filter(Q(lesson_title__icontains=query))
-        return render(request, 'search_q_results.html', {'m': m, 'f': f, 'quest': query})
-    else:
-        return HttpResponse('query not found')
-
-
-def generate_qp_results(request):
-    if 'quest' in request.POST:
-        query = request.POST['quest']
-        # find mcq questions
-        m = MCQ.objects.filter(Q(course_name__icontains=query))
-        # find fill in the blank questions
-        f = FITB.objects.filter(Q(course_name__icontains=query))
-        return render(request, 'generate_qp_results.html', {'m': m, 'f': f, 'quest': query})
-    else:
-        return HttpResponse('query not found')
-
-# Search for questions
-
-
-def search_que(request):
-    return render(request, 'search_questions.html')
-
-
-def generate_q_paper(request):
-    return render(request, 'generate_q_paper.html')
-
-
-def submit_question(request):
-    return render(request, 'question_entry.html')
-
-
-def search_results(request):
-    if 'query' in request.POST:
-        query = request.POST['query']
-        l = lesson.objects.filter(Q(lesson_title__icontains=query))
-        en = Engage_Urls.objects.filter(lesson_fk=l[0])
-        ex = Explain_Urls.objects.filter(lesson_fk=l[0])
-        ev = Evaluate_Urls.objects.filter(lesson_fk=l[0])
-        doc = Document.objects.filter(lesson_fk=l[0])
-        pic = Image.objects.filter(lesson_fk=l[0])
-        return render(request, 'search_results.html', {'lesson_title': l[0].lesson_title, 'en': en, 'ex': ex, 'ev': ev, 'doc': doc, 'pic': pic})
-    else:
-        return HttpResponse('query not found')
-
-
-def show_temp_lesson_plan(request):
-    return render(request, 'index.html')
