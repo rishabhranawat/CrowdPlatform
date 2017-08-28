@@ -48,6 +48,7 @@ class ManualLinkAddition(forms.Form):
 	link_title = forms.CharField(label='Title of the page')
 	link_desc = forms.CharField(label='Short Description', widget=forms.Textarea)
 
+<<<<<<< HEAD
 class AddMCQQuestions(forms.Form):
 	question = forms.CharField(required=True, label='Question', widget=forms.Textarea)
 	option_a = forms.CharField(required=True, label='Option A')
@@ -80,3 +81,5 @@ class AnswerQuestionsForm(forms.Form):
 
 
 
+=======
+>>>>>>> 981acbe8a601b5240a6d145d3d7d637b66e38582

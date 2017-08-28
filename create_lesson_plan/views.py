@@ -130,31 +130,31 @@ def processed(query, type1, type2, bullets, input_title):
             query += " "+input_title+" homeworks site:mit.edu"
             if bullets == 3: limit = 1
             if bullets == 2: limit = 1
-            else: limit = 6
-
+            else: limit = 4
         elif type2 == 2:
             query += " "+input_title+" homeworks site:cmu.edu"
+
             if bullets == 3: limit = 1
             if bullets == 2: limit = 1
-            else: limit = 6
+            else: limit = 4
 
         elif type2 == 3:
             query += " "+input_title+" homeworks site:stanford.edu"
             if bullets == 3: limit = 1
             if bullets == 2: limit = 1
-            else: limit = 6
+            else: limit = 4
 
         if type2 == 4:
             query += " "+input_title+" homeworks filetype:pdf"
-            if bullets == 3: limit = 1
-            if bullets == 2: limit = 1
-            else: limit = 6
+            if bullets == 3: limit = 2
+            if bullets == 2: limit = 3
+            else: limit = 4
 
         elif type2 == 5:
             query += " "+input_title+" midterm+final+practice filetype:pdf"
             if bullets == 3: limit = 1
             elif bullets == 2: limit = 1
-            else: limit = 6
+            else: limit = 4
 
     return query, limit
 
@@ -760,8 +760,6 @@ def save_lesson_plan(request):
     
     return redirect('/create_lesson_plan/profile/')
 
-
-# search existing lesson plans from the database based on user's request
 class SearchLessonPlans(View):
     form = SearchResultsForm()
 
@@ -810,4 +808,5 @@ class DisplaySearchLessonPlan(View):
             if(voted):
                 l.score -=1
             l.save()
+
         return HttpResponse("OKay!")

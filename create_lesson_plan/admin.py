@@ -1,6 +1,6 @@
 from django.contrib import admin
 from create_lesson_plan.models import *
-# Register your models here.
+
 admin.site.register(lesson)
 admin.site.register(lesson_plan)
 admin.site.register(Engage_Urls)
