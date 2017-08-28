@@ -130,6 +130,7 @@ from elasticsearch import Elasticsearch
 from datetime import datetime
 import base64
 import json
+import uuid
 
 
 class OfflineDocument(models.Model):
@@ -138,7 +139,7 @@ class OfflineDocument(models.Model):
 			('EV', 'Evaluate'),
 	)
 
-	link = models.CharField(max_length=600, unique=True)
+	link = models.CharField(max_length=600, unique=True, default=uuid.uuid1)
 	source = models.TextField()
 	title = models.TextField(null=True, blank=True)
 

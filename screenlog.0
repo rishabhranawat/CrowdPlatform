@@ -34,3 +34,48 @@ Traceback (most recent call last):
     <<<<<<< HEAD
      ^
 SyntaxError: invalid syntax
+Validating models...
+
+System check identified no issues (0 silenced).
+August 28, 2017 - 18:35:06
+Django version 1.10, using settings 'yesua1.settings'
+Starting development server at https://216.165.71.219:8000/
+Using SSL certificate: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.crt
+Using SSL key: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.key
+Quit the server with CONTROL-C.
+Validating models...
+
+System check identified no issues (0 silenced).
+August 28, 2017 - 18:37:17
+Django version 1.10, using settings 'yesua1.settings'
+Starting development server at https://216.165.71.219:8000/
+Using SSL certificate: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.crt
+Using SSL key: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.key
+Quit the server with CONTROL-C.
+Validating models...
+
+System check identified no issues (0 silenced).
+August 28, 2017 - 18:37:34
+Django version 1.10, using settings 'yesua1.settings'
+Starting development server at https://216.165.71.219:8000/
+Using SSL certificate: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.crt
+Using SSL key: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.key
+Quit the server with CONTROL-C.
+Validating models...
+
+System check identified no issues (0 silenced).
+August 28, 2017 - 18:39:47
+Django version 1.10, using settings 'yesua1.settings'
+Starting development server at https://216.165.71.219:8000/
+Using SSL certificate: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.crt
+Using SSL key: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.key
+Quit the server with CONTROL-C.
+Validating models...
+
+System check identified no issues (0 silenced).
+August 28, 2017 - 18:40:19
+Django version 1.10, using settings 'yesua1.settings'
+Starting development server at https://216.165.71.219:8000/
+Using SSL certificate: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.crt
+Using SSL key: /home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/certs/development.key
+Quit the server with CONTROL-C.
