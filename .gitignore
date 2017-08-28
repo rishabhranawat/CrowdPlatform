@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .DS_Store
+screenlog.0
 dev.db
 .Python
 env/
