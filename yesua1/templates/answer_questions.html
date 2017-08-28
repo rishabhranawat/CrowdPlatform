@@ -20,23 +20,21 @@
 
   <body>
 {% block banner %}
-    {% for each in questions%}
-    <h4>Associated Questions: </h4>
-    <p>{{each.question}}</p>
-    {% endfor %}
-    <h2>{{lesson.lesson_title}}
-        <a href="/create_lesson_plan/{{lesson.pk}}/user_lesson_plan/1">
-        <button class="btn btn-primary">
-          Go to lesson plan
-        </button>
-        </a>
-    </h2>
-    <form role="form" action = "/create_lesson_plan/{{lesson.pk}}/add_questions/" method = "POST" id="mcq" >
+{% for each in questions%}
+<p>{{each.question}}</p>
+{% endfor %}
+    <h2>{{lesson.lesson_title}}</h2>
+
+    <a href="/create_lesson_plan/{{lesson.pk}}/display_search_lesson_plan/">Go to lesson plan</a>
+    <form role="form" action = "/create_lesson_plan/{{lesson.pk}}/answer_questions/" method = "POST" id="mcq" >
       {% csrf_token %}
         {% load bootstrap %}
-        {{form|bootstrap}}
-      <button type="submit" name="submit" class="btn btn-default">Add</button>
+        {% for f in forms %}
+        {{f|bootstrap}}
+        {% endfor %}
+      <button type="submit" name="submit" class="btn btn-default">Add More</button>
     </form>
+
 {% endblock %}
   </body>
 

@@ -90,9 +90,7 @@ class Evaluate_Images(models.Model):
 
 # Multiple Choice Questions
 class MCQ(models.Model):
-	course_name = models.CharField(max_length=400)
-	lesson_title = models.CharField(max_length=400)
-	grade = models.CharField(max_length=100)
+	lesson = models.ForeignKey(lesson, null=True)
 	question = models.CharField(max_length=1600)
 	optiona = models.CharField(max_length=600)
 	optionb = models.CharField(max_length=600)
@@ -115,6 +113,10 @@ class Document(models.Model):
 class Image(models.Model):
 	lesson_fk=models.ForeignKey(lesson)
 	docfile=models.FileField(upload_to='images')
+
+class TestScore(models.Model):
+	test_score = models.IntegerField(default=0, null=False, blank=False)
+	lesson = models.ForeignKey(lesson)
 
 ##############################################
 #		Offline Database Models 			 #

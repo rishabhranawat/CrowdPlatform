@@ -18,7 +18,16 @@
 
     {% block banner %}
 
-      <h2>{{l.course_name}} <span> : {{l.lesson_title}} <button class="btn btn-primary" value="Save Lesson Plan" onclick="save_lesson_plan();">Save Lesson Plan</button></h2> 
+      <h2>{{l.course_name}} <span> : {{l.lesson_title}} 
+        <button class="btn btn-primary" value="Save Lesson Plan" onclick="save_lesson_plan();">
+          Save Lesson Plan
+        </button>
+        <a  href="/create_lesson_plan/{{l.pk}}/add_questions/"> 
+          <button class="btn btn-success">
+            Add Questions
+          </button>
+        </a>
+      </h2> 
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 

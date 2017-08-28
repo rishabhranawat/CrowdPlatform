@@ -26,7 +26,15 @@
       <button onclick="up_vote_plan('-1');" type="button" class="btn btn-default btn-lg">
         <span class="glyphicon glyphicon-thumbs-down"></span>
       </button>
-      <span>{{l.score}}</span>
+
+      <span>Rating: {{l.score}}</span>
+
+      <a href="/create_lesson_plan/{{l.pk}}/answer_questions/">
+        <button class="btn btn-success">
+          Take Test
+        </button>
+      </a>
+
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 

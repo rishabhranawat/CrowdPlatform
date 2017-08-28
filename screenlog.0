@@ -1,0 +1,36 @@
+Validating models...
+
+Unhandled exception in thread started by <function wrapper at 0xb59d741c>
+Traceback (most recent call last):
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/utils/autoreload.py", line 226, in wrapper
+    fn(*args, **kwargs)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/sslserver/management/commands/runsslserver.py", line 116, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/core/management/base.py", line 385, in check
+    include_deployment_checks=include_deployment_checks,
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/core/management/base.py", line 372, in _run_checks
+    return checks.run_checks(**kwargs)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/core/checks/registry.py", line 81, in run_checks
+    new_errors = check(app_configs=app_configs)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    for pattern in resolver.url_patterns:
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/utils/functional.py", line 35, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/urls/resolvers.py", line 310, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/utils/functional.py", line 35, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/yesua/.virtualenvs/crowd/local/lib/python2.7/site-packages/django/urls/resolvers.py", line 303, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/home/yesua/CrowdPlatform/yesua1/urls.py", line 20, in <module>
+    from create_lesson_plan import views as v
+  File "/home/yesua/CrowdPlatform/create_lesson_plan/views.py", line 28, in <module>
+    from create_lesson_plan.forms import *
+  File "/home/yesua/CrowdPlatform/create_lesson_plan/forms.py", line 51
+    <<<<<<< HEAD
+     ^
+SyntaxError: invalid syntax
