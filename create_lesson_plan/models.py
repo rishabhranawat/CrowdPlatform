@@ -6,7 +6,7 @@ from django.utils import timezone
 from vote.managers import VotableManager
 from vote.models import VoteModel
 
-from search import OfflineDocument as OfflineDoc
+from search import OfflineDocumentIndex as OfflineDoc
 
 
 
@@ -154,48 +154,63 @@ class OfflineDocument(models.Model):
 	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
 	attachment = models.FileField(blank=True, null=True,upload_to='documents')
 
-	def to_search(self):
-		es = Elasticsearch()
-		if(self.attachment != None):
-			data = base64.b64encode(self.attachment.file.read())
-		else:
-			data = ''
-		body = {
-			'link' : self.link,
-			'source': self.source,
-			'subject' : self.subject,
-			'phase': self.phase,
-			'pk': self.pk,
-			'content': self.content,
-			'summary': self.summary,
-			'data': data
-		}
-		body = json.dumps(body)
-		es.index(index='offline_content', 
-			doc_type="offline_document", 
-			pipeline="attachment",
-			body=body)
+	def indexing(self):
+		obj = OfflineDoc(
+				meta={'id':self.pk},
+				link=self.link,
+				source=self.source,
+				title=self.title,
+				subject=self.subject,
+				phase=self.phase,
+				pk=self.pk,
+				content=self.content,
+				summary=self.summary
+			)
+		obj.save()
+		return obj.to_dict(include_meta=True, update_all_types=True)
 
-	def to_delete():
-		es = Elasticsearch()
-		body = {
-		  "query": { 
-		    "match": {
-		      "pk": 42
-		    }
-		  }
-		}
-		body = json.dumps(body)
-		es.delete_by_query(index='offline_content', 
-			doc_type='offline_document',
-			body=body)
+# 	def to_search(self):
+# 		es = Elasticsearch()
+# 		if(self.attachment != None):
+# 			data = base64.b64encode(self.attachment.file.read())
+# 		else:
+# 			data = ''
+# 		body = {
+# 			'link' : self.link,
+# 			'source': self.source,
+# 			'subject' : self.subject,
+# 			'phase': self.phase,
+# 			'pk': self.pk,
+# 			'content': self.content,
+# 			'summary': self.summary,
+# 			'data': data
+# 		}
+# 		body = json.dumps(body)
+# 		es.index(index='offline_content', 
+# 			doc_type="offline_document", 
+# 			pipeline="attachment",
+# 			body=body)
+
+# 	def to_delete():
+# 		es = Elasticsearch()
+# 		body = {
+# 		  "query": { 
+# 		    "match": {
+# 		      "pk": 42
+# 		    }
+# 		  }
+# 		}
+# 		body = json.dumps(body)
+# 		es.delete_by_query(index='offline_content', 
+# 			doc_type='offline_document',
+# 			body=body)
 		
-def add_to_search(instance, **kwargs):
-	instance.to_search()
+# def add_to_search(instance, **kwargs):
+# 	instance.to_search()
 
-def remove_fro_search(instance, **kwargs):
-	instance.to_delete()
+# def remove_fro_search(instance, **kwargs):
+# 	instance.to_delete()
 
-post_save.connect(add_to_search, sender=OfflineDocument)
+# post_save.connect(add_to_search, sender=OfflineDocument)
 # pre_delete.connect(remove_fro_search, sender=OfflineDocument)
 	
