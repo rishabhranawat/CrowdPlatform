@@ -22,6 +22,7 @@ class OfflineDocumentIndex(DocType):
 
 	class Meta:
 		index = "offline_content_final"
+		pipeline = "attachment"
 
 
 # index = Index(settings.ES_INDEX)

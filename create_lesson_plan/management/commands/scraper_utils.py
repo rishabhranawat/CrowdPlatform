@@ -25,8 +25,9 @@ def create_offline_document_object(content_page_url, content, univeristy, subjec
 		source=univeristy, 
 		subject=subject, 
 		content=content)
-	if(f): 
+	if(f != None): 
 		off_doc.attachment.save(file_name, File(open('pdfBin/'+file_name, 'r')))
+		print(off_doc.attachment)
 	off_doc.save()
 	print(str(off_doc.pk)+" "+off_doc.link)
 	return True

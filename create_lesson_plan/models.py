@@ -154,6 +154,12 @@ class OfflineDocument(models.Model):
 	attachment = models.FileField(blank=True, null=True,upload_to='documents')
 
 	def indexing(self):
+		
+		if(self.attachment != None):
+			data = base64.b64encode(self.attachment.file.read())
+		else:
+			data = ''
+		
 		obj = OfflineDoc(
 				meta={'id':self.pk},
 				link=self.link,
@@ -163,7 +169,8 @@ class OfflineDocument(models.Model):
 				phase=self.phase,
 				pk=self.pk,
 				content=self.content,
-				summary=self.summary
+				summary=self.summary,
+				data=data
 			)
 		obj.save()
 		return obj.to_dict(include_meta=True)
@@ -177,7 +184,7 @@ class OfflineDocument(models.Model):
 # 		body = {
 # 			'link' : self.link,
 # 			'source': self.source,
-# 			'subject' : self.subject,
+#			'subject' : self.subject,
 # 			'phase': self.phase,
 # 			'pk': self.pk,
 # 			'content': self.content,
