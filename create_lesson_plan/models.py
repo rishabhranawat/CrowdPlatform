@@ -155,25 +155,46 @@ class OfflineDocument(models.Model):
 
 	def indexing(self):
 		
+		# if(self.attachment != None):
+		# 	data = base64.b64encode(self.attachment.file.read())
+		# else:
+		# 	data = ''
+		
+		# obj = OfflineDoc(
+		# 		meta={'id':self.pk},
+		# 		link=self.link,
+		# 		source=self.source,
+		# 		title=self.title,
+		# 		subject=self.subject,
+		# 		phase=self.phase,
+		# 		pk=self.pk,
+		# 		content=self.content,
+		# 		summary=self.summary,
+		# 		data=data
+		# 	)
+		# obj.save()
+		# return obj.to_dict(include_meta=True)
+
+		# 		es = Elasticsearch()
 		if(self.attachment != None):
 			data = base64.b64encode(self.attachment.file.read())
 		else:
 			data = ''
-		
-		obj = OfflineDoc(
-				meta={'id':self.pk},
-				link=self.link,
-				source=self.source,
-				title=self.title,
-				subject=self.subject,
-				phase=self.phase,
-				pk=self.pk,
-				content=self.content,
-				summary=self.summary,
-				data=data
-			)
-		obj.save()
-		return obj.to_dict(include_meta=True)
+		body = {
+			'link' : self.link,
+			'source': self.source,
+			'subject' : self.subject,
+			'phase': self.phase,
+			'pk': self.pk,
+			'content': self.content,
+			'summary': self.summary,
+			'data': data
+		}
+		body = json.dumps(body)
+		es.index(index="offline_content", 
+			doc_type="offline_document", 
+			pipeline="attachment",
+			body=body)
 
 # 	def to_search(self):
 # 		es = Elasticsearch()
