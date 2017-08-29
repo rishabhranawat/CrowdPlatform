@@ -9,7 +9,6 @@ from vote.models import VoteModel
 from search import OfflineDocumentIndex as OfflineDoc
 
 
-
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
 	'es_index_name', 'es_type_name', 'es_mapping'
 )
@@ -213,4 +212,7 @@ class OfflineDocument(models.Model):
 
 # post_save.connect(add_to_search, sender=OfflineDocument)
 # pre_delete.connect(remove_fro_search, sender=OfflineDocument)
-	
+def index_offline_document(instance, sender, **kwargs):
+	instance.indexing()
+
+post_save.connect(index_offline_document, sender=OfflineDocument)	
