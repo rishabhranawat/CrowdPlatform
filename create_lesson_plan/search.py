@@ -20,15 +20,16 @@ class OfflineDocumentIndex(DocType):
 	content = Text(analyzer='snowball')
 	summary = Text(analyzer='snowball')
 
+	class Meta:
+		index = "offline_content_final"
+
 
 # index = Index(settings.ES_INDEX)
 # index.settings(number_of_shards=1, number_of_replicas=0)
 # index.doc_type(OfflineDocument)
 
-
 def bulk_indexing():
 	from create_lesson_plan.models import OfflineDocument
-
 	OfflineDocumentIndex.init(index=settings.ES_INDEX)
 	es = Elasticsearch()
 	bulk(client=es,actions=(b.indexing() 

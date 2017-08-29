@@ -167,7 +167,7 @@ class OfflineDocument(models.Model):
 				summary=self.summary
 			)
 		obj.save()
-		return obj.to_dict(include_meta=True, update_all_types=True)
+		return obj.to_dict(include_meta=True)
 
 # 	def to_search(self):
 # 		es = Elasticsearch()
