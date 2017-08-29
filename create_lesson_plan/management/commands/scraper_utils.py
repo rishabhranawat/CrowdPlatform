@@ -26,7 +26,7 @@ def create_offline_document_object(content_page_url, content, univeristy, subjec
 		subject=subject, 
 		content=content)
 	if(f): 
-		off_doc.attachment.save(file_name, File(open(file_name, 'r')))
+		off_doc.attachment.save(file_name, File(open('pdfBin/'+file_name, 'r')))
 	off_doc.save()
 	print(str(off_doc.pk)+" "+off_doc.link)
 	return True
@@ -66,7 +66,7 @@ def download_files_load_es(all_course_pages, level, university,subject,content_p
 		if(level == 2): pass
 def download_pdf_file(download_url, name, response):
 	response = urllib2.urlopen(download_url)
-	file = open(name, 'w')
+	file = open('pdfBin/'+name, 'w')
 	file.write(response.read())
 	file.close()
 	return file
