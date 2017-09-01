@@ -26,6 +26,7 @@ from create_lesson_plan.models import Explain_Urls, Evaluate_Urls, MCQ
 from create_lesson_plan.models import FITB, Engage_Images, Explain_Images
 from create_lesson_plan.models import Evaluate_Images, Document, Image
 from create_lesson_plan.forms import *
+from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 
 from create_lesson_plan.pyms_cog import bing_search 
 

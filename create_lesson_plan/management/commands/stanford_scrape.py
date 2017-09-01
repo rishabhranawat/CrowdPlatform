@@ -38,9 +38,12 @@ def get_sub_level(all_course_pages, level, university, subject, content_page_url
 	return new_links_or_none
 
 def write_to_file(home_page_urls):
-	with open('stanford_links.txt', "w") as f:
+	with open('uiuc_algorithms.txt', "w") as f:
 		for url in home_page_urls:
-			f.write('%s \n'% url)
+			try:
+				f.write('%s \n'% url)
+			except:
+				print("ERROR: "+url)
 	f.close()
 
 
@@ -52,7 +55,7 @@ def download_level_1_links(content_page_url, course_page):
 	all_level_1_links = set()
 	for each_url in home_page_urls:
 		new_links = get_sub_level([course_page], 1, 
-			"Stanford Universiy", "Computer Science", each_url)
+			"University of Illinois at Urbana Champaign", "Computer Science", each_url)
 		time.sleep(2)
 
 		if(new_links != None):
@@ -62,8 +65,8 @@ def download_level_1_links(content_page_url, course_page):
 	write_to_file(all_level_1_links)
 
 def get_level_1_links():
-	f = open('stanford_links.txt', 'r')
-	links = f.read().splitlines()
+	f = open('uiuc_algorithms.txt', 'r')
+	links = [i.strip() for i in f.read().splitlines()]
 	return links
 
 class Command(BaseCommand):
@@ -71,11 +74,22 @@ class Command(BaseCommand):
 		content_page_url = "http://www.scs.stanford.edu/17wi-cs140/"
 		course_page = "http://www.scs.stanford.edu/17wi-cs140/"
 
+		content_page_url = "http://web.stanford.edu/class/cs161/"
+		course_page = "http://web.stanford.edu/class/cs161/"
+
+		course_page = "http://cs229.stanford.edu/"
+		content_page_url = "http://cs229.stanford.edu/"
+
+		course_page = "http://jeffe.cs.illinois.edu/teaching/algorithms/"
+		content_page_url = "http://jeffe.cs.illinois.edu/teaching/algorithms/"
+
+		download_level_1_links(content_page_url, course_page)
+
 		all_level_1_links = (get_level_1_links())
 		for final_depth_url in all_level_1_links:
 			url = final_depth_url.strip()
 			if(not OfflineDocument.objects.filter(link=url).exists()):
 				print("Request ", url)
 				get_sub_level([course_page], 2, 
-					"Stanford University", "Computer Science", url)
+					"University of Illinois at Urbana Champaign", "Computer Science", url)
 				time.sleep(5)
