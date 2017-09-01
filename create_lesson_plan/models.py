@@ -176,10 +176,12 @@ class OfflineDocument(models.Model):
 		# return obj.to_dict(include_meta=True)
 
 		# 		es = Elasticsearch()
+		es = Elasticsearch()
 		if(self.attachment != None):
 			data = base64.b64encode(self.attachment.file.read())
 		else:
 			data = ''
+		print(self.source)
 		body = {
 			'link' : self.link,
 			'source': self.source,
@@ -191,6 +193,7 @@ class OfflineDocument(models.Model):
 			'data': data
 		}
 		body = json.dumps(body)
+		print(body)
 		es.index(index="offline_content", 
 			doc_type="offline_document", 
 			pipeline="attachment",

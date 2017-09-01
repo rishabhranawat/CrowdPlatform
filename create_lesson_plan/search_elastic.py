@@ -4,9 +4,10 @@ from elasticsearch_dsl import Search, Q
 client = Elasticsearch()
 
 class ElasticsearchOfflineDocuments():
-	def generate_search_urls(self, input_title, lesson_outline):
+	def generate_search_urls(self, input_title, lesson_outline, source=""):
 		s = Search(using=client, index="create_lesson_plan")
 		q_input_title = Q('match', content=input_title)
+		q_source = Q('match', source=source)
 		q_lesson_outline = []
 		for bullet in lesson_outline:
 			q_lesson_outline.append(Q('match', content=bullet))
@@ -15,13 +16,3 @@ class ElasticsearchOfflineDocuments():
 		hits = res.execute()
 		for hit in hits:
 			print(hit.meta.score, hit.link)
-
-
-
-{
-  "query": { 
-    "match": {
-      "pk": 42
-    }
-  }
-}
