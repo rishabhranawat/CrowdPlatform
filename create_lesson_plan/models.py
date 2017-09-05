@@ -153,8 +153,11 @@ class OfflineDocument(models.Model):
 	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
 	attachment = models.FileField(blank=True, null=True,upload_to='documents')
 
+	def delete(self):
+		es = Elasticsearch()
+		es.delete(index="offline_content", doc_type="offline_document", pk=self.pk)
+
 	def indexing(self):
-		
 		# if(self.attachment != None):
 		# 	data = base64.b64encode(self.attachment.file.read())
 		# else:
@@ -246,4 +249,8 @@ class OfflineDocument(models.Model):
 def index_offline_document(instance, sender, **kwargs):
 	instance.indexing()
 
-post_save.connect(index_offline_document, sender=OfflineDocument)	
+def delete_offline_document(instance, sender, **kwargs):
+	instance.delete()
+
+post_save.connect(index_offline_document, sender=OfflineDocument)
+pre_delete.connect(delete_offline_document, sender=OfflineDocument)	

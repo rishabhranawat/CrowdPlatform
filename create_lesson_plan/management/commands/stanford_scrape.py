@@ -38,7 +38,7 @@ def get_sub_level(all_course_pages, level, university, subject, content_page_url
 	return new_links_or_none
 
 def write_to_file(home_page_urls):
-	with open('uiuc_algorithms.txt', "w") as f:
+	with open('stanford_ml_systems.txt', "w") as f:
 		for url in home_page_urls:
 			try:
 				f.write('%s \n'% url)
@@ -55,7 +55,7 @@ def download_level_1_links(content_page_url, course_page):
 	all_level_1_links = set()
 	for each_url in home_page_urls:
 		new_links = get_sub_level([course_page], 1, 
-			"University of Illinois at Urbana Champaign", "Computer Science", each_url)
+			"Stanford University", "Computer Science", each_url)
 		time.sleep(2)
 
 		if(new_links != None):
@@ -65,7 +65,7 @@ def download_level_1_links(content_page_url, course_page):
 	write_to_file(all_level_1_links)
 
 def get_level_1_links():
-	f = open('uiuc_algorithms.txt', 'r')
+	f = open('stanford_ml_systems.txt', 'r')
 	links = [i.strip() for i in f.read().splitlines()]
 	return links
 
@@ -83,6 +83,9 @@ class Command(BaseCommand):
 		course_page = "http://jeffe.cs.illinois.edu/teaching/algorithms/"
 		content_page_url = "http://jeffe.cs.illinois.edu/teaching/algorithms/"
 
+		course_page = "http://web.stanford.edu/class/cs246/"
+		content_page_url = "http://web.stanford.edu/class/cs246/"
+
 		download_level_1_links(content_page_url, course_page)
 
 		all_level_1_links = (get_level_1_links())
@@ -91,5 +94,5 @@ class Command(BaseCommand):
 			if(not OfflineDocument.objects.filter(link=url).exists()):
 				print("Request ", url)
 				get_sub_level([course_page], 2, 
-					"University of Illinois at Urbana Champaign", "Computer Science", url)
+					"Stanford University", "Computer Science", url)
 				time.sleep(5)
