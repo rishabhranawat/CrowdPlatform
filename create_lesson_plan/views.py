@@ -84,7 +84,7 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
 # FUNCTIONS FOR TRANSLATING USER KEYWORDS INTO SEARCH QUERIES AND FETCHING RESULTS
 # ================================================================================
 # create search query based on type1 and type2
-def processed_undergrad(uery, type1, type2, bullets, input_title):
+def processed_undergrad(query, type1, type2, bullets, input_title):
         # engage phase
     limit=2
     if type1 == 1:
@@ -161,6 +161,7 @@ def processed_undergrad(uery, type1, type2, bullets, input_title):
 
 def processed(query, type1, type2, bullets, input_title, input_grade):
     if input_grade == "Undergraduate":
+        return processed_undergrad(query, type1, type2, bullets, input_title)
 
 
 
