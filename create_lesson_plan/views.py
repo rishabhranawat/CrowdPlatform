@@ -84,9 +84,8 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
 # FUNCTIONS FOR TRANSLATING USER KEYWORDS INTO SEARCH QUERIES AND FETCHING RESULTS
 # ================================================================================
 # create search query based on type1 and type2
-
-def processed(query, type1, type2, bullets, input_title):
-    # engage phase
+def processed_undergrad(uery, type1, type2, bullets, input_title):
+        # engage phase
     limit=2
     if type1 == 1:
         if type2 == 1:
@@ -160,6 +159,10 @@ def processed(query, type1, type2, bullets, input_title):
     return query, limit
 
 
+def processed(query, type1, type2, bullets, input_title, input_grade):
+    if input_grade == "Undergraduate":
+
+
 
 def getProcessedQuery(query, type1,unType):
     if(type1 == 1): query = query.replace("site:edu", universities[unType])
@@ -182,19 +185,16 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
         l = Links(each_result['Url'], each_result['display_url'], each_result['Description'], -1,
          each_result['title'])
         new_link_list.append(l)
-  
-    print("VALID RESULTS \n \n", valid_result)
-
 
     return valid_result, duplicate_dict, new_link_list
 
-def run_topic_search(duplicate_dict, query_set, type1, input_title):
+def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade):
     type2_range = [7, 6]
     new_link_list = []
     for query in query_set:
         for type2 in range(1, type2_range[type1 - 1]):
             processed_query, limit = processed(query, type1, type2, \
-                len(query_set), input_title)
+                len(query_set), input_title, input_grade)
             query2 = query
             results = bing_search(processed_query, limit)
             valid_result, duplicate_dict, new_link_list = \
@@ -253,7 +253,7 @@ class GenerateLessonPlan(View):
                 query_set.append(bullet)
             
             dups = {}
-            outputs = run_topic_search(dups, query_set, 1, input_title)
+            outputs = run_topic_search(dups, query_set, 1, input_title, input_grade)
             
             engage_urls = []
             engage_urls_length = []
@@ -268,7 +268,7 @@ class GenerateLessonPlan(View):
                 print(url.url)
             
             # for evalaute phase, run query set (explain type1 = 3)
-            outputs = run_topic_search(dups, query_set, 2, input_title)
+            outputs = run_topic_search(dups, query_set, 2, input_title, input_grade)
             evaluate_urls = []
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])
