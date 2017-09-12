@@ -53,7 +53,7 @@ def spawn_crawlers(dets):
 		url = final_depth_url.strip()
 		print(final_depth_url)
 		if(not OfflineDocument.objects.filter(link=url).exists()):
-			get_sub_level([course_page], 2, university, subject, url)
+			get_sub_level([url], 2, university, subject, url)
 			time.sleep(5)
 
 class Command(BaseCommand):
