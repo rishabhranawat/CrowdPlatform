@@ -11,12 +11,14 @@ import time
 from functools import partial
 import hashlib
 import os
+from Queue import Queue
 
 from create_lesson_plan.models import OfflineDocument
 
 from scraper_utils import get_file_type, get_sha_encoding, get_fro_links, download_pdf_file
 from scraper_utils import get_page_content_response, download_files_load_es
 
+import threading
 
 class Command(BaseCommand):
 	def __init__(self):
@@ -32,5 +34,16 @@ class Command(BaseCommand):
 			self.seed_urls = set([i.replace("\n",  "") for i in lines])
 		return self.seed_urls
 
+	# def fetch_urls(self, url, q, next_level):
+		
+
+
 	def handle(self, *args, **options):
-		print(self.get_seed_urls(options['seed'][0]))
+		self.get_seed_urls(options['seed'][0])
+
+		queues = []
+		for each in self.seed_urls:
+			queues.append(Queue())
+
+		p = Pool(8)
+
