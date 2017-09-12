@@ -20,7 +20,6 @@ WASHU_STOP_URLS = ["http://courses.cs.washington.edu/", "/",
 
 def create_offline_document_object(content_page_url, content, univeristy, subject, 
 	f=None, file_name=None):
-	
 	off_doc = OfflineDocument(link=content_page_url, 
 		source=univeristy, 
 		subject=subject, 
@@ -113,8 +112,6 @@ def check_if_pdf(response):
 	return response.headers['content-type']=='application/pdf'
 		
 def get_fro_links(all_course_pages, course_home_page_url, course_home_page_response):
-	# Soup Boiler Plate
-		
 	if(course_home_page_response != None):
 		course_home_page = course_home_page_response.content
 		course_home_page_soup = BeautifulSoup(course_home_page, 'html.parser')

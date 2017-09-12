@@ -92,7 +92,6 @@ class Command(BaseCommand):
 		for final_depth_url in all_level_1_links:
 			url = final_depth_url.strip()
 			if(not OfflineDocument.objects.filter(link=url).exists()):
-				print("Request ", url)
 				get_sub_level([course_page], 2, 
 					"Stanford University", "Computer Science", url)
 				time.sleep(5)
