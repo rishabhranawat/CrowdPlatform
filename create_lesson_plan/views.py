@@ -802,7 +802,11 @@ class DisplaySearchLessonPlan(View):
     def post(self, request, pk, *args, **kwargs):
       
         typ = request.POST['type']
-        l = lesson.objects.get(pk=pk)
+        l = lesson.objects.get(pk=pk)\
+
+        if(l.user_name == request.user.username):
+            return HttpResponse("OKay!")
+
         if(typ == '1'):
             voted = l.votes.up(request.user.id)
             if(voted):

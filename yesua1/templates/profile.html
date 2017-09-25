@@ -23,13 +23,12 @@
             </div>
             {% for l in lesson_plans %}
                 <div class="row">
-                    <h4><strong>{{ l.0.course_name }}</strong></h4>
+                    <h4><strong>Course:{{ l.0.course_name }}</strong></h4>
                     {% for lp in l %}
                         <div class="col-md-4 col-sm-6">
-                            <h4><i class="glyphicon glyphicon-plus-sign"></i><a href="{% url 'clp:user_lesson_plan' lp.pk 1 %}">{{lp.grade}}</a></h4>
+                            <h4><i class="glyphicon glyphicon-plus-sign"></i><a href="{% url 'clp:user_lesson_plan' lp.pk 1 %}">{{lp.lesson_title}}</a></h4>
                             <div class="col-md-12 col-sm-12" style="background-color: white;">
-                                <p><strong>Lesson:<strong></p>
-                                <p>{{lp.lesson_title}}</p>
+                                <p><strong>{{lp.grade}}<strong></p>
                                 <p><strong>Lesson Outline:<strong></p>
                                 <p>{{lp.bullets}}</p>
                             </div>
