@@ -13,5 +13,7 @@ class ElasticsearchOfflineDocuments():
 		q = Q('bool', should=q_lesson_outline, minimum_should_match=1)
 		res = s.query(q_input_title).query(q)
 		hits = res.execute()
+		links = []
 		for hit in hits:
-			print(hit.meta.score, hit.link)
+			links.append(hit)
+		return links

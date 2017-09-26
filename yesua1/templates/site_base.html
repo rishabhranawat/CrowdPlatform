@@ -1,19 +1,17 @@
 {% extends "theme_bootstrap/base.html" %}
 
 {% load staticfiles %}
-{% load metron_tags %}
+<!-- {% load metron_tags %}
 {% load i18n %}
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-
+ -->
 {% block nav %}
 <!-- {% block site_brand %}<a class="navbar-brand" href="{% url "home" %}">CollectiveTeach</a>{% endblock %} -->
     {% if user.is_authenticated %}
     <ul class="nav navbar-nav navbar-right">
         <li><a href="{% url 'clp:profile' %}">Profile</a></li>
-<!--         <li><a href="{% url 'account_settings' %}">Settings</a></li>
-        <li><a href="{% url 'account_logout' %}">Logout</a></li> -->
     </ul>
     {% endif %}
 {% endblock %}
