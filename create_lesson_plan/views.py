@@ -194,7 +194,7 @@ def get_index_results(input_title, lesson_outline):
     hits = es.generate_search_urls(input_title, lesson_outline)
     links = []
     for hit in hits:
-        if(hit.meta.score > 9):
+        if(hit.meta.score > 20):
             print(hit.attachment)
             link_dets = {'Url': hit.link, 'display_url': hit.link, 'Description': '',
             'title': hit.link}
@@ -210,7 +210,7 @@ def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade)
 
     valid_result, duplicate_dict, new_link_list = \
         generateDictAndLinksList(es_links, duplicate_dict, new_link_list)
-    type2_range = [3, 6]
+    type2_range = [6, 6]
     for query in query_set:
         for type2 in range(1, type2_range[type1 - 1]):
             processed_query, limit = processed(query, type1, type2, \
