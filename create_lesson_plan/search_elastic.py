@@ -4,17 +4,36 @@ from elasticsearch_dsl import Search, Q
 client = Elasticsearch()
 
 class ElasticsearchOfflineDocuments():
-	def generate_search_urls(self, input_title, lesson_outline, source=""):
-		s = Search(using=client, index="offline_content")
-		q_input_title = Q('match', content=input_title)
-		q_link = Q('must_not', link='syllabus')
+
+	def get_query_input_title(self, input_title):
+		q_input_title = Q("match", content=input_title)
+		return q_input_title
+
+	def get_query_lesson_outline(self, lesson_outline):
 		q_lesson_outline = []
 		for bullet in lesson_outline:
 			q_lesson_outline.append(Q('match', content=bullet))
-		q = Q('bool', should=q_lesson_outline, minimum_should_match=1)
-		res = s.query(q_input_title).query(q).query(q_link)[:100]
-		hits = res.execute()
+		q_outlines = Q('bool', should=q_lesson_outline, minimum_should_match=1)
+		return q_outlines		
+
+	def get_query_link(self):
+		q_link = ~Q("match", link="syllabus")
+		return q_link
+	
+	def get_required_links(self, hits):
 		links = []
 		for hit in hits:
-			links.append(hit)
+			if("syllabus" not in str(hit.link)): links.append(hit)
 		return links
+
+	def generate_search_urls(self, input_title, lesson_outline, source=""):
+		s = Search(using=client, index="offline_content")
+		input_title_q = self.get_query_input_title(input_title)
+		link_q = self.get_query_link()
+		lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
+
+		query = lesson_outline_q &input_title_q & link_q
+		res = s.query(query)[:100]
+		hits = res.execute()
+
+		return self.get_required_links(hits)
