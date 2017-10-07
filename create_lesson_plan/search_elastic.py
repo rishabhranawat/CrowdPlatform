@@ -11,7 +11,7 @@ class ElasticsearchOfflineDocuments():
 		for bullet in lesson_outline:
 			q_lesson_outline.append(Q('match', content=bullet))
 		q = Q('bool', should=q_lesson_outline, minimum_should_match=1)
-		res = s.query(q_input_title).query(q)
+		res = s.query(q_input_title).query(q)[:100]
 		hits = res.execute()
 		links = []
 		for hit in hits:

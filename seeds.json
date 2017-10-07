@@ -1,5 +1,7 @@
-[{"url": "https://www.seas.harvard.edu/courses/cs281/", "university": "Harvard University", 
+[{"url": "http://cs170.org/", "university": "University of California Berkeley", 
 "subject":"Computer Science"},
-{"url":"http://www.cs.cmu.edu/~tom/10701_sp11/lectures.shtml","university":"Carnegie Mellon University",
+{"url":"http://people.seas.harvard.edu/~cs125/", "university":"Harvard University",
+"subject":"Computer Science"},
+{"url":"https://www.cs.cmu.edu/~15451/", "university":"Carnegie Mellon University",
 "subject":"Computer Science"}
 ]
