@@ -34,12 +34,13 @@ def query_formulator(kg, query):
     queries = []
     current_node, node = get_closest_node(query, kg)
     children_neighbours = kg.neighbors(current_node)
-    
+    pr = nx.pagerank(kg, alpha=0.9)
     for child in children_neighbours:
         queries.append(current_node+" "+child)
     return queries
 
-print(query_formulator(nx.read_gpickle("graphs/algorithms.gpickle"), "sorting"))
+kg = nx.read_gpickle("graphs/algorithms.gpickle")
+print(query_formulator(kg, "sorting"))
 
 
 
