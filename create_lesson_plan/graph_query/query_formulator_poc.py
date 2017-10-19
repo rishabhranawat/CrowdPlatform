@@ -11,14 +11,14 @@ import networkx as nx
 import nltk
 
 class GraphQueryFormulator:
-	def __init__():
+	def __init__(self):
 		pass
 	
 	def get_queries(self, query):
-		kg = nx.read_gpickle("graphs/algorithms.gpickle")
-		return query_formulator(kg, query)	
+		kg = nx.read_gpickle("create_lesson_plan/graph_query/algorithms.gpickle")
+		return self.query_formulator(kg, query)	
 		
-	def get_closest_distance_node(query, kg):
+	def get_closest_distance_node(self, query, kg):
 	    nodes = kg.nodes()
 	    mi, val = None, None
 	    for node in nodes:
@@ -30,17 +30,17 @@ class GraphQueryFormulator:
 		    return node
 	    return val
 
-	def get_closest_node(query, kg):
+	def get_closest_node(self, query, kg):
 	    if(query in kg.nodes()): 
 		return query, kg.node[query]
 	    else: 
-		node_label = get_closest_distance_node(query, kg)
+		node_label = self.get_closest_distance_node(query, kg)
 		return node_label, kg.node[node_label]
 
 
-	def query_formulator(kg, query):
+	def query_formulator(self, kg, query):
 	    queries = []
-	    current_node, node = get_closest_node(query, kg)
+	    current_node, node = self.get_closest_node(query, kg)
 	    children_neighbours = kg.neighbors(current_node)
 	    pr = nx.pagerank(kg, alpha=0.9)
 	    for child in children_neighbours:

@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q
-from graph_query.graph_query_formulator import GraphQueryFormulator
+from graph_query.query_formulator_poc import GraphQueryFormulator
 
 
 client = Elasticsearch()
@@ -44,4 +44,4 @@ class ElasticsearchOfflineDocuments():
 		return self.get_required_links(hits)
 
 	def get_graph_based_queries(self, query):
-		return self.gqf(query)
+		return self.gqf.get_queries(query)
