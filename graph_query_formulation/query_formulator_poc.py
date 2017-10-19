@@ -23,7 +23,7 @@ def get_closest_distance_node(query, kg):
     return val
 
 def get_closest_node(query, kg):
-    if(query in kg): 
+    if(query in kg.nodes()): 
         return query, kg.node[query]
     else: 
         node_label = get_closest_distance_node(query, kg)
