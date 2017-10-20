@@ -30,7 +30,6 @@ kg.add_edges_from([("Introduction to Algorithms", "Algorithmic Complexity"),
                   ("Algorithmic Complexity","Analysis of Algorithms")])
 
 
-
 # Topic 3 -- Graph Theory
 kg.add_node("Graph Theory", NodeType = "TopicNode")
 kg.add_node("Representations of graphs", NodeType = "ConceptNode")
@@ -65,6 +64,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Divide and Conquer"),
                    ("Divide and Conquer", "Master method solving recurrences")])
 
 
+# Topic 5 -- Probablistic Analaysis and Randomized Algorithms
 kg.add_node("Probablistic Analysis and Randomized Algorithms", NodeType="TopicNode")
 kg.add_node("Hiring problem", NodeType="ConceptNode")
 kg.add_node("Randomized algorithms", NodeType="ConceptNode")
@@ -74,6 +74,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Probablistic Analysis and Ran
                    ("Probablistic Analysis and Randomized Algorithms", "Randomized algorithms")
                   ])
 
+# Topic 6 -- Heapsort
 kg.add_node("Heapsort", NodeType="TopicNode")
 kg.add_node("Heaps", NodeType="ConceptNode")
 kg.add_node("Maintaining heap property", NodeType="ConceptNode")
@@ -88,6 +89,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Heapsort"),
 
 kg.add_edge("Sorting", "Heapsort")
 
+# Topic 7 -- Medians and Order Statistics
 kg.add_node("Medians and Order Statistics")
 kg.add_node("Minimum and Maximum")
 
@@ -95,6 +97,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Medians and Order Statistics"
                   ("Medians and Order Statistics", "Minimum and Maximum")])
 
 
+# Topic 8 -- Dynamic Programming
 kg.add_node("Dynamic Programming", NodeType="TopicNode")
 kg.add_node("Rod cutting", NodeType="ConceptNode")
 kg.add_node("Elements of dynamic programming", NodeType="ConceptNode")
@@ -108,6 +111,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Dynamic Programming"),
                   ("Dynamic Programming", "Optimal binary search trees")])
 
 
+# Topic 9 -- Greedy Algorithms
 kg.add_node("Greedy Algorithms", NodeType="TopicNode")
 kg.add_node("Activity selection problem", NodeType="ConceptNode")
 kg.add_node("Huffman codes", NodeType="ConceptNode")
@@ -116,6 +120,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Greedy Algorithms"),
                    ("Greedy Algorithms", "Activity selection problem"),
                    ("Greedy Algorithms", "Huffman codes")])
 
+# Topic 10 -- Minimum Spanning Trees
 kg.add_node("Minimum Spanning Trees", NodeType="TopicNode")
 kg.add_node("Growing a minimum spanning tree", NodeType="ConceptNode")
 kg.add_node("Kruskal and Prim algorithms", NodeType="ConceptNode")
@@ -125,7 +130,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Minimum Spanning Trees"),
                   ("Minimum Spanning Trees", "Kruskal and Prim algorithms")
                   ])
 
-
+# Topic 11 - Single Source Shortest Paths
 kg.add_node("Single source shortest paths", NodeType="TopicNode")
 kg.add_node("Bellman-Ford algorithm", NodeType="ConceptNode")
 kg.add_node("single source shortest path in directed acyclic graphs", NodeType="ConceptNode")
@@ -138,7 +143,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Single source shortest paths"
                   ])
 
 
-
+# Topic 12 -- All pairs shortest paths
 kg.add_node("All pairs shortest paths", NodeType="TopicNode")
 kg.add_node("Shortest paths and matrix multiplication", NodeType="ConceptNode")
 kg.add_node("The Floyd-Warshall algorithm", NodeType="ConceptNode")
@@ -150,6 +155,7 @@ kg.add_edges_from([("Introduction to Algorithms", "All pairs shortest paths"),
                    ("All pairs shortest paths", "Johnson's algorithm for sparse graphs")
                   ])
 
+# Topic 13 -- Maximum Flow
 kg.add_node("Maximum Flow", NodeType="TopicNode")
 kg.add_node("Flow networks", NodeType="ConceptNode")
 kg.add_node("The Ford Fulkerson method", NodeType="ConceptNode")
@@ -160,6 +166,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Maximum Flow"),
                   ("Maximum Flow", "The Ford Fulkerson method"),
                   ("Maximum Flow", "Maximum bipartite matching")])
 
+# Topic 14 -- Mulithreaded Algorithms
 kg.add_node("Multithreaded algorithms", NodeType="TopicNode")
 kg.add_node("Basics of dynamic multithreading", NodeType="ConceptNode")
 kg.add_node("Multithreaded Matrix Multiplication", NodeType="ConceptNode")
@@ -171,7 +178,7 @@ kg.add_edges_from([("Introduction to Algorithms", "Multithreaded algorithms"),
                   ("Multithreaded algorithms", "Multithreaded merge sort")])
 
 
-
+# Topic 15 -- Linear Programming
 kg.add_node("Linear Programming", NodeType="TopicNode")
 kg.add_node("Formulating problems as linear programs", NodeType="ConceptNode")
 kg.add_node("Simplex algorithm", NodeType="ConceptNode")
@@ -189,6 +196,26 @@ kg.add_edge("Sorting", "Analysis of Algorithms")
 kg.add_edge("Sorting", "Topological Sort")
 
 
+kg.add_node("Operating Systems", NodeType="CourseNode")
+kg.add_edge("Computer Science", "Operating Systems")
+
+kg.add_node("Processes", NodeType="TopicNode")
+kg.add_node("Process Creation", NodeType="ConceptNode")
+kg.add_node("Process Termination", NodeType="ConceptNode")
+kg.add_node("Process States", NodeType="ConceptNode")
+kg.add_node("Implementation of Processes", NodeType="ConceptNode")
+kg.add_node("Modeling Multiprogramming", NodeType="ConceptNode")
 
 
-nx.write_gpickle(kg,"graphs/algorithms.gpickle")
+kg.add_node("Threads", NodeType="TopicNode")
+kg.add_node("Thread usage", NodeType="ConceptNode")
+kg.add_node("The Classical Thread Model", NodeType="ConceptNode")
+kg.add_node("POSIX Threads", NodeType="ConceptNode")
+kg.add_node("Implementing Threads in User Space", NodeType="ConceptNode")
+kg.add_node("Implementing Threads in the Kernel", NodeType="ConceptNode")
+
+
+
+
+
+#nx.write_gpickle(kg,"graphs/algorithms.gpickle")
