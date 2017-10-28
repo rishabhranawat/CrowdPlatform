@@ -117,12 +117,6 @@ class TestScore(models.Model):
 	test_score = models.IntegerField(default=0, null=False, blank=False)
 	lesson = models.ForeignKey(lesson)
 
-##############################################
-#		Offline Database Models 			 #
-#		Todo - create mappings structure	 #
-#		and then put to the index instead 	 #
-#		instead of randomly putting it 		 #
-##############################################
 from elasticsearch.client import IndicesClient, IngestClient
 from django.conf import settings
 from elasticsearch import Elasticsearch
@@ -158,27 +152,6 @@ class OfflineDocument(models.Model):
 		es.delete(index="offline_content", doc_type="offline_document", pk=self.pk)
 
 	def indexing(self):
-		# if(self.attachment != None):
-		# 	data = base64.b64encode(self.attachment.file.read())
-		# else:
-		# 	data = ''
-		
-		# obj = OfflineDoc(
-		# 		meta={'id':self.pk},
-		# 		link=self.link,
-		# 		source=self.source,
-		# 		title=self.title,
-		# 		subject=self.subject,
-		# 		phase=self.phase,
-		# 		pk=self.pk,
-		# 		content=self.content,
-		# 		summary=self.summary,
-		# 		data=data
-		# 	)
-		# obj.save()
-		# return obj.to_dict(include_meta=True)
-
-		# 		es = Elasticsearch()
 		es = Elasticsearch()
 		if(self.attachment != None):
 			data = base64.b64encode(self.attachment.file.read())
@@ -200,50 +173,6 @@ class OfflineDocument(models.Model):
 			pipeline="attachment",
 			body=body)
 
-# 	def to_search(self):
-# 		es = Elasticsearch()
-# 		if(self.attachment != None):
-# 			data = base64.b64encode(self.attachment.file.read())
-# 		else:
-# 			data = ''
-# 		body = {
-# 			'link' : self.link,
-# 			'source': self.source,
-#			'subject' : self.subject,
-# 			'phase': self.phase,
-# 			'pk': self.pk,
-# 			'content': self.content,
-# 			'summary': self.summary,
-# 			'data': data
-# 		}
-# 		body = json.dumps(body)
-# 		es.index(index='offline_content', 
-# 			doc_type="offline_document", 
-# 			pipeline="attachment",
-# 			body=body)
-
-# 	def to_delete():
-# 		es = Elasticsearch()
-# 		body = {
-# 		  "query": { 
-# 		    "match": {
-# 		      "pk": 42
-# 		    }
-# 		  }
-# 		}
-# 		body = json.dumps(body)
-# 		es.delete_by_query(index='offline_content', 
-# 			doc_type='offline_document',
-# 			body=body)
-		
-# def add_to_search(instance, **kwargs):
-# 	instance.to_search()
-
-# def remove_fro_search(instance, **kwargs):
-# 	instance.to_delete()
-
-# post_save.connect(add_to_search, sender=OfflineDocument)
-# pre_delete.connect(remove_fro_search, sender=OfflineDocument)
 def index_offline_document(instance, sender, **kwargs):
 	instance.indexing()
 
