@@ -37,12 +37,13 @@ class GraphQueryFormulator:
 		node_label = self.get_closest_distance_node(query, kg)
 		return node_label, kg.node[node_label]
 
-
 	def query_formulator(self, kg, query):
+	    print(query)
 	    queries = []
 	    current_node, node = self.get_closest_node(query, kg)
 	    children_neighbours = kg.neighbors(current_node)
-	    pr = nx.pagerank(kg, alpha=0.9)
+	    
+	    print(current_node, node, children_neighbours)
 	    for child in children_neighbours:
 		queries.append(current_node+" "+child)
 	    return queries
