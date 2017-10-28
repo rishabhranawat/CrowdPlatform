@@ -80,14 +80,6 @@ def get_sha_encoding(content):
 def get_page_content_response(url):
 	counter = 0
 	page_response = requests.get(url)
-	# while(counter <=2 and page_response == None):
-	# 	print(page_response)
-	# 	counter += 1
-	# 	try:
-	# 		page_response = requests.get(url)
-	# 	except:
-	# 		sleep(1)
-	# 		continue
 	return page_response
 
 def is_abs(url):
