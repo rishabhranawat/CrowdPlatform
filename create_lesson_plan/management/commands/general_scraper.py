@@ -1,24 +1,25 @@
-from django.core.management.base import BaseCommand
-from django.core.files import File
-
 from multiprocessing import Pool
 import requests
-from bs4 import BeautifulSoup
-import re
-import urlparse
-import json
-import time
-from functools import partial
-import hashlib
-import os
-from Queue import Queue
 
-from create_lesson_plan.models import OfflineDocument
+from scraper_utils import get_page_content_response, download_pdf_file
+from scraper_utils import download_files_load_es, create_offline_document_object, get_fro_links
 
-Command(BaseCommand):
-	def __init__(self):
-		self.visited = set()
-	
-	def handle(self, *args, **options):
-		pass
 
+class GeneralSeedScraper:
+    
+    def __init__(self):
+        pass
+
+    def get_seed_links(self, file_name):
+        f = open(file_name, 'r')
+        lines = f.readlines()
+        seed_links = [x.strip() for x in lines]
+        f.close()
+        return seed_links
+    
+    def level_depth_a(self, link):
+        download_files_load_es(link)
+        fro_links = get_fro_links(None, link, get_page_content_response(link))
+
+    def run_scraper(self, file_name):
+        seeds = self.get_seed_links(file_name)

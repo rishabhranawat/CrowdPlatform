@@ -196,6 +196,7 @@ kg.add_edge("Sorting", "Analysis of Algorithms")
 kg.add_edge("Sorting", "Topological Sort")
 
 
+# Operating Systems
 kg.add_node("Operating Systems", NodeType="CourseNode")
 kg.add_edge("Computer Science", "Operating Systems")
 
@@ -214,7 +215,7 @@ kg.add_node("POSIX Threads", NodeType="ConceptNode")
 kg.add_node("Implementing Threads in User Space", NodeType="ConceptNode")
 kg.add_node("Implementing Threads in the Kernel", NodeType="ConceptNode")
 
-
+# 
 
 
 
