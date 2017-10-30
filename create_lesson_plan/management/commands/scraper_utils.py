@@ -29,7 +29,9 @@ the database and the database fires a signal to es to the load the document.
 '''
 def create_offline_document_object(url, content, source, subject, 
 	f=None, file_name=None):
-	off_doc = OfflineDocument(
+	num = OfflineDocument.objects.filter(link=url)
+        if(len(num) > 0): return False
+        off_doc = OfflineDocument(
 		link=url, 
 		source=source, 
 		subject=subject, 
@@ -80,15 +82,21 @@ def download_pdf_file(download_url, name, response):
 	return file
 
 def get_file_type(url, response):
-	return url.split('.')[-1].replace(" ", ""), response.headers['content-type']
+        if('content-type' in response.headers):
+            ct = response.headers['content-type']
+        else:
+            ct = 'text/html'
+	return url.split('.')[-1].replace(" ", ""), ct
 
 def get_sha_encoding(content):
 	return 1
 
 def get_page_content_response(url):
-	counter = 0
-	page_response = requests.get(url)
-	return page_response
+        try:
+	    page_response = requests.get(url)
+	    return page_response
+        except Exception, e:
+            return None
 
 def is_abs(url):
 	return bool(urlparse.urlparse(url).netloc)

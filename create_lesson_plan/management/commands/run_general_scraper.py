@@ -1,12 +1,31 @@
 from django.core.management.base import BaseCommand
 
+from multiprocessing import Pool
+from functools import partial
+
+
 from general_scraper import GeneralSeedScraper
+
+def spawn_tasks(link):
+	gss = GeneralSeedScraper()
+	gss.run_scraper(link)
+
 
 class Command(BaseCommand):
 	def __init__(self):
 		self.visited = set()
 	
-	def handle(self, *args, **options):
-		gss = GeneralSeedScraper()
-		gss.initialize_scraper('seeds_generator/seeds.txt')
+    	def get_seed_links(self, file_name):
+        	f = open(file_name, 'r')
+        	lines = f.readlines()
+        	seed_links = [x.strip() for x in lines]
+       	 	f.close()
+        	return seed_links
 
+	
+	def handle(self, *args, **options):
+		seeds = self.get_seed_links('seeds_generator/seeds.txt')
+		res_seeds = seeds[11:]
+		p = Pool(4)
+		func = partial(spawn_tasks)
+		p.map(func, res_seeds)

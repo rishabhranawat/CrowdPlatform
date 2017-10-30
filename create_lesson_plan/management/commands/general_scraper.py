@@ -1,5 +1,6 @@
 from multiprocessing import Pool
 import requests
+import time
 
 from scraper_utils import get_page_content_response, download_pdf_file
 from scraper_utils import download_files_load_es, create_offline_document_object, get_fro_links
@@ -19,40 +20,44 @@ class GeneralSeedScraper:
 
     def load_doc(self, link, response, source, subject):
         file_type = get_file_type(link, response)[1]
-        if("text/html" in file_type):
-            print('html',link)
-            create_offline_document_object(link, response.content, source, 
-                subject)
-            return
-        else:
-            print(file_type, link)
-            file_name = link.split("/")[-1]
-            f = download_pdf_file(link, file_name, response)
-            create_offline_document_object(link, 'doc attached', source, 
-                subject, f, file_name)
-            return
+        try:
+            if("text/html" in file_type):
+                print('html',link)
+                create_offline_document_object(link, response.content, source, subject)
+                return True
+            else:
+                print(file_type, link)
+                file_name = link.split("/")[-1]
+                f = download_pdf_file(link, file_name, response)
+                create_offline_document_object(link, 'doc attached', source, subject, f, file_name)
+                return True
+        except Exception, e:
+            return False
 
     def level_depth_b(self, links):
         for link in links:
             source = get_domain_from_url(link)
             response = get_page_content_response(link)
-            self.load_doc(link, response, source, "Computer Science")
+            if(response == None): continue
+            else: self.load_doc(link, response, source, "Computer Science")
+            time.sleep(2)
         return
 
     def level_depth_a(self, link):
         source = get_domain_from_url(link)
         response = get_page_content_response(link)
-        self.load_doc(link, response, source, "Computer Science")
-        links = get_fro_links([], link, response)
-        return links
+        if(response == None): return []
+        loaded = self.load_doc(link, response, source, "Computer Science")
+        if(loaded): 
+            links = get_fro_links([], link, response)
+            return links
+        else: return []
 
     def run_scraper(self, link):
         links = self.level_depth_a(link)
         self.level_depth_b(links)
         return
         
-    def initialize_scraper(self, file_name):
-        seeds = self.get_seed_links(file_name)
-        self.run_scraper(seeds[0])
+
 
 
