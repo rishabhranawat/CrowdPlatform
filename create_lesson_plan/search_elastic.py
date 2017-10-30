@@ -21,7 +21,9 @@ class ElasticsearchOfflineDocuments():
 		return q_outlines		
 
 	def get_query_link(self):
-		q_link = ~Q("match", link="syllabus")
+		q_syllabus = ~Q("match", link="syllabus")
+                q_edu = Q("wildcard", link="*edu*")
+                q_link = q_syllabus & q_edu
 		return q_link
 	
 	def get_required_links(self, hits):
@@ -42,11 +44,10 @@ class ElasticsearchOfflineDocuments():
 		query = lesson_outline_q &input_title_q & link_q
 		res = s.query(query)[:100]
 		hits = res.execute()
-		
-		
+			
 		return self.get_required_links(hits)
 
 	def get_graph_based_queries(self, query):
 		queries = self.gqf.get_queries(query)
-		print(queries)
-		return queries
+                if(len(queries) == 0): return [query]
+                else: return queries

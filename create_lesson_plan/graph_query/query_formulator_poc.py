@@ -45,5 +45,6 @@ class GraphQueryFormulator:
 	    print(current_node, node, children_neighbours)
 	    for child in children_neighbours:
 			queries.append(current_node+" "+child)
+	    print(queries)
 	    return queries
 
