@@ -12,7 +12,7 @@ import nltk
 
 class GraphQueryFormulator:
 	def __init__(self):
-		self.kg = nx.read_gpickle("create_lesson_plan/graph_query/algorithms.gpickle")
+		self.kg = nx.read_gpickle("create_lesson_plan/graph_query/ml_graph.gpickle")
 	
 	def get_queries(self, query):
 		return self.query_formulator(query)	

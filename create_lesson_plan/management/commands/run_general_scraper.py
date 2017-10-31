@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from multiprocessing import Pool
 from functools import partial
-
+from create_lesson_plan.models import OfflineDocument
 
 from general_scraper import GeneralSeedScraper
 
@@ -24,8 +24,13 @@ class Command(BaseCommand):
 
 	
 	def handle(self, *args, **options):
-		seeds = self.get_seed_links('seeds_generator/seeds.txt')
-		res_seeds = seeds[11:]
-		p = Pool(4)
+		seeds = self.get_seed_links('seeds_generator/seeds_os.txt')
+		res_seeds = []
+                for each_link in seeds:
+                    num = len(OfflineDocument.objects.filter(link=each_link))
+                    if(num == 0): 
+                        res_seeds.append(each_link)
+                final_seeds = res_seeds
+                p = Pool(4)
 		func = partial(spawn_tasks)
-		p.map(func, res_seeds)
+		p.map(func, final_seeds)

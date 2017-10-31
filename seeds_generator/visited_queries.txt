@@ -61,3 +61,35 @@ Analysis of Algorithms
 Basics of dynamic multithreading
 Dijkstra's algorithm
 Single source shortest paths
+Clustering. K-means.
+Linear quadratic regulation
+Reinforcement Learning
+PCA (Principal components analysis)
+Q-learning. Value function approximation
+Forward/Backward propagation
+Bias/variance tradeoff
+Support Vector Machines
+Linear Algebra
+Vectorization
+Convex Optimization
+Generative Learning Algorithms
+Adversarial Machine Learning
+Value iteration and policy iteration
+Factor Analysis
+Policy search. Reinforce. POMPDPs
+Unsupervised Learning
+Online Learning and the Perceptron Algorithm
+Gaussian Discriminant Analysis
+Naive Bayes
+NN architecture
+ICA (Indpeendent components analysis
+EM. Mixture of Gaussians
+Practial ML
+Model selection and feature selection
+Deep Learning
+Machine Learning
+MDPs. Bellman equations
+Regularization and Model Selection
+Logistic Regression
+Supervised Learning
+Perceptron

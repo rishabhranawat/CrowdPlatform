@@ -1,0 +1,11 @@
+Äcnetworkx.classes.digraph
+DiGraph
+q)Åq}q(Uadjlist_inner_dict_factoryqc__builtin__
+dict
+qUnode_dict_factoryqhUedge_attr_dict_factoryqhU_nodeq}q	(UClustering. K-means.q
+}qUNodeTypeqUConceptNodeqsULinear quadratic regulationq}qhhsUReinforcement Learningq}qhU	TopicNodeqsU#PCA (Principal components analysis)q}qhhsU(Q-learning. Value function approximationq}qhhsUSupport Vector Machinesq}qhhsUBias/variance tradeoffq}qhhsUForward/Backward propagationq}qhhsULinear Algebraq}qhhsUVectorizationq}q hhsUConvex Optimizationq!}q"hhsUComputer Scienceq#}q$hUSubjectNodeq%sU"Regularization and Model Selectionq&}q'hhsUAdversarial Machine Learningq(}q)hhsU$Value iteration and policy iterationq*}q+hhsUFactor Analysisq,}q-hhsU!Policy search. Reinforce. POMPDPsq.}q/hhsUUnsupervised Learningq0}q1hhsU,Online Learning and the Perceptron Algorithmq2}q3hhsUNaive Bayesq4}q5hhsUGaussian Discriminant Analysisq6}q7hhsUNN architectureq8}q9hhsU$ICA (Indpeendent components analysisq:}q;hhsUEM. Mixture of Gaussiansq<}q=hhsUPractial MLq>}q?hhsU%Model selection and feature selectionq@}qAhhsUDeep LearningqB}qChhsUMachine LearningqD}qEhU
+CourseNodeqFsUMDPs. Bellman equationsqG}qHhhsUGenerative Learning AlgorithmsqI}qJhhsULogistic RegressionqK}qLhhsUSupervised LearningqM}qNhhsU
+PerceptronqO}qPhhsuUgraphqQ}qRU
+root_graphqShU_predqT}qU(h
+}h}h}h}h}h}h}h}h}h}h!}h#}h&}h(}h*}h,}h.}h0}h2}h4}h6}h8}h:}h<}h>}h@}hB}hD}qVh#}qWshG}hI}hK}hM}hO}uU_succqX}qY(h
+}h}h}h}h}h}h}h}h}h}h!}h#}qZhDhWsh&}h(}h*}h,}h.}h0}h2}h4}h6}h8}h:}h<}h>}h@}hB}hD}hG}hI}hK}hM}hO}uU_adjq[hYUadjlist_outer_dict_factoryq\hub.

@@ -57,7 +57,7 @@ class Command(BaseCommand):
 		# get query nodes
 		queries = self.get_graph_nodes()
 		
-		f = open('seeds_generator/seeds.txt', 'as')
+		f = open('seeds_generator/seeds_ml.txt', 'a')
 		
 		for query in queries:
 			self.get_links_query(query, f)
