@@ -1,5 +1,7 @@
 import networkx as nx
 
+kg = nx.DiGraph()
+
 # Subject and Course nodes
 kg.add_node("Computer Science", NodeType = "SubjectNode")
 
@@ -32,4 +34,4 @@ kg.add_node("Virtual Machines", NodeType="ConceptNode")
 kg.add_node("Technology and Operating Systems", NodeType="ConceptNode")
 
 
-
+nx.write_gpickle(kg, "os_graph.gpickle")

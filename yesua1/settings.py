@@ -146,7 +146,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'pinax_theme_bootstrap.context_processors.theme',
             ],
-            'timeout': 20,
         },
     },
 ]
