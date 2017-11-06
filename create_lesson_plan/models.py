@@ -124,6 +124,7 @@ from datetime import datetime
 import base64
 import json
 import uuid
+from elasticsearch_dsl import Search
 
 
 class OfflineDocument(models.Model):
@@ -146,12 +147,15 @@ class OfflineDocument(models.Model):
 
 	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
 	attachment = models.FileField(blank=True, null=True,upload_to='documents')
+        content_hash = models.TextField(blank=True, null=True)
 
 	def delete(self):
 		es = Elasticsearch()
-		es.delete(index="offline_content", doc_type="offline_document", pk=self.pk)
-
-	def indexing(self):
+                s = Search(using=es, index="offline_content")
+                sq = s.query("match", pk=self.pk)
+                res = sq.delete()
+	
+        def indexing(self):
 		es = Elasticsearch()
 		if(self.attachment != None):
 			data = base64.b64encode(self.attachment.file.read())

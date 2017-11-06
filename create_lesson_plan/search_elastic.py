@@ -45,17 +45,17 @@ class ElasticsearchOfflineDocuments():
                 q_wiki = Q("wildcard", link="*wikipedia*")
                 q_edu = Q("wildcard", link="*\.edu*")
                 q_must = Q("wildcard", content="*"+lesson_outline[0].replace(" ", "\ ")+"*")
+                q_edu_pdf = q_edu & Q("wildcard", link="\.pdf*")
                 q_random = ~q_wiki & ~q_edu
 
-                query_types= [(q_wiki, 2), (q_edu, 5), (q_random, 2)]
+                query_types= [(q_wiki, 2), (q_edu, 3),(q_edu_pdf, 2), (q_random, 2)]
                 for each_type in query_types:
                     query = lesson_outline_q & each_type[0]
+                    #res = s.query(query)[:each_type[1]]
                     res = s.query(query)[:10]
                     hits = res.execute()
                     results |= self.get_required_links(hits)
 
-                #res = s.query(query)[:]
-		#hits = res.execute()
                 return results
 
 	def get_graph_based_queries(self, query):
