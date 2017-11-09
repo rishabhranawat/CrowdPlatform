@@ -126,6 +126,10 @@ import json
 import uuid
 from elasticsearch_dsl import Search
 
+class IndexDocument(models.Model):
+    link = models.CharField(max_length=2083, unique=True, default=uuid.uuid1)
+    content_hash = models.TextField(unique=True, default=uuid.uuid1)
+    
 
 class OfflineDocument(models.Model):
 	PHASE_CHOICES = (
@@ -147,7 +151,7 @@ class OfflineDocument(models.Model):
 
 	date_scraped = models.DateTimeField(default=timezone.now, blank=True)
 	attachment = models.FileField(blank=True, null=True,upload_to='documents')
-        content_hash = models.TextField(blank=True, null=True)
+        #content_hash = models.TextField(blank=True, null=True)
 
 	def delete(self):
 		es = Elasticsearch()
@@ -183,5 +187,5 @@ def index_offline_document(instance, sender, **kwargs):
 def delete_offline_document(instance, sender, **kwargs):
 	instance.delete()
 
-post_save.connect(index_offline_document, sender=OfflineDocument)
+#post_save.connect(index_offline_document, sender=OfflineDocument)
 pre_delete.connect(delete_offline_document, sender=OfflineDocument)	
