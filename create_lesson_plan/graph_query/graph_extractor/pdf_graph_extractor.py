@@ -1,0 +1,2 @@
+import pdfquery
+pdf = pdf
