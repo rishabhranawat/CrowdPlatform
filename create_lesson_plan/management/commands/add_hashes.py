@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def __init__(self):
         self.client = Elasticsearch()
-        self.f = open("text_corpus/delete_es_docs.txt", "a")
+        #self.f = open("text_corpus/delete_es_docs.txt", "a")
 
     def delete_es_document(self, pk):
         # get doc by pk, and delete. Possibility of error but minor docs.
@@ -64,7 +64,20 @@ class Command(BaseCommand):
             scroll_size = len(page['hits']['hits'])
             tots += 50
             print(sid, tots)
+        self.f.close()
+
+    def delete_duplicate_es_docs(self):
+        f = open("text_corpus/delete_es_docs.txt", "r")
+        l = f.readlines()
+
+        nums = set([int(x.strip()) for x in l])
+        
+        for pk in nums:
+            body = {"query":{"match":{"pk": pk}}}
+            self.client.delete_by_query(index="offline_content", 
+                    doc_type="offline_document", body=body, conflicts="proceed")
+            print(pk)
 
     def handle(self, *args, **options):
-        self.create_index_documents()
-        f.close()
+        #self.create_index_documents()
+        self.delete_duplicate_es_docs()
