@@ -35,7 +35,9 @@ class Command(BaseCommand):
                 scroll_size = page['hits']['total']
 	    	f = open("text_corpus/data.txt", "a")
                 tots = 50
-                while(scroll_size > 0 and tots < 2000):
+
+                # getting the doc
+                while(scroll_size > 0):
                     hits = page['hits']['hits']
                     for each_hit in hits:
                         source_data = each_hit['_source']

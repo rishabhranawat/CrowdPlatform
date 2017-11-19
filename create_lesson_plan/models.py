@@ -188,4 +188,4 @@ def delete_offline_document(instance, sender, **kwargs):
 	instance.delete()
 
 #post_save.connect(index_offline_document, sender=OfflineDocument)
-pre_delete.connect(delete_offline_document, sender=OfflineDocument)	
+#pre_delete.connect(delete_offline_document, sender=OfflineDocument)	
