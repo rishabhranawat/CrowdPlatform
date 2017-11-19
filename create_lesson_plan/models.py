@@ -154,10 +154,10 @@ class OfflineDocument(models.Model):
         #content_hash = models.TextField(blank=True, null=True)
 
 	def delete(self):
-		# es = Elasticsearch()
-  #       s = Search(using=es, index="offline_content")
-  #       sq = s.query("match", pk=self.pk)
-  #       res = sq.delete()
+            es = Elasticsearch()
+            s = Search(using=es, index="offline_content")
+            sq = s.query("match", pk=self.pk)
+            res = sq.delete()
 	
         def indexing(self):
 		es = Elasticsearch()

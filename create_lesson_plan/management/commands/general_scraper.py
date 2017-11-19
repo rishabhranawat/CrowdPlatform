@@ -31,18 +31,23 @@ class GeneralSeedScraper:
                 print(file_type, link)
                 file_name = link.split("/")[-1]
                 f = download_pdf_file(link, file_name, response)
-                data = base64.b64encode(f.read())
-                self.es_indexer.create_mapping_index(link, source, subject, 'engage/evaluate', data, '', data)
-                return False
+                fname = f.name
+		f.close()
+		fi = open(fname, 'r')
+		data = unicode(base64.b64encode(fi.read()))
+		r = self.es_indexer.create_mapping_index(link, source, subject, 'engage/evaluate', data, '', data)
+                
+		return False
         except Exception, e:
-            return False
+            	print(e)
+		return False
 
     def level_depth_b(self, links):
         for link in links:
             source = get_domain_from_url(link)
             response = get_page_content_response(link)
             if(response == None): continue
-            else: self.load_doc(link, response, source, "Computer Science")
+            else: self.load_doc(link, response, source, "Computer Science", 2)
             time.sleep(2)
         return
 
@@ -50,7 +55,7 @@ class GeneralSeedScraper:
         source = get_domain_from_url(link)
         response = get_page_content_response(link)
         if(response == None): return []
-        loaded = self.load_doc(link, response, source, "Computer Science")
+        loaded = self.load_doc(link, response, source, "Computer Science", 1)
         if(loaded): 
             links = get_fro_links([], link, response)
             return links

@@ -11,6 +11,7 @@ import hashlib
 from create_lesson_plan.models import OfflineDocument, IndexDocument
 from django.core.files import File
 import hashlib
+from elasticsearch import Elasticsearch
 
 class EsIndexer:
 
@@ -25,10 +26,12 @@ class EsIndexer:
 		content_hash = h.digest()
 
 		l = IndexDocument.objects.filter(link=link, content_hash=content_hash).count()
+		print(l, 'here')
 		if(l > 0):
 			return False
 		else:
 			i = IndexDocument(link=link, content_hash=content_hash)
+			print('here!')
 			mapping = {
 				'link' : link,
 				'source': source,
@@ -58,8 +61,6 @@ def get_domain_from_url(url):
 	domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_url)
 	return domain
 
-
-def create_index_document():
 
 '''
 create_offline_document_object - Creates OfflineDocument object in 
