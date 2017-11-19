@@ -1,15 +1,16 @@
 from multiprocessing import Pool
 import requests
 import time
+import base64
 
 from scraper_utils import get_page_content_response, download_pdf_file
 from scraper_utils import download_files_load_es, create_offline_document_object, get_fro_links
-from scraper_utils import get_domain_from_url, get_file_type
+from scraper_utils import get_domain_from_url, get_file_type, EsIndexer
 
 class GeneralSeedScraper:
     
     def __init__(self):
-        pass
+        self.es_indexer = EsIndexer()
 
     def get_seed_links(self, file_name):
         f = open(file_name, 'r')
@@ -18,19 +19,21 @@ class GeneralSeedScraper:
         f.close()
         return seed_links
 
-    def load_doc(self, link, response, source, subject):
+    def load_doc(self, link, response, source, subject, level):
         file_type = get_file_type(link, response)[1]
         try:
             if("text/html" in file_type):
-                print('html',link)
-                create_offline_document_object(link, response.content, source, subject)
+                if(level == 2):
+                    data = response.content
+                    self.es_indexer(link, source, subject, 'engage/evaluate', data, '', data)
                 return True
             else:
                 print(file_type, link)
                 file_name = link.split("/")[-1]
                 f = download_pdf_file(link, file_name, response)
-                create_offline_document_object(link, 'doc attached', source, subject, f, file_name)
-                return True
+                data = base64.b64encode(f.read())
+                self.es_indexer.create_mapping_index(link, source, subject, 'engage/evaluate', data, '', data)
+                return False
         except Exception, e:
             return False
 

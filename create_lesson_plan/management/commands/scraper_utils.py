@@ -8,8 +8,43 @@ import json
 import time
 from time import sleep
 import hashlib
-from create_lesson_plan.models import OfflineDocument
+from create_lesson_plan.models import OfflineDocument, IndexDocument
 from django.core.files import File
+import hashlib
+
+class EsIndexer:
+
+	def __init__(self):
+		es = Elasticsearch()
+
+	def create_mapping_index(self, 
+		link, source, subject, phase, content, summary, data):
+
+		h = hashlib.sha256()
+		h.update(content)
+		content_hash = h.digest()
+
+		l = IndexDocument.objects.filter(link=link, content_hash=content_hash).count()
+		if(l > 0):
+			return False
+		else:
+			i = IndexDocument(link=link, content_hash=content_hash)
+			mapping = {
+				'link' : link,
+				'source': source,
+				'subject' : subject,
+				'phase': phase,
+				'pk': i.pk,
+				'content': data,
+				'summary': summary,
+				'data': data
+			}
+
+			body = json.dumps(body)
+			es.index(index="offline_content", 
+				doc_type="offline_document",
+				pipeline="attachment", 
+				body=body)
 
 
 FILE_TYPES = ["application/pdf", "pdf"]
@@ -22,6 +57,9 @@ def get_domain_from_url(url):
 	parsed_url = urlparse.urlparse(url)
 	domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_url)
 	return domain
+
+
+def create_index_document():
 
 '''
 create_offline_document_object - Creates OfflineDocument object in 
