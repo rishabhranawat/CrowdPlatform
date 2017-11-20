@@ -42,7 +42,7 @@ class Command(BaseCommand):
 		return l
 
 	def get_links_query(self, query, f):
-		results = bing_search(query, 10)
+		results = bing_search(query, 20)
 		for each_link in results:
 			try:
 				resp = requests.get(each_link['Url'])

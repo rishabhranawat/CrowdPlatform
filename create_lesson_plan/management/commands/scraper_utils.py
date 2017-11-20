@@ -38,13 +38,13 @@ class EsIndexer:
 	into it.
 	'''
 	def create_mapping_index(self, link, source, subject, phase, content, summary, data, pk):
-		mapping = {
-		'link' : link,
+                mapping = {
+		        'link' : link,
 			'source': source,
 			'subject' : subject,
 			'phase': phase,
 			'pk': pk,
-			'content': data,
+			'content': content,
 			'summary': summary,
 			'data': data
 		}
@@ -59,17 +59,20 @@ class EsIndexer:
 	object in db.
 	'''
 	def index_document(self, link, source, subject, phase, content, summary, data):
-		content_hash = self.get_content_hash(content)
-                print(content_hash)
-		if(IndexDocument.objects.filter(link=link, content_hash=content_hash).count()>0):
-			return False
-		else:
+                if(data == ''):
+                    content_hash = self.get_content_hash(content)
+                else:
+                    content_hash = self.get_content_hash(data)
+                if(IndexDocument.objects.filter(content_hash=content_hash).count()==0 and 
+                        IndexDocument.objects.filter(link=link).count()==0):
 			pk = self.create_index_document(content_hash, link)
                         if(pk != None):
                             resp = self.create_mapping_index(link, source, subject, phase, 
                                     content, summary, data, pk)
+                            print(pk)
                             return True
                         return False
+                return False
 
 FILE_TYPES = ["application/pdf", "pdf"]
 STOP_URLS = ["http://courses.cs.washington.edu/", "/", 
@@ -171,7 +174,10 @@ def get_sha_encoding(content):
 def get_page_content_response(url):
         try:
 	    page_response = requests.get(url)
-	    return page_response
+            if(page_response.status_code == 200):
+                return page_response
+            else:
+                return None
         except Exception, e:
             return None
 

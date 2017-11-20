@@ -17,13 +17,13 @@ class GeneralSeedScraper:
         try:
             if("text/html" in file_type):
                 if(level == 2):
-                    data = response.content
-                    self.es_indexer(link, source, subject, 'engage/evaluate', data, '', data)
+                    content = response.content
+                    self.es_indexer.index_document(link, source, subject, 'engage/evaluate', content, '', '')
                 return True
             else:
                 file_name = link.split("/")[-1]
                 data = download_pdf_file(link, file_name, response)
-                r = self.es_indexer.index_document(link, source, subject, 'engage/evaluate', data, '', data)
+                r = self.es_indexer.index_document(link, source, subject, 'engage/evaluate', '', '', data)
         except Exception as e:
             print(e)
             return False
