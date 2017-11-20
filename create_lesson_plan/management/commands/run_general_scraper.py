@@ -23,8 +23,8 @@ class Command(BaseCommand):
 
 	
 	def handle(self, *args, **options):
-		# seeds = self.get_seed_links('seeds_generator/seeds_os.txt')
-                seeds = ["https://cs.nyu.edu/~khot/CSCI-GA.3520-001-2017/hw1.pdf"]
+		seeds = self.get_seed_links('seeds_generator/'+args[1])
+                #seeds = ["https://cs.nyu.edu/~khot/CSCI-GA.3520-001-2017/hw2.pdf"]
 		res_seeds = []
                 for each_link in seeds:
                     num = len(IndexDocument.objects.filter(link=each_link))

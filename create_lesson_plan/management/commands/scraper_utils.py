@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import urllib2
 import re
 import urlparse
+import base64
 import json
 import time
 from time import sleep
@@ -12,43 +13,63 @@ from create_lesson_plan.models import OfflineDocument, IndexDocument
 from django.core.files import File
 import hashlib
 from elasticsearch import Elasticsearch
+from datetime import datetime
+import os
 
 class EsIndexer:
-
 	def __init__(self):
-		es = Elasticsearch()
-
-	def create_mapping_index(self, 
-		link, source, subject, phase, content, summary, data):
-
+		self.es = Elasticsearch()
+	
+	def get_content_hash(self, content):
 		h = hashlib.sha256()
 		h.update(content)
-		content_hash = h.digest()
-
-		l = IndexDocument.objects.filter(link=link, content_hash=content_hash).count()
-		print(l, 'here')
-		if(l > 0):
+		content_hash = unicode(h.hexdigest(), "utf-8")
+		return content_hash
+	'''
+	Creates IndexDocument with content_hash and link
+	'''
+	def create_index_document(self, content_hash, link):
+		i_doc = IndexDocument(link=link, content_hash=content_hash)
+		i_doc.save()
+		return i_doc.pk
+	
+	'''
+	Creates ES mapping and indexes the current document
+	into it.
+	'''
+	def create_mapping_index(self, link, source, subject, phase, content, summary, data, pk):
+		mapping = {
+		'link' : link,
+			'source': source,
+			'subject' : subject,
+			'phase': phase,
+			'pk': pk,
+			'content': data,
+			'summary': summary,
+			'data': data
+		}
+		body = json.dumps(mapping)
+		self.es.index(index="offline_content", 
+			doc_type="offline_document",
+			pipeline="attachment", 
+			body=body)
+		return True
+	'''
+	Indexes document -- checks if link+hash combination exists, indexes into ES, creates
+	object in db.
+	'''
+	def index_document(self, link, source, subject, phase, content, summary, data):
+		content_hash = self.get_content_hash(content)
+                print(content_hash)
+		if(IndexDocument.objects.filter(link=link, content_hash=content_hash).count()>0):
 			return False
 		else:
-			i = IndexDocument(link=link, content_hash=content_hash)
-			print('here!')
-			mapping = {
-				'link' : link,
-				'source': source,
-				'subject' : subject,
-				'phase': phase,
-				'pk': i.pk,
-				'content': data,
-				'summary': summary,
-				'data': data
-			}
-
-			body = json.dumps(body)
-			es.index(index="offline_content", 
-				doc_type="offline_document",
-				pipeline="attachment", 
-				body=body)
-
+			pk = self.create_index_document(content_hash, link)
+                        if(pk != None):
+                            resp = self.create_mapping_index(link, source, subject, phase, 
+                                    content, summary, data, pk)
+                            return True
+                        return False
 
 FILE_TYPES = ["application/pdf", "pdf"]
 STOP_URLS = ["http://courses.cs.washington.edu/", "/", 
@@ -113,12 +134,29 @@ def download_files_load_es(all_course_pages, level, source,subject,content_page_
 	except:
 		if(level == 1): return set()
 		if(level == 2): pass
+
+'''
+Downloads a file, gets the data and deletes the file.
+TODO: Change the name (make sure there aren't occurences)
+'''
 def download_pdf_file(download_url, name, response):
-	response = urllib2.urlopen(download_url)
-	file = open('pdfBin/'+name, 'w')
-	file.write(response.read())
-	file.close()
-	return file
+	
+	# create unique file name
+        time = str(datetime.now())
+	f_name = 'pdfBin/'+name+time
+        file = open(f_name, 'w')
+	file.write(response.content)
+        file.close()
+
+        file = open(f_name, 'r')
+        # get data and encode
+        data = unicode(base64.b64encode(file.read()), "utf-8")
+        
+        # close and remove file
+        file.close()
+        os.remove(f_name)
+        return data
+	
 
 def get_file_type(url, response):
         if('content-type' in response.headers):
