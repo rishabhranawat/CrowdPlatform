@@ -1,0 +1,114 @@
+Bellman-Ford algorithm
+Graph Theory
+Strongly Connected Components
+Kruskal and Prim algorithms
+Maximum Flow
+Multithreaded merge sort
+Maintaining heap property
+Sorting
+Strassen's matrix multiplication
+Growing a minimum spanning tree
+Basic feasible solution
+Radix Sort, Counting Sort
+Introduction to Algorithms
+Depth-first search DFS
+Substitution method solving recurrences
+Probablistic Analysis and Randomized Algorithms
+The Floyd-Warshall algorithm
+Heapsort
+The Ford Fulkerson method
+Multithreaded algorithms
+Optimal binary search trees
+Formulating problems as linear programs
+Computer Science
+Randomized algorithms
+Minimum and Maximum
+Representations of graphs
+Activity selection problem
+Insertion Sort, Bubble Sort
+Rod cutting
+Divide and Conquer
+Master method solving recurrences
+Linear Programming
+Greedy Algorithms
+Hiring problem
+Medians and Order Statistics
+Flow networks
+Topological Sort
+Multithreaded Matrix Multiplication
+Maximum subarray
+Shortest paths and matrix multiplication
+Priority queues
+Simplex algorithm
+Elements of dynamic programming
+Longest common subsequence
+Duality
+Heaps
+Dynamic Programming
+single source shortest path in directed acyclic graphs
+Heapsort algorithm
+All pairs shortest paths
+Maximum bipartite matching
+Johnson's algorithm for sparse graphs
+Breadth-first search BFS
+Algorithmic Complexity
+Big Oh Notation
+Merge Sort, Quick Sort
+Recursion-tree method solving recurrences
+Minimum Spanning Trees
+Huffman codes
+Analysis of Algorithms
+Basics of dynamic multithreading
+Dijkstra's algorithm
+Single source shortest paths
+Clustering. K-means.
+Linear quadratic regulation
+Reinforcement Learning
+PCA (Principal components analysis)
+Q-learning. Value function approximation
+Forward/Backward propagation
+Bias/variance tradeoff
+Support Vector Machines
+Linear Algebra
+Vectorization
+Convex Optimization
+Generative Learning Algorithms
+Adversarial Machine Learning
+Value iteration and policy iteration
+Factor Analysis
+Policy search. Reinforce. POMPDPs
+Unsupervised Learning
+Online Learning and the Perceptron Algorithm
+Gaussian Discriminant Analysis
+Naive Bayes
+NN architecture
+ICA (Indpeendent components analysis
+EM. Mixture of Gaussians
+Practial ML
+Model selection and feature selection
+Deep Learning
+Machine Learning
+MDPs. Bellman equations
+Regularization and Model Selection
+Logistic Regression
+Supervised Learning
+Perceptron
+Processes
+POSIX Threads
+Operating Systems
+Storage Devices
+Virtual Machines
+Concurrent Threads
+Implementing Locks
+Demand Paging
+Thrashing and Working Sets
+Virtual Memory
+Technology and Operating Systems
+Dynamic Storage Management
+Threads
+Deadlock
+Scheduling
+File Systems
+The Classical Thread Model
+Flash Memory
+Linkers

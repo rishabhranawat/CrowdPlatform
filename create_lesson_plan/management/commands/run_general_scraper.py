@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
 	
 	def handle(self, *args, **options):
-		seeds = self.get_seed_links('seeds_generator/meta_ml_seeds.txt')
+		seeds = self.get_seed_links('seeds_generator/ml_seeds_nov.txt')
                 #seeds = ["https://cs.nyu.edu/~khot/CSCI-GA.3520-001-2017/hw3.pdf"]
 		res_seeds = []
                 for each_link in seeds:
