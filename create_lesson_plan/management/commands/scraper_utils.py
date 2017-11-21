@@ -53,7 +53,8 @@ class EsIndexer:
 			doc_type="offline_document",
 			pipeline="attachment", 
 			body=body)
-		return True
+		print(link)
+                return True
 	'''
 	Indexes document -- checks if link+hash combination exists, indexes into ES, creates
 	object in db.
