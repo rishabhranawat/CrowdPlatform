@@ -1,6 +1,3 @@
-
-# coding: utf-8
-
 # ### Graph Query Formulator
 # Exploring the idea of generating optimal queries for elasticsearch using a graph datastructure that contains the ontologies of different courses and thus, acts like a knowledge graph.
 
@@ -51,7 +48,18 @@ class GraphQueryFormulator:
 		node_label = self.get_closest_distance_node(query)
 		return node_label, self.kg.node[node_label]
 
-        def get_queries_based_on_node(self, query):
+        def get_queries_based_on_node(self, node_label):
+            node = self.kg.node[node_label]
+            node_type = node["NodeType"]
+            
+            if(node_type == "TopicNode" or node_type == "ConceptNode"):
+                return self.kg.neighbors(node_label)
+            elif(node_type == "ConceptNode"):
+                return self.kg.neighbors(node_label)
+            elif(node_type == "SubConceptNode"):
+                return [node_label]
+            else:
+                pass
 
 
         '''
@@ -62,12 +70,11 @@ class GraphQueryFormulator:
         '''
 	def query_formulator(self, query):
 	    queries = []
-	    current_node, node = self.get_closest_node(query)
-	    children_neighbours = self.kg.neighbors(current_node)
-	    
-	    print(current_node, node, children_neighbours)
+	    node_label, node = self.get_closest_node(query)
+            children_neighbours = self.get_queries_based_on_node(node_label)
+
+	    print(node_label, node, children_neighbours)
 	    for child in children_neighbours:
-			queries.append(current_node+" "+child)
-	    print(queries)
+			queries.append(node_label+" "+child)
 	    return queries
 
