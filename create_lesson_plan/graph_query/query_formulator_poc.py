@@ -9,7 +9,7 @@ import nltk
 
 class GraphQueryFormulator:
 	def __init__(self):
-		self.kg = nx.read_gpickle("create_lesson_plan/graph_query/ml_graph.gpickle")
+		self.kg = nx.read_gpickle("create_lesson_plan/graph_query/graphs/algorithms.gpickle")
 
         '''
         To interface with the module

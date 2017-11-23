@@ -29,6 +29,7 @@ from create_lesson_plan.forms import *
 from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 
 from create_lesson_plan.pyms_cog import bing_search 
+import sentnn
 
 # list of subjects
 subjects = ['Computer Science']
@@ -189,9 +190,20 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 
     return valid_result, duplicate_dict, new_link_list
 
+from subprocess import Popen, PIPE
+from multiprocessing import Lock
+c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/visited_queries.txt"
+
+process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
+time.sleep(3)
+
+process.stdout.readline()
+mutex = Lock()
 def get_index_results(input_title, lesson_outline):
     es = ElasticsearchOfflineDocuments()
-    hits = es.generate_search_urls(input_title, lesson_outline)
+    print(sentnn.get_relevant_queries(input_title, process, mutex))
+    #hits = es.generate_search_urls(input_title, lesson_outline)
+    #print(sentnn.get_relevant_queries(input_title))
 #    links = []
 #    for hit in hits:
 #        if(hit.meta.score > 20):
