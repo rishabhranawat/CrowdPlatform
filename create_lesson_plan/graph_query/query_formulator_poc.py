@@ -49,9 +49,7 @@ class GraphQueryFormulator:
 		node_type = node["NodeType"]
 
 		if(node_type == "TopicNode" or node_type == "ConceptNode"):
-			return self.kg.neighbors(node_label)
-		elif(node_type == "ConceptNode"):
-			return self.kg.neighbors(node_label)
+			return list(self.kg.neighbors(node_label))
 		elif(node_type == "SubConceptNode"):
 			return [node_label]
 		else:
@@ -66,10 +64,12 @@ class GraphQueryFormulator:
         '''
 	def query_formulator(self, query, label):
 	    queries = []
-	    node_label, node = label, self.kg.node[label]
-	    children_neighbours = self.get_queries_based_on_node(node_label)
-
-	    for child in children_neighbours:
-			queries.append(node_label+" "+child)
+	    #node_label, node = label, self.kg.node[label]
+            print(label)
+	    children_neighbours = self.get_queries_based_on_node(label)
+	    print(children_neighbours)
+            for child in children_neighbours:
+			queries.append(label+" "+child)
+            print(queries)
 	    return queries
 

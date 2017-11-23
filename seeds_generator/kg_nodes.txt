@@ -1,0 +1,108 @@
+Strongly Connected Components
+PCA (Principal components analysis)
+Radix Sort, Counting Sort
+Introduction to Algorithms
+Duality
+Computer Science
+Minimum and Maximum
+Factor Analysis
+Hiring problem
+NN architecture
+Multithreaded Matrix Multiplication
+Maximum subarray
+single source shortest path in directed acyclic graphs
+Model selection and feature selection
+Breadth-first search BFS
+Big Oh Notation
+Recursion-tree method solving recurrences
+Perceptron
+Clustering. K-means.
+Linear quadratic regulation
+Reinforcement Learning
+Q-learning. Value function approximation
+Process States
+Support Vector Machines
+Representations of graphs
+Probablistic Analysis and Randomized Algorithms
+Johnson's algorithm for sparse graphs
+The Ford Fulkerson method
+Multithreaded algorithms
+Optimal binary search trees
+Threads
+Implementing Threads in the Kernel
+Modeling Multiprogramming
+Value iteration and policy iteration
+Unsupervised Learning
+Linear Programming
+Gaussian Discriminant Analysis
+Priority queues
+Heaps
+Topological Sort
+Single source shortest paths
+Maximum bipartite matching
+MDPs. Bellman equations
+Minimum Spanning Trees
+Simplex algorithm
+Graph Theory
+Multithreaded merge sort
+Thread usage
+Kruskal and Prim algorithms
+Insertion Sort, Bubble Sort
+Process Termination
+POSIX Threads
+Implementation of Processes
+The Floyd-Warshall algorithm
+Heapsort
+Formulating problems as linear programs
+Randomized algorithms
+Bellman-Ford algorithm
+Processes
+Sorting
+Policy search. Reinforce. POMPDPs
+Master method solving recurrences
+All pairs shortest paths
+Flow networks
+Dynamic Programming
+Huffman codes
+Shortest paths and matrix multiplication
+The Classical Thread Model
+Longest common subsequence
+Practial ML
+Deep Learning
+Merge Sort, Quick Sort
+Logistic Regression
+Process Creation
+Analysis of Algorithms
+Activity selection problem
+Maximum Flow
+Maintaining heap property
+Strassen's matrix multiplication
+Growing a minimum spanning tree
+Basic feasible solution
+Forward/Backward propagation
+Substitution method solving recurrences
+Bias/variance tradeoff
+Linear Algebra
+Vectorization
+Convex Optimization
+Depth-first search DFS
+Dijkstra's algorithm
+Generative Learning Algorithms
+Adversarial Machine Learning
+Rod cutting
+Divide and Conquer
+Online Learning and the Perceptron Algorithm
+Algorithmic Complexity
+Naive Bayes
+Medians and Order Statistics
+Basics of dynamic multithreading
+ICA (Indpeendent components analysis
+EM. Mixture of Gaussians
+Elements of dynamic programming
+Heapsort algorithm
+Machine Learning
+Regularization and Model Selection
+Greedy Algorithms
+Implementing Threads in User Space
+Supervised Learning
+Operating Systems

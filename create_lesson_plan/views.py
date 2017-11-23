@@ -140,7 +140,7 @@ Starts a subprocess that runs the sent2Vec c++ implementation.
 TODO: A gensim wrapper.
 '''
 def start_subprocess_sent2vec(request):
-    c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/visited_queries.txt"
+    c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/kg_nodes.txt"
 
     process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
     time.sleep(3)
@@ -158,8 +158,9 @@ GQF which in turn returns related queries.
 '''
 def get_queries_knowledge_graph(request, query):
     gqf = GraphQueryFormulator()
-    query_node = get_relevant_queries_sent2vec(request, query)[1].replace("\n", "").strip()
-    queries = gqf.get_queries(query, query_node)
+    query_node = get_relevant_queries_sent2vec(request, query)[0].replace("\n", "").strip()
+    print(query_node)
+    queries = gqf.get_queries(query, 'Graph Theory')
     return queries
 
 '''
@@ -171,7 +172,7 @@ def run_topic_search(request, duplicate_dict, query_set, type1, input_title, inp
 
     queries = get_queries_knowledge_graph(request, query_set[0])
 
-    es_links = get_index_results(input_title, query_set)
+    es_links = get_index_results(input_title, queries)
 
     valid_result, duplicate_dict, new_link_list = \
         generateDictAndLinksList(es_links, duplicate_dict, new_link_list)

@@ -49,7 +49,7 @@ class ElasticsearchOfflineDocuments():
                 q_edu_pdf = Q("wildcard", link="*.pdf*")
                 q_random = ~q_wiki & ~q_edu
 
-                query_types= [(q_wiki, 2), (q_edu, 3),(q_edu_pdf, 10), (q_random, 2)]
+                query_types= [(q_wiki, 4), (q_edu, 5), (q_random, 5)]
                 for each_type in query_types:
                     query = lesson_outline_q & each_type[0]
                     #res = s.query(query)[:each_type[1]]
