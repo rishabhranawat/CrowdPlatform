@@ -200,15 +200,17 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 def get_relevant_queries(request, query):
     process = request.session.get('process')
     mutex = request.session.get('mutex')
+
+    print(process, mutex)
     with mutex:
         print('here!', query)
-    process.stdin.write(query)
+        process.stdin.write(query+"\n")
         time.sleep(0.5)
         l = []
         for i in range(0, 10, 1):
-        print('here', i, process.stdout.readline())     
-        #l.append(process.stdout.readline())
-        print(l)
+             print('here', i, process.stdout.readline())     
+             #l.append(process.stdout.readline())
+             print(l)
     return l
 
 def get_index_results(input_title, lesson_outline):
@@ -284,6 +286,8 @@ class GenerateLessonPlan(View):
 
         request.session['process'] = process
         request.session['mutex'] = mutex
+        
+        #get_relevant_queries(request, 'dynamic programming \n')
         return
 
     def get(self, request, *args, **kwargs):
