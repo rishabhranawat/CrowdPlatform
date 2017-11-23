@@ -36,27 +36,28 @@ class ElasticsearchOfflineDocuments():
 
 	def generate_search_urls(self, input_title, lesson_outline, source=""):
 		s = Search(using=client, index="offline_content")
-		
+
+                print(lesson_outline)
 		#input_title_q = self.get_query_input_title(input_title)
 		#link_q = self.get_query_link()
-        lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
+                lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
 
-        results = set()
-        q_wiki = Q("wildcard", link="*wikipedia*")
-        q_edu = Q("wildcard", link="*\.edu*")
-        q_must = Q("wildcard", content="*"+lesson_outline[0].replace(" ", "\ ")+"*")
-        q_edu_pdf = Q("wildcard", link="*.pdf*")
-        q_random = ~q_wiki & ~q_edu
+                results = set()
+                q_wiki = Q("wildcard", link="*wikipedia*")
+                q_edu = Q("wildcard", link="*\.edu*")
+                q_must = Q("wildcard", content="*"+lesson_outline[0].replace(" ", "\ ")+"*")
+                q_edu_pdf = Q("wildcard", link="*.pdf*")
+                q_random = ~q_wiki & ~q_edu
 
-        query_types= [(q_wiki, 2), (q_edu, 3),(q_edu_pdf, 10), (q_random, 2)]
-        for each_type in query_types:
-            query = lesson_outline_q & each_type[0]
-            #res = s.query(query)[:each_type[1]]
-            res = s.query(query)[:each_type[1]]
-            hits = res.execute()
-            results |= self.get_required_links(hits)
+                query_types= [(q_wiki, 2), (q_edu, 3),(q_edu_pdf, 10), (q_random, 2)]
+                for each_type in query_types:
+                    query = lesson_outline_q & each_type[0]
+                    #res = s.query(query)[:each_type[1]]
+                    res = s.query(query)[:each_type[1]]
+                    hits = res.execute()
+                    results |= self.get_required_links(hits)
 
-        return results
+                return results
 
 	def get_graph_based_queries(self, query):
 		queries = self.gqf.get_queries(query)

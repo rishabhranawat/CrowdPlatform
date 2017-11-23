@@ -105,6 +105,7 @@ Quries es using the search_elastic module.
 def get_index_results(input_title, lesson_outline):
     es = ElasticsearchOfflineDocuments()
     hits = es.generate_search_urls(input_title, lesson_outline)
+    links = []
     for hit in hits:
         link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}
         links.append(link_dets)
@@ -120,12 +121,17 @@ def get_relevant_queries_sent2vec(request, query):
     mutex = request.session.get('mutex')
 
     with mutex:
-        process.stdin.write(query)
+        print(query)
+        process.stdin.write(query+" \n")
         time.sleep(0.5)
+        print('here~')
         l = []
         for i in range(0, 10, 1):
-            val = "".join(process.stdout.readline().split(" ")[2:])
-            l.append(val)
+            print('here', i)
+            val = " ".join(process.stdout.readline().split(" ")[2:])
+            if(len(val) > 1 and val != " "):
+                print(val)
+                l.append(val)
         return l
 
 
@@ -152,7 +158,7 @@ GQF which in turn returns related queries.
 '''
 def get_queries_knowledge_graph(request, query):
     gqf = GraphQueryFormulator()
-    query_node = get_relevant_queries_sent2vec(request, query)[0]
+    query_node = get_relevant_queries_sent2vec(request, query)[1].replace("\n", "").strip()
     queries = gqf.get_queries(query, query_node)
     return queries
 
@@ -223,7 +229,8 @@ class GenerateLessonPlan(View):
             
             dups = {}
             outputs = run_topic_search(request, dups, query_set, 1, input_title, input_grade)
-            
+            request.session['process'] = ''
+            request.session['mutex'] = ''
             engage_urls = []
             engage_urls_length = []
             dups = outputs['dups']
@@ -237,7 +244,11 @@ class GenerateLessonPlan(View):
                 print(url.url)
             
             # for evalaute phase, run query set (explain type1 = 3)
-            outputs = run_topic_search(request, dups, query_set, 2, input_title, input_grade)
+            
+            #outputs = run_topic_search(request, dups, query_set, 2, input_title, input_grade)
+            lesson_pk = l.pk
+            return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
+
             evaluate_urls = []
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])

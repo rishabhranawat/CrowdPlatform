@@ -6,19 +6,19 @@ import nltk
 
 class GraphQueryFormulator:
 	def __init__(self):
-		self.kg = nx.read_gpickle("create_lesson_plan/graph_query/graphs/algorithms.gpickle")
+		self.kg = nx.read_gpickle("create_lesson_plan/graph_query/graphs/knowledge_graph.gpickle")
 
-    '''
-    To interface with the module
-    '''
+        '''
+        To interface with the module
+        '''
 	def get_queries(self, query, label):
 		return self.query_formulator(query, label)	
 		
 	'''
-    Closest edit distance.
-    args - query (str)
-    TODO: Sent2Vec
-    '''
+        Closest edit distance.
+        args - query (str)
+        TODO: Sent2Vec
+        '''
 	def get_closest_distance_node(self, query):
 	    nodes = self.kg.nodes()
 	    mi, val = None, None
@@ -32,11 +32,11 @@ class GraphQueryFormulator:
 		    return node
 	    return val
 
-    '''
-    Returns the node with the minimum edit distance.
-    args - query (str)
-    returns - label of closest node (str), closest node (nx.node)
-    '''
+        '''
+        Returns the node with the minimum edit distance.
+        args - query (str)
+        returns - label of closest node (str), closest node (nx.node)
+        '''
 	def get_closest_node(self, query):
 	    if(query in self.kg.nodes()): 
 		return query, self.kg.node[query]
@@ -58,12 +58,12 @@ class GraphQueryFormulator:
 			pass
 
 
-    '''
-    Returns a list of queries depending on the type of the
-    node closest to the query.
-    args - query(str)
-    returns [] of str
-    '''
+        '''
+        Returns a list of queries depending on the type of the
+        node closest to the query.
+        args - query(str)
+        returns [] of str
+        '''
 	def query_formulator(self, query, label):
 	    queries = []
 	    node_label, node = label, self.kg.node[label]

@@ -1,3 +1,4 @@
+import networkx as nx
 kg = nx.DiGraph()
 
 # Subject and Course nodes
@@ -253,5 +254,6 @@ kg.add_node("Q-learning. Value function approximation", NodeType="ConceptNode")
 kg.add_node("Policy search. Reinforce. POMPDPs", NodeType="ConceptNode")
 kg.add_node("Adversarial Machine Learning", NodeType="ConceptNode")
 
-nx.write_gpickle(kg, "knowledge_graph.gpickle")
+#nx.write_gpickle(kg, "knowledge_graph.gpickle")
 #nx.write_gpickle(kg,"graphs/algorithms.gpickle")
+nx.write_gpickle(kg, "graphs/knowledge_graph.gpickle")
