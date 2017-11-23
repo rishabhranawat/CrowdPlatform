@@ -29,7 +29,7 @@ from create_lesson_plan.forms import *
 from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 
 from create_lesson_plan.pyms_cog import bing_search 
-import sentnn
+#import sentnn
 
 # list of subjects
 subjects = ['Computer Science']
@@ -44,6 +44,18 @@ filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog',\
 types = ['Document', 'Image']
 # list of universities
 universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
+
+
+def get_relevant_queries(query, process, mutex):
+    with mutex:
+        print('here', query)
+        process.stdin.write(query)
+        time.sleep(0.5)
+        l = []
+        for i in range(0, 10, 1):
+            print('here', i, process.stdout.readline())
+        print(l)
+        return l
 
 class Links(object):
 
@@ -201,7 +213,7 @@ process.stdout.readline()
 mutex = Lock()
 def get_index_results(input_title, lesson_outline):
     es = ElasticsearchOfflineDocuments()
-    print(sentnn.get_relevant_queries(input_title, process, mutex))
+    print(get_relevant_queries(input_title, process, mutex))
     #hits = es.generate_search_urls(input_title, lesson_outline)
     #print(sentnn.get_relevant_queries(input_title))
 #    links = []
