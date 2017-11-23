@@ -6,6 +6,8 @@ from multiprocessing import Pool
 from multiprocessing import Process
 from multiprocessing import Manager
 from multiprocessing import Queue
+from multiprocessing import Lock
+from subprocess import Popen, PIPE
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -27,11 +29,8 @@ from create_lesson_plan.models import FITB, Engage_Images, Explain_Images
 from create_lesson_plan.models import Evaluate_Images, Document, Image
 from create_lesson_plan.forms import *
 from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
-
 from create_lesson_plan.pyms_cog import bing_search 
-from subprocess import Popen, PIPE
-from multiprocessing import Lock
-
+from create_lesson_plan.graph_query.query_formulator_poc import GraphQueryFormulator
 
 
 # list of subjects
@@ -49,9 +48,7 @@ types = ['Document', 'Image']
 universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
 
 
-
 class Links(object):
-
     def __init__(self, url, display_url, desc, value, title):
         self.url = url
         self.desc = desc
@@ -60,8 +57,6 @@ class Links(object):
         self.display_url = display_url
 
 # determine if a search result is to be filtered, just based on its URL
-
-
 def isToBeFiltered(url, description, title):
     for temp in filters:
         if temp in url.lower() or temp in description.lower()\
@@ -70,8 +65,6 @@ def isToBeFiltered(url, description, title):
     return False
 
 # determine wether URL contains specific keywords
-
-
 def contains(url, course_list, input_bullets, input_title, subject_list):
     for course_sub in course_list:
         if (course_sub in url.url) or (course_sub in url.desc):
@@ -86,95 +79,6 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
         return True
     return False
 
-# ===============================================================================
-# FUNCTIONS FOR TRANSLATING USER KEYWORDS INTO SEARCH QUERIES AND FETCHING RESULTS
-# ================================================================================
-# create search query based on type1 and type2
-def processed_undergrad(query, type1, type2, bullets, input_title):
-        # engage phase
-    limit=2
-    if type1 == 1:
-        if type2 == 1:
-            query += " "+input_title+" +site:wikipedia.org"
-            if bullets == 3: limit = 2
-            elif bullets == 2: limit = 2
-            else: limit = 2
-
-        elif type2 == 2:
-            query += " "+input_title+" notes site:mit.edu "
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-
-        elif type2 == 3:
-            query += " "+input_title+" notes site:cmu.edu "
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-            
-        elif type2 == 4:
-            query += " "+input_title+" notes site:stanford.edu "
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-
-        elif type2 == 5:
-            query += " "+input_title+" notes site:edu "
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-
-        elif type2 == 6:
-            query += " "+input_title+" applications examples"
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 2
-            else: limit = 3
-    
-    # evaluate phase
-    elif type1 == 2:
-        if type2 == 1:
-            query += " "+input_title+" homeworks site:mit.edu"
-            if bullets == 3: limit = 1
-            if bullets == 2: limit = 1
-            else: limit = 4
-        elif type2 == 2:
-            query += " "+input_title+" homeworks site:cmu.edu"
-
-            if bullets == 3: limit = 1
-            if bullets == 2: limit = 1
-            else: limit = 4
-
-        elif type2 == 3:
-            query += " "+input_title+" homeworks site:stanford.edu"
-            if bullets == 3: limit = 1
-            if bullets == 2: limit = 1
-            else: limit = 4
-
-        if type2 == 4:
-            query += " "+input_title+" homeworks filetype:pdf"
-            if bullets == 3: limit = 2
-            if bullets == 2: limit = 3
-            else: limit = 4
-
-        elif type2 == 5:
-            query += " "+input_title+" midterm+final+practice filetype:pdf"
-            if bullets == 3: limit = 1
-            elif bullets == 2: limit = 1
-            else: limit = 4
-
-    return query, limit
-
-
-def processed(query, type1, type2, bullets, input_title, input_grade):
-    if input_grade == "Undergraduate":
-        return processed_undergrad(query, type1, type2, bullets, input_title)
-
-
-
-def getProcessedQuery(query, type1,unType):
-    if(type1 == 1): query = query.replace("site:edu", universities[unType])
-    elif(type1 == 2): query = query+(" "+universities[unType])
-    return query
 
 def generateDictAndLinksList(results, duplicate_dict, new_link_list):
     valid_result = []
@@ -195,107 +99,102 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 
     return valid_result, duplicate_dict, new_link_list
 
-
-
-def get_relevant_queries(request, query):
-    process = request.session.get('process')
-    mutex = request.session.get('mutex')
-
-    print(process, mutex)
-    with mutex:
-        print('here!', query)
-        process.stdin.write(query+"\n")
-        time.sleep(0.5)
-        l = []
-        for i in range(0, 10, 1):
-             print('here', i, process.stdout.readline())     
-             #l.append(process.stdout.readline())
-             print(l)
-    return l
-
+'''
+Quries es using the search_elastic module.
+'''
 def get_index_results(input_title, lesson_outline):
     es = ElasticsearchOfflineDocuments()
-    #hits = es.generate_search_urls(input_title, lesson_outline)
-    #print(sentnn.get_relevant_queries(input_title))
-#    links = []
-#    for hit in hits:
-#        if(hit.meta.score > 20):
-#            print(hit.attachment)
-#            link_dets = {'Url': hit.link, 'display_url': hit.link, 'Description': '',
-#            'title': hit.link}
-#            links.append(link_dets)
-#    return links
-    links = []
+    hits = es.generate_search_urls(input_title, lesson_outline)
     for hit in hits:
         link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}
         links.append(link_dets)
     return links
 
+'''
+Uses the running subprocess to stdin and read stdout.
+TODO: Wrap start_subprocess_sent2vec and get_sent2vec_relevant_queries
+into a sentnn module.
+'''
+def get_relevant_queries_sent2vec(request, query):
+    process = request.session.get('process')
+    mutex = request.session.get('mutex')
 
+    with mutex:
+        process.stdin.write(query)
+        time.sleep(0.5)
+        l = []
+        for i in range(0, 10, 1):
+            val = "".join(process.stdout.readline().split(" ")[2:])
+            l.append(val)
+        return l
+
+
+'''
+Starts a subprocess that runs the sent2Vec c++ implementation.
+TODO: A gensim wrapper.
+'''
+def start_subprocess_sent2vec(request):
+    c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/visited_queries.txt"
+
+    process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
+    time.sleep(3)
+
+    process.stdout.readline()
+    mutex = Lock()
+
+    request.session['process'] = process
+    request.session['mutex'] = mutex
+    return True
+
+'''
+Gets the closest node label and passes it to 
+GQF which in turn returns related queries.
+'''
+def get_queries_knowledge_graph(request, query):
+    gqf = GraphQueryFormulator()
+    query_node = get_relevant_queries_sent2vec(request, query)[0]
+    queries = gqf.get_queries(query, query_node)
+    return queries
+
+'''
+Runs Topic wise search.
+Flow: input -> get closest node -> generate contextual queries graph -> es
+'''
 def run_topic_search(request, duplicate_dict, query_set, type1, input_title, input_grade):
-    print(get_relevant_queries(request, input_title))
     new_link_list = []
+
+    queries = get_queries_knowledge_graph(request, query_set[0])
 
     es_links = get_index_results(input_title, query_set)
 
     valid_result, duplicate_dict, new_link_list = \
         generateDictAndLinksList(es_links, duplicate_dict, new_link_list)
-   # type2_range = [6, 6]
-   # for query in query_set:
-   #     for type2 in range(1, type2_range[type1 - 1]):
-   #         processed_query, limit = processed(query, type1, type2, \
-   #             len(query_set), input_title, input_grade)
-   #         query2 = query
-   #         results = bing_search(processed_query, limit)
-   #         valid_result, duplicate_dict, new_link_list = \
-   #             generateDictAndLinksList(results, duplicate_dict, new_link_list)
 
     output = {'dups': duplicate_dict, 'links': new_link_list}
-    print(output)
     return output
 
-
-def get_relevant_links(query, results, query_type, output):
-    result_filtered = summsrch.summ_search(query, results, query_type)
-    link_list = []
-    for r in result_filtered:
-        link = Links(r['Url'], each_result['display_url'],r['Description'], r['Value'], r['title'])
-        link_list.append(link)
-    output.put(link_list)
 
 # use this to create a new lesson plan
 def create_lesson_plan(request):
     dropdown_options = {'subjects': subjects, 'grades': grades}
     return render(request, 'form.html', dropdown_options)
 
-# displays the lesson plan created based on web search results using user
-# keywords
+'''
+Responsible for generation of lesson plans -- integrates
+the entire search engine cycle.
 
+TODO: Need to clean up the garbage code from the ancient past.
+'''
 class GenerateLessonPlan(View):
     form = GenerateLessonPlanForm()
 
-
-    def start_subprocess_sent2vec(self, request):
-        c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/visited_queries.txt"
-
-        process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
-        time.sleep(3)
-
-        process.stdout.readline()
-        mutex = Lock()
-
-        request.session['process'] = process
-        request.session['mutex'] = mutex
-        
-        #get_relevant_queries(request, 'dynamic programming \n')
-        return
 
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})
 
     def post(self, request, todo, *args, **kwargs):
         if('process' not in request):
-            self.start_subprocess_sent2vec(request)
+            start_subprocess_sent2vec(request)
 
         if(todo == '1'):
           if 'input_title' in request.POST:
@@ -354,7 +253,6 @@ class GenerateLessonPlan(View):
             return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
           else:
               return HttpResponse('input_title not found')
-
 
 
 # remove an item from the lesson plan
@@ -599,12 +497,6 @@ def search_lp(request):
 
 def save_lesson_plan(request):
     if 'input_title' in request.POST:
-                # print 'yes'
-                # print request.POST['input_title']
-                #l = lesson()
-                #l= request.POST['lesson']
-                # l = lesson.objects.filter(Q(subject= subject,course_name__icontains=course, lesson_title__icontains=title, grade=input_grade))  #user_name==request.user.username and
-                # receive search parameters
         subject_name = request.POST['subject']
         course_name = request.POST['course_name']
         input_title = request.POST['input_title']
@@ -615,16 +507,7 @@ def save_lesson_plan(request):
         input_grade = request.POST['grade']
         input_bullets = request.POST['bullets']
         user_name = request.POST['user_name']
-        # print user_name
-        # print 'hello'
-        # print request.user.username
-        # exist = False
-        # l_list = lesson.objects.filter(Q(user_name=request.user.username, subject=subject_name,
-        #                                  course_name__icontains=course_name, 
-        #                                  lesson_title__icontains=input_title, 
-        #                                  grade=input_grade))
-        #l_list_exist = lesson.objects.filter(Q(user_name = user_name, subject= subject_name,course_name__icontains=course_name, lesson_title__icontains=input_title, grade=input_grade))
-    # Create new lesson object
+        # Create new lesson object
         print(input_bullets)
         l = lesson(user_name=request.user.username, subject=subject_name, course_name=course_name,
                    lesson_title=input_title, grade=input_grade, bullets=input_bullets)
@@ -652,12 +535,7 @@ def save_lesson_plan(request):
                 e = Image.objects.filter(lesson_fk=l)
                 if len(e) > 0:
                     e.delete()
-            # engage_urls_exist.extend(Engage_Urls.objects.filter(lesson_fk=l))
-            # explain_urls_exist.extend(Explain_Urls.objects.filter(lesson_fk=l))
-            # evaluate_urls_exist.extend(Evaluate_Urls.objects.filter(lesson_fk=l))
         else:
-            # print 'length not > 0'
-            #l = lesson(user_name = request.user.username, subject=subject_name,course_name = course_name, lesson_title = input_title, grade = input_grade, bullets = input_bullets)
             l.save()
 
     else:
@@ -675,8 +553,7 @@ def save_lesson_plan(request):
         while (True):
 
             item = "engageurl_" + str(i)
-            # print item
-            # print request.POST[item]
+
         # try:
             if request.POST[item] != "none":
                 itemdesc = "engagedesc_" + str(i)
