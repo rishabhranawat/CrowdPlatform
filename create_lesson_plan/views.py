@@ -29,7 +29,10 @@ from create_lesson_plan.forms import *
 from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 
 from create_lesson_plan.pyms_cog import bing_search 
-#import sentnn
+from subprocess import Popen, PIPE
+from multiprocessing import Lock
+
+
 
 # list of subjects
 subjects = ['Computer Science']
@@ -46,16 +49,6 @@ types = ['Document', 'Image']
 universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
 
 
-def get_relevant_queries(query, process, mutex):
-    with mutex:
-        print('here', query)
-        process.stdin.write(query)
-        time.sleep(0.5)
-        l = []
-        for i in range(0, 10, 1):
-            print('here', i, process.stdout.readline())
-        print(l)
-        return l
 
 class Links(object):
 
@@ -202,18 +195,24 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 
     return valid_result, duplicate_dict, new_link_list
 
-from subprocess import Popen, PIPE
-from multiprocessing import Lock
-c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/visited_queries.txt"
 
-process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
-time.sleep(3)
 
-process.stdout.readline()
-mutex = Lock()
+def get_relevant_queries(request, query):
+    process = request.session.get('process')
+    mutex = request.session.get('mutex')
+    with mutex:
+        print('here!', query)
+    process.stdin.write(query)
+        time.sleep(0.5)
+        l = []
+        for i in range(0, 10, 1):
+        print('here', i, process.stdout.readline())     
+        #l.append(process.stdout.readline())
+        print(l)
+    return l
+
 def get_index_results(input_title, lesson_outline):
     es = ElasticsearchOfflineDocuments()
-    print(get_relevant_queries(input_title, process, mutex))
     #hits = es.generate_search_urls(input_title, lesson_outline)
     #print(sentnn.get_relevant_queries(input_title))
 #    links = []
@@ -231,8 +230,8 @@ def get_index_results(input_title, lesson_outline):
     return links
 
 
-def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade):
-    
+def run_topic_search(request, duplicate_dict, query_set, type1, input_title, input_grade):
+    print(get_relevant_queries(request, input_title))
     new_link_list = []
 
     es_links = get_index_results(input_title, query_set)
@@ -273,10 +272,27 @@ def create_lesson_plan(request):
 class GenerateLessonPlan(View):
     form = GenerateLessonPlanForm()
 
+
+    def start_subprocess_sent2vec(self, request):
+        c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/visited_queries.txt"
+
+        process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
+        time.sleep(3)
+
+        process.stdout.readline()
+        mutex = Lock()
+
+        request.session['process'] = process
+        request.session['mutex'] = mutex
+        return
+
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})
 
     def post(self, request, todo, *args, **kwargs):
+        if('process' not in request):
+            self.start_subprocess_sent2vec(request)
+
         if(todo == '1'):
           if 'input_title' in request.POST:
             subject_name = request.POST['subject_name']
@@ -303,7 +319,7 @@ class GenerateLessonPlan(View):
                 query_set.append(bullet)
             
             dups = {}
-            outputs = run_topic_search(dups, query_set, 1, input_title, input_grade)
+            outputs = run_topic_search(request, dups, query_set, 1, input_title, input_grade)
             
             engage_urls = []
             engage_urls_length = []
@@ -318,7 +334,7 @@ class GenerateLessonPlan(View):
                 print(url.url)
             
             # for evalaute phase, run query set (explain type1 = 3)
-            outputs = run_topic_search(dups, query_set, 2, input_title, input_grade)
+            outputs = run_topic_search(request, dups, query_set, 2, input_title, input_grade)
             evaluate_urls = []
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])
