@@ -51,7 +51,7 @@ universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
 sent2Vec_process_key = 'sent2Vec_process'
 sent2Vec_mutex_key = 'sent2Vec_mutex'
 
-
+collective_cache = {sent2Vec_process_key:None}
 class Links(object):
     def __init__(self, url, display_url, desc, value, title):
         self.url = url
@@ -122,7 +122,7 @@ into a sentnn module.
 '''
 def get_relevant_queries_sent2vec(query):
     process = cache.get(sent2Vec_process_key)
-    mutex = cache.get(sent2Vec_mutex_key)
+    mutex = Lock()
 
     with mutex:
         process.stdin.write(query+" \n")
@@ -140,7 +140,7 @@ def get_relevant_queries_sent2vec(query):
 Gets the closest node label and passes it to 
 GQF which in turn returns related queries.
 '''
-def get_queries_knowledge_graph(request, query):
+def get_queries_knowledge_graph(query):
     gqf = GraphQueryFormulator()
     query_node = get_relevant_queries_sent2vec(query)[0].replace("\n", "").strip()
     queries = gqf.get_queries(query, query_node)
@@ -177,10 +177,9 @@ def start_subprocess_sent2vec():
     time.sleep(3)
 
     process.stdout.readline()
-    mutex = Lock()
 
-    cache.set(sent2Vec_process_key, process)
-    cache.set(sent2Vec_mutex_key, mutex)
+    #cache.set(sent2Vec_process_key, process)
+    sent2
     return True
 
 
