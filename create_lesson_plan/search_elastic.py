@@ -37,7 +37,6 @@ class ElasticsearchOfflineDocuments():
 	def generate_search_urls(self, input_title, lesson_outline, source=""):
 		s = Search(using=client, index="offline_content")
 
-                print(lesson_outline)
 		#input_title_q = self.get_query_input_title(input_title)
 		#link_q = self.get_query_link()
                 lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
