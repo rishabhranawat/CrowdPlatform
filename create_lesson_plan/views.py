@@ -106,9 +106,9 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 '''
 Quries es using the search_elastic module.
 '''
-def get_index_results(input_title, lesson_outline):
+def get_index_results(input_title, lesson_outline, phase):
     es = ElasticsearchOfflineDocuments()
-    hits = es.generate_search_urls(input_title, lesson_outline)
+    hits = es.generate_search_urls(input_title, lesson_outline, phase)
     links = []
     for hit in hits:
         link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}
@@ -138,7 +138,7 @@ def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade)
     else:
         queries = [query_set[0]+" homework", query_set[0]+" final", query_set[0]+" exams", 
                 query_set[0]+" solutions"]
-    es_links = get_index_results(input_title, queries)
+    es_links = get_index_results(input_title, queries, 1)
 
     valid_result, duplicate_dict, new_link_list = \
         generateDictAndLinksList(es_links, duplicate_dict, new_link_list)
