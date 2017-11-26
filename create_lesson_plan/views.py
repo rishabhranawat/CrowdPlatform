@@ -134,11 +134,11 @@ Flow: input -> get closest node -> generate contextual queries graph -> es
 def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade):
     new_link_list = []
     
-    queries = get_queries_knowledge_graph(query_set[0])
-    es_links = get_index_results(input_title, queries, type1)
-
-    valid_result, duplicate_dict, new_link_list = \
-        generateDictAndLinksList(es_links, duplicate_dict, new_link_list)
+    for query in query_set:
+        queries = get_queries_knowledge_graph(query)
+        es_links = get_index_results(input_title, queries, type1)
+        valid_result, duplicate_dict, new_link_list = \
+            generateDictAndLinksList(es_links, duplicate_dict, new_link_list)
     output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
 
