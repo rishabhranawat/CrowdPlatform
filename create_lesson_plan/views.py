@@ -21,6 +21,7 @@ from django.views import View
 from django.views.generic.edit import FormView
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.core.cache import cache
 
 
 from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls
@@ -46,6 +47,9 @@ filters = ['blogspot', 'syllabus', 'curriculum', 'syllabi', 'catalog',\
 types = ['Document', 'Image']
 # list of universities
 universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
+
+sent2Vec_process_key = 'sent2Vec_process'
+sent2Vec_mutex_key = 'sent2Vec_mutex'
 
 
 class Links(object):
@@ -116,41 +120,21 @@ Uses the running subprocess to stdin and read stdout.
 TODO: Wrap start_subprocess_sent2vec and get_sent2vec_relevant_queries
 into a sentnn module.
 '''
-def get_relevant_queries_sent2vec(request, query):
-    process = request.session.get('process')
-    mutex = request.session.get('mutex')
+def get_relevant_queries_sent2vec(query):
+    process = cache.get(sent2Vec_process_key)
+    mutex = cache.get(sent2Vec_mutex_key)
 
     with mutex:
-        print(query)
         process.stdin.write(query+" \n")
         time.sleep(0.5)
-        print('here~')
         l = []
         for i in range(0, 10, 1):
-            print('here', i)
             val = " ".join(process.stdout.readline().split(" ")[2:])
+            print(val)
             if(len(val) > 1 and val != " "):
                 print(val)
                 l.append(val)
         return l
-
-
-'''
-Starts a subprocess that runs the sent2Vec c++ implementation.
-TODO: A gensim wrapper.
-'''
-def start_subprocess_sent2vec(request):
-    c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/kg_nodes.txt"
-
-    process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
-    time.sleep(3)
-
-    process.stdout.readline()
-    mutex = Lock()
-
-    request.session['process'] = process
-    request.session['mutex'] = mutex
-    return True
 
 '''
 Gets the closest node label and passes it to 
@@ -158,8 +142,7 @@ GQF which in turn returns related queries.
 '''
 def get_queries_knowledge_graph(request, query):
     gqf = GraphQueryFormulator()
-    query_node = get_relevant_queries_sent2vec(request, query)[0].replace("\n", "").strip()
-    print(query_node)
+    query_node = get_relevant_queries_sent2vec(query)[0].replace("\n", "").strip()
     queries = gqf.get_queries(query, query_node)
     return queries
 
@@ -167,16 +150,13 @@ def get_queries_knowledge_graph(request, query):
 Runs Topic wise search.
 Flow: input -> get closest node -> generate contextual queries graph -> es
 '''
-def run_topic_search(request, duplicate_dict, query_set, type1, input_title, input_grade):
+def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade):
     new_link_list = []
-
-    queries = get_queries_knowledge_graph(request, query_set[0])
-    print(queries)
+    queries = get_queries_knowledge_graph(query_set[0])
     es_links = get_index_results(input_title, queries)
 
     valid_result, duplicate_dict, new_link_list = \
         generateDictAndLinksList(es_links, duplicate_dict, new_link_list)
-
     output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
 
@@ -185,6 +165,24 @@ def run_topic_search(request, duplicate_dict, query_set, type1, input_title, inp
 def create_lesson_plan(request):
     dropdown_options = {'subjects': subjects, 'grades': grades}
     return render(request, 'form.html', dropdown_options)
+
+'''
+Starts a subprocess that runs the sent2Vec c++ implementation.
+TODO: A gensim wrapper.
+'''
+def start_subprocess_sent2vec():
+    c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/kg_nodes.txt"
+
+    process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
+    time.sleep(3)
+
+    process.stdout.readline()
+    mutex = Lock()
+
+    cache.set(sent2Vec_process_key, process)
+    cache.set(sent2Vec_mutex_key, mutex)
+    return True
+
 
 '''
 Responsible for generation of lesson plans -- integrates
@@ -200,10 +198,8 @@ class GenerateLessonPlan(View):
         return render(request, 'generate.html', {'form':self.form})
 
     def post(self, request, todo, *args, **kwargs):
-        if('process' not in request):
-            start_subprocess_sent2vec(request)
-            process = request.session['process']
-            mutex = request.session['mutex']
+        if(cache.get(sent2Vec_process_key) == None):
+            start_subprocess_sent2vec()
 
         if(todo == '1'):
           if 'input_title' in request.POST:
@@ -231,9 +227,8 @@ class GenerateLessonPlan(View):
                 query_set.append(bullet)
             
             dups = {}
-            outputs = run_topic_search(request, dups, query_set, 1, input_title, input_grade)
-            request.session['process'] = ''
-            request.session['mutex'] = ''
+            outputs = run_topic_search(dups, query_set, 1, input_title, input_grade)
+
             engage_urls = []
             engage_urls_length = []
             dups = outputs['dups']
@@ -247,12 +242,7 @@ class GenerateLessonPlan(View):
                 print(url.url)
             
             # for evalaute phase, run query set (explain type1 = 3)
-            request.session['process'] = process
-            request.session['mutex'] = mutex
-            outputs = run_topic_search(request, dups, query_set, 2, input_title, input_grade)
-            lesson_pk = l.pk
-            #return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
-
+            outputs = run_topic_search(dups, query_set, 2, input_title, input_grade)
             evaluate_urls = []
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])
