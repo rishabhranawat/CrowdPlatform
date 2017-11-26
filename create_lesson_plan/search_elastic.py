@@ -9,56 +9,71 @@ class ElasticsearchOfflineDocuments():
 	def __init__(self):
 		self.gqf = GraphQueryFormulator()	
 
-	def get_query_input_title(self, input_title):
-		q_input_title = Q("match", content=input_title)
-		return q_input_title
 
+	'''
+	Must contain at least 1 bullet point as a wildcard
+	in the content.
+	'''
 	def get_query_lesson_outline(self, lesson_outline):
 		q_lesson_outline = []
 		for bullet in lesson_outline:
-                    q_lesson_outline.append(Q("match", content=bullet))
-		q_outlines = Q('bool', should=q_lesson_outline, minimum_should_match=0)
-		return q_outlines		
+                    q_lesson_outline.append(Q("wildcard", 
+                    	content="*"+lesson_outline[0].replace(" ", "\ ")+"*"))
+		q_outlines = Q('bool', should=q_lesson_outline, minimum_should_match=1)
+		return q_outlines
 
-	def get_query_link(self):
-		q_syllabus = ~Q("wildcard", link="*syllabus*")
-                q_wiki = ~Q("wildcard", link="*wikipedia*")
-                q_edu = Q("wildcard", link="*\.pdf*")
-                q_link = q_syllabus & q_wiki & q_edu
-	        
-                return q_link
+
+	def get_query_types(self, phase):
+		if(phase == 1):
+			lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
+			q_wiki = Q("wildcard", link="*wikipedia*")
+			q_edu = Q("wildcard", link="*\.edu")
+			q_edu_pdf = Q("wildcard", link="*\.pdf") & q_edu
+			q_random = ~q_edu & ~q_wiki & ~q_edu_pdf
+			return [(q_wiki, 3), (q_edu, 5), (q_edu_pdf, 3), (q_random, 5)]
+		else:
+			lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
+			q_link_final = Q("wildcard", link="*final*")
+			q_link_midterm = Q("wildcard", link="*final*")
+			q_link_solution = Q("wildcard", link="*final*")
+			q_link_homework = Q("wildcard", link="*final*")
+
+			q_link = (q_link_homework or q_link_midterm 
+			or q_link_solution or q_link_final) and lesson_outline_q
+
+			q_edu = Q("wildcard", link="*\.edu")
+			q_edu_pdf = Q("wildcard", link="*\.pdf") & q_edu
+
+			return [(q_link, 10)]
 	
+	'''
+	Cleaning
+	'''
 	def get_required_links(self, hits):
 		links = []
-		for hit in hits:
+		print(hits[0])
+		for hit in hits and hit.score > 20:
 			if("syllabus" not in str(hit.link)): links.append(hit.link)
 		return set(links)
 
-	def generate_search_urls(self, input_title, lesson_outline, source=""):
+	def generate_search_urls(self, input_title, lesson_outline, source="", phase):
 		s = Search(using=client, index="offline_content")
+		results = set()
+		query_types= self.get_query_types(lesson_outline, phase)
+		for each_type in query_types:
+			query = lesson_outline_q & each_type[0]
+			res = s.query(query)[:each_type[1]]
+			hits = res.execute()
+			results |= self.get_required_links(hits)
+		return results
 
-		#input_title_q = self.get_query_input_title(input_title)
-		#link_q = self.get_query_link()
-                lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
+# def get_graph_based_queries(self, query):
+# 	queries = self.gqf.get_queries(query)
+#                if(len(queries) == 0): return [query]
+#                else: return queries
+# q_wiki = Q("wildcard", link="*wikipedia*")
+# q_edu = Q("wildcard", link="*\.edu*")
+# q_must = Q("wildcard", content="*"+lesson_outline[0].replace(" ", "\ ")+"*")
+# q_edu_pdf = Q("wildcard", link="*.pdf*")
 
-                results = set()
-                q_wiki = Q("wildcard", link="*wikipedia*")
-                q_edu = Q("wildcard", link="*\.edu*")
-                q_must = Q("wildcard", content="*"+lesson_outline[0].replace(" ", "\ ")+"*")
-                q_edu_pdf = Q("wildcard", link="*.pdf*")
-                q_random = ~q_wiki & ~q_edu
 
-                query_types= [(q_wiki, 4), (q_edu, 5), (q_random, 5)]
-                for each_type in query_types:
-                    query = lesson_outline_q & each_type[0]
-                    #res = s.query(query)[:each_type[1]]
-                    res = s.query(query)[:each_type[1]]
-                    hits = res.execute()
-                    results |= self.get_required_links(hits)
-
-                return results
-
-	def get_graph_based_queries(self, query):
-		queries = self.gqf.get_queries(query)
-                if(len(queries) == 0): return [query]
-                else: return queries
