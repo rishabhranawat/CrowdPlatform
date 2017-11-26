@@ -115,26 +115,7 @@ def get_index_results(input_title, lesson_outline):
         links.append(link_dets)
     return links
 
-'''
-Uses the running subprocess to stdin and read stdout.
-TODO: Wrap start_subprocess_sent2vec and get_sent2vec_relevant_queries
-into a sentnn module.
-'''
-def get_relevant_queries_sent2vec(query):
-    process = cache.get(sent2Vec_process_key)
-    mutex = Lock()
 
-    with mutex:
-        process.stdin.write(query+" \n")
-        time.sleep(0.5)
-        l = []
-        for i in range(0, 10, 1):
-            val = " ".join(process.stdout.readline().split(" ")[2:])
-            print(val)
-            if(len(val) > 1 and val != " "):
-                print(val)
-                l.append(val)
-        return l
 
 '''
 Gets the closest node label and passes it to 
@@ -167,6 +148,27 @@ def create_lesson_plan(request):
     return render(request, 'form.html', dropdown_options)
 
 '''
+Uses the running subprocess to stdin and read stdout.
+TODO: Wrap start_subprocess_sent2vec and get_sent2vec_relevant_queries
+into a sentnn module.
+'''
+def get_relevant_queries_sent2vec(query):
+    process = collective_cache[sent2Vec_process_key]
+    mutex = collective_cache[sent2Vec_mutex_key]
+
+    with mutex:
+        process.stdin.write(query+" \n")
+        time.sleep(0.5)
+        l = []
+        for i in range(0, 10, 1):
+            val = " ".join(process.stdout.readline().split(" ")[2:])
+            print(val)
+            if(len(val) > 1 and val != " "):
+                print(val)
+                l.append(val)
+        return l
+
+'''
 Starts a subprocess that runs the sent2Vec c++ implementation.
 TODO: A gensim wrapper.
 '''
@@ -179,7 +181,8 @@ def start_subprocess_sent2vec():
     process.stdout.readline()
 
     #cache.set(sent2Vec_process_key, process)
-    sent2
+    collective_cache[sent2Vec_process_key] = process
+    collective_cache[sent2Vec_mutex_key] = Lock()
     return True
 
 
@@ -197,7 +200,7 @@ class GenerateLessonPlan(View):
         return render(request, 'generate.html', {'form':self.form})
 
     def post(self, request, todo, *args, **kwargs):
-        if(cache.get(sent2Vec_process_key) == None):
+        if(collective_cache[sent2Vec_process_key] == None):
             start_subprocess_sent2vec()
 
         if(todo == '1'):
