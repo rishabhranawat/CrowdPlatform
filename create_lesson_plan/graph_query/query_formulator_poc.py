@@ -67,7 +67,7 @@ class GraphQueryFormulator:
 	    #node_label, node = label, self.kg.node[label]
             print(label)
 	    children_neighbours = self.get_queries_based_on_node(label)
-	    print(children_neighbours)
+	    queries = [label]
             for child in children_neighbours:
 			queries.append(label+" "+child)
             print(queries)

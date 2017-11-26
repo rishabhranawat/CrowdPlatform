@@ -160,7 +160,7 @@ def get_queries_knowledge_graph(request, query):
     gqf = GraphQueryFormulator()
     query_node = get_relevant_queries_sent2vec(request, query)[0].replace("\n", "").strip()
     print(query_node)
-    queries = gqf.get_queries(query, 'Graph Theory')
+    queries = gqf.get_queries(query, query_node)
     return queries
 
 '''
@@ -171,7 +171,7 @@ def run_topic_search(request, duplicate_dict, query_set, type1, input_title, inp
     new_link_list = []
 
     queries = get_queries_knowledge_graph(request, query_set[0])
-
+    print(queries)
     es_links = get_index_results(input_title, queries)
 
     valid_result, duplicate_dict, new_link_list = \
@@ -202,6 +202,8 @@ class GenerateLessonPlan(View):
     def post(self, request, todo, *args, **kwargs):
         if('process' not in request):
             start_subprocess_sent2vec(request)
+            process = request.session['process']
+            mutex = request.session['mutex']
 
         if(todo == '1'):
           if 'input_title' in request.POST:
@@ -245,10 +247,11 @@ class GenerateLessonPlan(View):
                 print(url.url)
             
             # for evalaute phase, run query set (explain type1 = 3)
-            
-            #outputs = run_topic_search(request, dups, query_set, 2, input_title, input_grade)
+            request.session['process'] = process
+            request.session['mutex'] = mutex
+            outputs = run_topic_search(request, dups, query_set, 2, input_title, input_grade)
             lesson_pk = l.pk
-            return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
+            #return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
 
             evaluate_urls = []
             dups = outputs['dups']
