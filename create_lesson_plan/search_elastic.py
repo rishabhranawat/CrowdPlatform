@@ -41,9 +41,17 @@ class ElasticsearchOfflineDocuments():
                     q_link_hw = Q("wildcard", link="*hw*")
                     q_link_h = Q("wildcard", link="*homework*")
 
+                    q_content_h = Q("wildcard", content="*homework*")
+                    q_content_f = Q("wildcard", content="*final*")
+                    q_content_s = Q("wildcard", content="*solution*")
+                    q_content_e = Q("wildcard", content="*exam*")
+                    
                     q_link = q_link_m or q_link_e or q_link_f or q_link_s \
                             or q_link_hw or q_link_h
-                    return [(q_link, 20)]
+                    
+                    q_content = q_content_h or q_content_f or q_content_s \
+                            or q_content_e
+                    return [(q_link, 20), (q_content, 10)]
 
 	def generate_search_urls(self, input_title, lesson_outline, phase=1, source=""):
 		s = Search(using=client, index="offline_content")
