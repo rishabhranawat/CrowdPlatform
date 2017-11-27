@@ -30,7 +30,7 @@ class ElasticsearchOfflineDocuments():
                     q_edu_pdf = Q("wildcard", link="*.pdf*")
                     q_random = ~q_wiki & ~q_edu
 
-                    query_types= [(q_wiki, 4), (q_edu, 5), (q_random, 5)]
+                    query_types= [(q_wiki, 10), (q_edu, 10), (q_random, 10)]
                     return query_types
                 else:
                     print('here1')

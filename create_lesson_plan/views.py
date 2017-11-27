@@ -160,7 +160,7 @@ into a sentnn module.
 def get_relevant_queries_sent2vec(query):
     process = collective_cache[sent2Vec_process_key]
     mutex = collective_cache[sent2Vec_mutex_key]
-
+    query = query.title()
     with mutex:
         process.stdin.write(query+"\n")
         time.sleep(0.5)
