@@ -5,24 +5,26 @@ Introduction to Algorithms
 Duality
 Computer Science
 Minimum and Maximum
+Mixture of Gaussians
 Factor Analysis
+Bellman equations
 Hiring problem
-NN architecture
 Multithreaded Matrix Multiplication
 Maximum subarray
+Reinforcment Learning
 single source shortest path in directed acyclic graphs
 Model selection and feature selection
 Breadth-first search BFS
-Big Oh Notation
+Value function approximation
 Recursion-tree method solving recurrences
 Perceptron
-Clustering. K-means.
 Linear quadratic regulation
 Reinforcement Learning
-Q-learning. Value function approximation
+Q-learning
 Process States
 Support Vector Machines
 Representations of graphs
+Big Oh Notation
 Probablistic Analysis and Randomized Algorithms
 Johnson's algorithm for sparse graphs
 The Ford Fulkerson method
@@ -35,12 +37,12 @@ Value iteration and policy iteration
 Unsupervised Learning
 Linear Programming
 Gaussian Discriminant Analysis
+Optimization
 Priority queues
 Heaps
 Topological Sort
 Single source shortest paths
 Maximum bipartite matching
-MDPs. Bellman equations
 Minimum Spanning Trees
 Simplex algorithm
 Graph Theory
@@ -50,25 +52,28 @@ Kruskal and Prim algorithms
 Insertion Sort, Bubble Sort
 Process Termination
 POSIX Threads
+Practical ML
 Implementation of Processes
 The Floyd-Warshall algorithm
 Heapsort
+Markov Decision Processes
 Formulating problems as linear programs
 Randomized algorithms
 Bellman-Ford algorithm
 Processes
 Sorting
-Policy search. Reinforce. POMPDPs
 Master method solving recurrences
 All pairs shortest paths
 Flow networks
 Dynamic Programming
 Huffman codes
+Policy search
 Shortest paths and matrix multiplication
 The Classical Thread Model
 Longest common subsequence
 Practial ML
 Deep Learning
+Expectation Maximization
 Merge Sort, Quick Sort
 Logistic Regression
 Process Creation
@@ -82,27 +87,32 @@ Basic feasible solution
 Forward/Backward propagation
 Substitution method solving recurrences
 Bias/variance tradeoff
+Expecation Maximization
 Linear Algebra
 Vectorization
 Convex Optimization
 Depth-first search DFS
 Dijkstra's algorithm
 Generative Learning Algorithms
+Opearting Systems
 Adversarial Machine Learning
 Rod cutting
 Divide and Conquer
 Online Learning and the Perceptron Algorithm
 Algorithmic Complexity
 Naive Bayes
+K-means clustering
 Medians and Order Statistics
 Basics of dynamic multithreading
+ICA (Independent components analysis)
 ICA (Indpeendent components analysis
-EM. Mixture of Gaussians
 Elements of dynamic programming
+Neural Network architecture
 Heapsort algorithm
 Machine Learning
 Regularization and Model Selection
 Greedy Algorithms
 Implementing Threads in User Space
 Supervised Learning
+Genearting Learning Algorithms
 Operating Systems

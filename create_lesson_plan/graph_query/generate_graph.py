@@ -205,6 +205,13 @@ kg.add_node("Process States", NodeType="ConceptNode")
 kg.add_node("Implementation of Processes", NodeType="ConceptNode")
 kg.add_node("Modeling Multiprogramming", NodeType="ConceptNode")
 
+kg.add_edges_from([("Operating Systems", "Processes"),
+    ("Processes", "Process Creation"),
+    ("Processes", "Process Termination"), 
+    ("Processes","Process States"),
+    ("Processes", "Implementation of Processes"),
+    ("Processes", "Modeling Multiprogramming")
+    ])
 
 kg.add_node("Threads", NodeType="TopicNode")
 kg.add_node("Thread usage", NodeType="ConceptNode")
@@ -212,7 +219,14 @@ kg.add_node("The Classical Thread Model", NodeType="ConceptNode")
 kg.add_node("POSIX Threads", NodeType="ConceptNode")
 kg.add_node("Implementing Threads in User Space", NodeType="ConceptNode")
 kg.add_node("Implementing Threads in the Kernel", NodeType="ConceptNode")
-kg.add_node("Computer Science", NodeType = "SubjectNode")
+
+kg.add_edges_from([("Opearting Systems", "Threads"),
+    ("Threads", "Thread usage"),
+    ("Threads", "The Classical Thread Model"),
+    ("Threads", "POSIX Threads"),
+    ("Threads", "Implementing Threads in User Space"),
+    ("Threads", "Implementing Threads in the Kernel")
+    ])
 
 # Machine Learning
 kg.add_node("Machine Learning", NodeType="CourseNode")
@@ -227,6 +241,17 @@ kg.add_node("Gaussian Discriminant Analysis", NodeType="ConceptNode")
 kg.add_node("Naive Bayes", NodeType="ConceptNode")
 kg.add_node("Support Vector Machines", NodeType="ConceptNode")
 kg.add_node("Vectorization", NodeType="ConceptNode")
+        
+kg.add_edges_from([("Machine Learning", "Supervised Learning"),
+    ("Supervised Learning", "Linear Algebra"),
+    ("Supervised Learning", "Logistic Regression"),
+    ("Supervised Learning", "Perceptron"),
+    ("Supervised Learning", "Genearting Learning Algorithms"),
+    ("Supervised Learning", "Gaussian Discriminant Analysis"),
+    ("Supervised Learning", "Naive Bayes"),
+    ("Supervised Learning", "Support Vector Machines"),
+    ("Supervised Learning", "Vectorization")
+    ])
 
 kg.add_node("Practial ML", NodeType="TopicNode")
 kg.add_node("Bias/variance tradeoff", NodeType="ConceptNode")
@@ -235,25 +260,59 @@ kg.add_node("Regularization and Model Selection", NodeType="ConceptNode")
 kg.add_node("Online Learning and the Perceptron Algorithm", NodeType="ConceptNode")
 kg.add_node("Convex Optimization", NodeType="ConceptNode")
 
+kg.add_edges_from([("Machine Learning", "Practical ML"),
+    ("Practical ML", "Bias/variance tradeoff"),
+    ("Practical ML", "Model selection and feature selection"),
+    ("Practical ML", "Regularization and Model Selection"),
+    ("Practical ML", "Online Learning and the Perceptron Algorithm"),
+    ("Practical ML", "Convex Optimization")
+    ])
+
 kg.add_node("Deep Learning", NodeType="TopicNode")
-kg.add_node("NN architecture", NodeType="ConceptNode")
+kg.add_node("Neural Network architecture", NodeType="ConceptNode")
 kg.add_node("Forward/Backward propagation", NodeType="ConceptNode")
 
+kg.add_edges_from([("Machine Learning", "Deep Learning"),
+    ("Deep Learning", "Neural Network architecture"),
+    ("Deep Learning", "Forward/Backward propagation"),
+    ("Deep Learning", "Optimization")
+    ])
+
 kg.add_node("Unsupervised Learning", NodeType="TopicNode")
-kg.add_node("Clustering. K-means.", NodeType="ConceptNode")
-kg.add_node("EM. Mixture of Gaussians", NodeType="ConceptNode")
+kg.add_node("K-means clustering", NodeType="ConceptNode")
+kg.add_node("Mixture of Gaussians", NodeType="ConceptNode")
+kg.add_node("Expecation Maximization", NodeType="ConceptNode")
 kg.add_node("Factor Analysis", NodeType="ConceptNode")
 kg.add_node("PCA (Principal components analysis)", NodeType="ConceptNode")
 kg.add_node("ICA (Indpeendent components analysis", NodeType="ConceptNode")
 
+kg.add_edges_from([("Machine Learning", "Unsupervised Learning"),
+    ("Unsupervised Learning", "K-means clustering"),
+    ("Unsupervised Learning", "Expectation Maximization"),
+    ("Unsupervised Learning", "Mixture of Gaussians"),
+    ("Unsupervised Learning", "Factor Analysis"),
+    ("Unsupervised Learning", "PCA (Principal components analysis)"),
+    ("Unsupervised Learning", "ICA (Independent components analysis)")
+    ])
+
+
 kg.add_node("Reinforcement Learning", NodeType="TopicNode")
-kg.add_node("MDPs. Bellman equations", NodeType="ConceptNode")
+kg.add_node("Markov Decision Processes", NodeType="ConceptNode")
 kg.add_node("Value iteration and policy iteration", NodeType="ConceptNode")
 kg.add_node("Linear quadratic regulation", NodeType="ConceptNode")
-kg.add_node("Q-learning. Value function approximation", NodeType="ConceptNode")
-kg.add_node("Policy search. Reinforce. POMPDPs", NodeType="ConceptNode")
+kg.add_node("Q-learning", NodeType="ConceptNode")
+kg.add_node("Value function approximation", NodeType="ConceptNode")
+kg.add_node("Policy search", NodeType="ConceptNode")
 kg.add_node("Adversarial Machine Learning", NodeType="ConceptNode")
 
-#nx.write_gpickle(kg, "knowledge_graph.gpickle")
-#nx.write_gpickle(kg,"graphs/algorithms.gpickle")
+kg.add_edges_from([("Machine Learning", "Reinforcement Learning"),
+    ("Reinforcement Learning", "Markov Decision Processes"),
+    ("Reinforcement Learning", "Bellman equations"),
+    ("Reinforcment Learning", "Value iteration and policy iteration"),
+    ("Reinforcement Learning", "Q-learning"),
+    ("Reinforcement Learning", "Value function approximation"),
+    ("Reinforcement Learning", "Policy search"), 
+    ("Reinforcement Learning", "Adversarial Machine Learning")
+    ])
+
 nx.write_gpickle(kg, "graphs/knowledge_graph.gpickle")

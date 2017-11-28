@@ -123,7 +123,11 @@ GQF which in turn returns related queries.
 '''
 def get_queries_knowledge_graph(query):
     gqf = GraphQueryFormulator()
-    query_node = get_relevant_queries_sent2vec(query)[0].replace("\n", "").strip()
+    query = query.replace("\n", "")
+    if(not gqf.kg.has_node(query)):
+        query_node = get_relevant_queries_sent2vec(query)[0].replace("\n", "").strip()
+    else:
+        query_node = query
     queries = gqf.get_queries(query, query_node)
     return queries
 
@@ -156,9 +160,9 @@ into a sentnn module.
 def get_relevant_queries_sent2vec(query):
     process = collective_cache[sent2Vec_process_key]
     mutex = collective_cache[sent2Vec_mutex_key]
-
+    query = query.title()
     with mutex:
-        process.stdin.write(query+" \n")
+        process.stdin.write(query+"\n")
         time.sleep(0.5)
         l = []
         for i in range(0, 10, 1):
