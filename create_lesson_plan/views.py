@@ -174,7 +174,7 @@ Starts a subprocess that runs the sent2Vec c++ implementation.
 TODO: A gensim wrapper.
 '''
 def start_subprocess_sent2vec():
-    c = "../ResearchRepos/sent2vec/fasttext nnSent ../ResearchRepos/trainedModels/model_31k.bin seeds_generator/kg_nodes.txt"
+    c = "/home/ec2-user/collective_store_one/researchModels/sent2vec/fasttext nnSent /home/ec2-user/collective_store_one/researchModels/models/model_31k.bin seeds_generator/kg_nodes.txt"
 
     process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
     time.sleep(3)
