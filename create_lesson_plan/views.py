@@ -127,7 +127,7 @@ def get_queries_knowledge_graph(query):
     gqf = GraphQueryFormulator()
     query = query.replace("\n", "")
     if(not gqf.kg.has_node(query)):
-        query_node = get_relevant_queries_sent2vec(query)[0].replace("\n", "").strip()
+        query_node = get_relevant_queries_sent2vec(query).replace("\n", "").strip()
     else:
         query_node = query
     queries = gqf.get_queries(query, query_node)
@@ -163,17 +163,18 @@ def get_relevant_queries_sent2vec(query):
     process = collective_cache[sent2Vec_process_key]
     mutex = collective_cache[sent2Vec_mutex_key]
     query = query.title()
-    print("QUER", query, "\n" in query)
     with mutex:
         process.stdin.write(str(query)+"\n")
         time.sleep(0.5)
         l = []
         for i in range(0, 11, 1):
-            val = " ".join(process.stdout.readline().split(" ")[2:])
-            print(val)
+            dets = process.stdout.readline().split(" ")
+            val = " ".join(dets[2:])
             if(len(val) > 1 and val != " "):
                 print(val)
-                l.append(val)
+                l.append((float(dets[0]), val))
+        if(l[0][0] > 0.7):
+            return l[0]
         return l
 
 '''
