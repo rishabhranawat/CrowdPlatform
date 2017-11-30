@@ -20,17 +20,23 @@ class ElasticsearchOfflineDocuments():
 	def get_required_links(self, hits):
 		links = []
 		for hit in hits:
-			if("syllabus" not in str(hit.link)): links.append(hit.link)
+                        link = str(hit.link)
+			if("syllabus" not in link):
+                            if("wikipedia" in link):
+                                if("edit" not in link): 
+                                    links.append(link) 
+                            else:                             
+                                links.append(hit.link)
 		return set(links)
 
         def get_diversity_links(self, phase):
                 if(phase == 1):
-                    q_wiki = Q("wildcard", link="*wikipedia*")
+                    q_wiki = Q("wildcard", link="*wikipedia*") & ~Q("wildcard", link="*edit*")
                     q_edu = Q("wildcard", link="*\.edu*")
                     q_edu_pdf = Q("wildcard", link="*.pdf*")
                     q_random = ~q_wiki & ~q_edu
 
-                    query_types= [(q_wiki, 10), (q_edu, 10), (q_random, 10)]
+                    query_types= [(q_wiki, 20), (q_edu, 10), (q_random, 10)]
                     return query_types
                 else:
                     print('here1')

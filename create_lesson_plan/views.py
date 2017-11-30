@@ -1,6 +1,8 @@
 import json
 import string
 import time
+import hashlib
+import requests
 
 from multiprocessing import Pool
 from multiprocessing import Process
@@ -161,11 +163,12 @@ def get_relevant_queries_sent2vec(query):
     process = collective_cache[sent2Vec_process_key]
     mutex = collective_cache[sent2Vec_mutex_key]
     query = query.title()
+    print("QUER", query, "\n" in query)
     with mutex:
-        process.stdin.write(query+"\n")
+        process.stdin.write(str(query)+"\n")
         time.sleep(0.5)
         l = []
-        for i in range(0, 10, 1):
+        for i in range(0, 11, 1):
             val = " ".join(process.stdout.readline().split(" ")[2:])
             print(val)
             if(len(val) > 1 and val != " "):
@@ -200,6 +203,38 @@ TODO: Need to clean up the garbage code from the ancient past.
 class GenerateLessonPlan(View):
     form = GenerateLessonPlanForm()
 
+    def remove_url_anchor(self, url):
+        return url[:url.index('#')] if '#' in url else url
+    
+    def clean_anchors(self, links):
+        l = set()
+        f = []
+        for link in links:
+            clean_url = self.remove_url_anchor(link.display_url)
+            if(clean_url not in l):
+                link.display_url = clean_url
+                link.url = clean_url
+                l.add(clean_url)
+                f.append(link)
+        return f
+
+    def detect_dups(self, links):
+        links = self.clean_anchors(links)
+        for each in links:
+            print(each.display_url, each.url)
+
+         
+        hashes = set()
+        l = []
+        for link in links:
+            response = requests.get(link.display_url).content
+            h = hashlib.sha256()
+            h.update(response)
+            hash = h.hexdigest()
+            if(hash not in hashes):
+                hashes.add(hash)
+                l.append(link)
+        return l
 
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})
@@ -240,9 +275,11 @@ class GenerateLessonPlan(View):
             engage_urls_length = []
             dups = outputs['dups']
             item_id = 0
-            for url in outputs['links']:
-                e = Engage_Urls(lesson_fk=l, item_id=item_id, url=url.url,
-                                desc=url.desc, title=url.title, display_url=url.display_url)
+            
+            output_links = self.detect_dups(outputs['links'])
+            for url in output_links:
+                e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
+                                desc=url.desc, title=url.title, display_url=self.remove_url_anchor(url.display_url))
                 e.save()
                 engage_urls.append(e)
                 item_id += 1
