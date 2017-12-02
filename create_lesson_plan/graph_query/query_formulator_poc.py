@@ -6,14 +6,18 @@ import nltk
 
 class GraphQueryFormulator:
 	def __init__(self):
-                self.path = "create_lesson_plan/graph_query/graphs/knowledge_graph.gpickle") 
+                self.path = "create_lesson_plan/graph_query/graphs/knowledge_graph.gpickle" 
 		self.kg = nx.read_gpickle(self.path)
 
         def add_to_kg(self, closest_node_label, query):
             closest_node=self.kg.node[closest_node_label]
             if(closest_node["NodeType"] == "TopicNode"):
-                self.kg.add_node(query, "ConceptNode")
+                self.kg.add_node(query, NodeType="ConceptNode")
                 self.kg.add_edges_from([closest_node_label, query])
+            elif(closest_node["NodeType"] == "ConceptNode"):
+                self.kg.add_node(query, NodeType="ConceptNode")
+                print(list(self.kg.predecessors(closest_node_label))[0])
+                self.kg.add_edges_from([(list(self.kg.predecessors(closest_node_label))[0], query)])
             nx.write_gpickle(self.kg, self.path)
             self.kg = nx.read_gpickle(self.path)            
         '''

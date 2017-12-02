@@ -52,8 +52,10 @@ universities = ['ocw.mit:edu', 'stanford:edu', 'cmu:edu']
 
 sent2Vec_process_key = 'sent2Vec_process'
 sent2Vec_mutex_key = 'sent2Vec_mutex'
+gqf_key = 'gqf'
 
-collective_cache = {sent2Vec_process_key:None}
+collective_cache = {sent2Vec_process_key:None, sent2Vec_mutex_key:None,gqf_key:GraphQueryFormulator()}
+
 class Links(object):
     def __init__(self, url, display_url, desc, value, title):
         self.url = url
@@ -124,7 +126,7 @@ Gets the closest node label and passes it to
 GQF which in turn returns related queries.
 '''
 def get_queries_knowledge_graph(query):
-    gqf = GraphQueryFormulator()
+    gqf = collective_cache[gqf_key]
     query = query.replace("\n", "")
     if(not gqf.kg.has_node(query)):
         query_node = get_relevant_queries_sent2vec(query).replace("\n", "").strip()
@@ -174,26 +176,35 @@ def get_relevant_queries_sent2vec(query):
                 print(val)
                 l.append((float(dets[0]), val))
         if(l[0][0] > 0.7):
-            return l[0]
-        return l
+            return l[0][1]
+        else:
+            gqf = collective_cache[gqf_key]
+            new_label = query.replace("\n", "").strip()
+            closest_label = l[0][1].replace("\n", "").strip()
+            gqf.add_to_kg(closest_label, new_label) 
+            return query
 
 '''
 Starts a subprocess that runs the sent2Vec c++ implementation.
 TODO: A gensim wrapper.
 '''
 def start_subprocess_sent2vec():
-    c = "/home/ec2-user/collective_store_one/researchModels/sent2vec/fasttext nnSent /home/ec2-user/collective_store_one/researchModels/models/model_31k.bin seeds_generator/kg_nodes.txt"
+    if(collective_cache[sent2Vec_process_key] == None):
+        c = "/home/ec2-user/collective_store_one/researchModels/sent2vec/fasttext nnSent /home/ec2-user/collective_store_one/researchModels/models/model_31k.bin seeds_generator/kg_nodes.txt"
 
-    process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
-    time.sleep(3)
+        process = Popen(c.split(), stdin=PIPE, stdout=PIPE, universal_newlines=True)
+        time.sleep(3)
 
-    process.stdout.readline()
+        process.stdout.readline()
 
-    #cache.set(sent2Vec_process_key, process)
-    collective_cache[sent2Vec_process_key] = process
-    collective_cache[sent2Vec_mutex_key] = Lock()
-    return True
-
+        #cache.set(sent2Vec_process_key, process)
+        collective_cache[sent2Vec_process_key] = process
+        collective_cache[sent2Vec_mutex_key] = Lock()
+        return True
+    else:
+        collective_cache[sent2Vec_process_key].kill()
+        collective_cache[sent2Vec_process_key] = None
+        return start_subprocess_sent2vec()
 
 '''
 Responsible for generation of lesson plans -- integrates
