@@ -226,16 +226,14 @@ class GenerateLessonPlan(View):
             if(clean_url not in l):
                 link.display_url = clean_url
                 link.url = clean_url
+                link.title = clean_url
                 l.add(clean_url)
                 f.append(link)
         return f
 
     def detect_dups(self, links):
-        links = self.clean_anchors(links)
-        for each in links:
-            print(each.display_url, each.url)
-
-         
+        # the following is for edge cases but as of now
+        # not in use. Need fix.
         hashes = set()
         l = []
         for link in links:
@@ -286,9 +284,8 @@ class GenerateLessonPlan(View):
             engage_urls = []
             engage_urls_length = []
             dups = outputs['dups']
-            item_id = 0
-            
-            output_links = self.detect_dups(outputs['links'])
+            item_id = 0 
+            output_links = self.clean_anchors(outputs['links'])
             for url in output_links:
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
                                 desc=url.desc, title=url.title, display_url=self.remove_url_anchor(url.display_url))
@@ -303,7 +300,8 @@ class GenerateLessonPlan(View):
             dups = outputs['dups']
             # print "evaluate %d"%len(outputs['links'])
             item_id = 0
-            for url in outputs['links']:
+            output_links = self.clean_anchors(outputs['links'])
+            for url in output_links:
                 e = Evaluate_Urls(lesson_fk=l, item_id=item_id,
                                   url=url.url, desc=url.desc, title=url.title, display_url=url.display_url)
                 e.save()
@@ -400,6 +398,8 @@ class UserLessonPlan(View):
     def get_details(self, pk):
         l = lesson.objects.get(pk=pk)
         engage_urls = Engage_Urls.objects.filter(lesson_fk=l).order_by('item_id')
+        for each in engage_urls:
+            print(each.display_url, each.url)
         evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l).order_by('item_id')
         return l, engage_urls, evaluate_urls
 
