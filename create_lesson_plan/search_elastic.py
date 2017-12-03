@@ -21,7 +21,7 @@ class ElasticsearchOfflineDocuments():
 		links = []
 		for hit in hits:
                         link = str(hit.link)
-			if("syllabus" not in link):
+			if(hit.meta.score > 10 and "syllabus" not in link):
                             if("wikipedia" in link):
                                 if("edit" not in link): 
                                     links.append(link) 
