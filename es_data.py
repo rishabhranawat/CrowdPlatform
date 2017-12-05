@@ -1,21 +1,23 @@
 from elasticsearch import Elasticsearch
 es = Elasticsearch()
-
 body = {
 	"query": {
-		"wildcard":{
-			"link": "*edu",
-			"content": "*mixture \ models*"
-		}
+            "bool":{
+                "must_not":{
+                    "match":{
+                        "link":"wikipedia"
+                    }     
+                },
+                "minimum_should_match" : 1,
+                "boost" : 1.0
+            },
+            "wildcard":{
+                "content": "*logistic?regression*"            
+            }
 	}
 }
 
-
-
-res = es.search(index="offline_content", body = body)
+res = es.search(index="offline_content", body = body, size=500)
 print(res['hits']['total'])
-
-
-#for hit in res['hits']['hits']
-#    if("wikipedia" not in hit['_source']['link']):
-#        print(hit['_source']['link'])
+for hit in res['hits']['hits']:
+        print(hit['_source']['link'])
