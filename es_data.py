@@ -1,11 +1,16 @@
 from elasticsearch import Elasticsearch
 es = Elasticsearch()
 
+body = {
+	"query": {
+		"wildcard":{
+			"link": "*edu",
+			"content": "*mixture \ models*"
+		}
+	}
+}
 
 
-body = {"query": {"wildcard":{
-    "link": "*edu"
-}}}
 
 res = es.search(index="offline_content", body = body)
 print(res['hits']['total'])
