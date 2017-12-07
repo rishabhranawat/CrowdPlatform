@@ -4,11 +4,8 @@ from mapping_generator import SearchMappingGenerator
 es = Elasticsearch()
 
 mapping = SearchMappingGenerator()
-mapping.add_minimum_should_condition("should", "wildcard", "content", "*mixture?models*")
-mapping.add_minimum_should_condition("should", "wildcard", "content", "*probability*")
-mapping.add_minimum_should_condition("must_not", "wildcard", "link", "*edu*")
-#mapping.add_minimum_should_condition("wildcard", "content", "*depth?first?search*")
-#mapping.add_minimum_should_condition("wildcard", "content", "*breadth?first?search*")
+mapping.add_minimum_should_condition("should", "wildcard", "content", "*heapsort*")
+mapping.add_minimum_should_condition("should", "wildcard", "content", "*sorting*")
 mapping.edit_minimum_should_number(2)
 
 print(mapping.body)

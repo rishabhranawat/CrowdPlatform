@@ -34,7 +34,7 @@ from create_lesson_plan.forms import *
 from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 from create_lesson_plan.pyms_cog import bing_search 
 from create_lesson_plan.graph_query.query_formulator_poc import GraphQueryFormulator
-
+from create_lesson_plan.es_search_module.es_search import SearchES
 
 # list of subjects
 subjects = ['Computer Science']
@@ -111,8 +111,10 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 Quries es using the search_elastic module.
 '''
 def get_index_results(input_title, lesson_outline, phase):
-    es = ElasticsearchOfflineDocuments()
-    hits = es.generate_search_urls(input_title, lesson_outline, phase)
+    #es = ElasticsearchOfflineDocuments()
+    #hits = es.generate_search_urls(input_title, lesson_outline, phase)
+    es = SearchES()
+    hits = es.generate_search_urls(lesson_outline, phase)
     links = []
     for hit in hits:
         link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}
