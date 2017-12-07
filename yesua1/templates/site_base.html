@@ -9,11 +9,6 @@
  -->
 {% block nav %}
 <!-- {% block site_brand %}<a class="navbar-brand" href="{% url "home" %}">CollectiveTeach</a>{% endblock %} -->
-    {% if user.is_authenticated %}
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'clp:profile' %}">Profile</a></li>
-    </ul>
-    {% endif %}
 {% endblock %}
 
 {% block style_base %}
