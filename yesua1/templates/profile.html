@@ -21,9 +21,9 @@
             <div class="col-lg-12">
                 <h2 class="page-header">Your Lesson Plans</h2>
             </div>
-            {% for l in lesson_plans %}
+            {% for course_name, l in lesson_plans.items %}
                 <div class="row">
-                    <h4><strong>Course:{{ l.0.course_name }}</strong></h4>
+                    <h4><strong>Course:{{ course_name }}</strong></h4>
                     {% for lp in l %}
                         <div class="col-md-4 col-sm-6">
                             <h4><i class="glyphicon glyphicon-plus-sign"></i><a href="{% url 'clp:user_lesson_plan' lp.pk 1 %}">{{lp.lesson_title}}</a></h4>

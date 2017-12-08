@@ -375,20 +375,15 @@ class user_profile(View):
         # user = User.objects.get(username=user)
         lesson_plans = list(lesson.objects.filter(user_name=user, stage=1).order_by('course_name'))
         print(user, lesson_plans)
-        plans = []
-        if(len(lesson_plans) > 0):
-            c = lesson_plans[0].course_name
-            cl = []
+        plans = {}
+        
+        for each_lesson_plan in lesson_plans:
+            lesson_plan_name = each_lesson_plan.course_name
+            if(lesson_plan_name in plans):
+                plans[lesson_plan_name].append(each_lesson_plan)
+            else:
+                plans[lesson_plan_name] = [each_lesson_plan]
 
-            for lp in lesson_plans:
-                if(lp.course_name == c): 
-                    cl.append(lp)
-                else: 
-                    plans.append(cl)
-                    cl = []
-                    c = lp.course_name
-                    cl.append(lp)
-            if(len(plans) == 0): plans.append(cl)
         print(plans)
         context = {
             'user':user, 

@@ -9,10 +9,12 @@ from scraper_utils import download_pdf_file, get_domain_from_url, get_file_type
 from scraper_utils import EsIndexer, get_page_content_response
 
 import requests
+import time
+
 
 class Command(BaseCommand):
     def __init__(self):
-        #self.es_indexer = EsIndexer()
+        self.es_indexer = EsIndexer()
         self.es = Elasticsearch()
 
 
@@ -61,6 +63,7 @@ class Command(BaseCommand):
         docs = IndexDocument.objects.all()
         es_indexer = EsIndexer()
         for doc in docs:
+            time.sleep(2)
             if(not self.check_if_in_es(doc)):
                 try:
                     link = doc.link
