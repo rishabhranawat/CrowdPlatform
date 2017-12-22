@@ -36,16 +36,18 @@ class Command(BaseCommand):
             if(not self.check_if_doc_exists(d)):
                 try:
                     response = requests.get(d.link)
-                    file_type = get_file_type(d.link, response)[1]
-                    if("text/html" in file_type):
-                        content = response.content
-                        self.es_indexer_index_document(d.link, d.source, 
-                                d.subject, 'engage/evaluate', content, '','')
+                    if(response.status_code != 200): continue
                     else:
-                        file_name = link.split("/")[-1]
-                        data = download_pdf_file(link, file_name, response)
-                        self.es_indexer.index_document(d.link, d.source, 
-                                d.subject, 'engage/evaluate', '', '', data)
+                        file_type = get_file_type(d.link, response)[1]
+                        if("text/html" in file_type):
+                            content = response.content
+                            self.es_indexer_index_document(d.link, d.source, 
+                                    d.subject, 'engage/evaluate', content, '','')
+                        else:
+                            file_name = link.split("/")[-1]
+                            data = download_pdf_file(link, file_name, response)
+                            self.es_indexer.index_document(d.link, d.source, 
+                                    d.subject, 'engage/evaluate', '', '', data)
                 except Exception as e:
                     print(e)
                     continue
@@ -60,18 +62,18 @@ class Command(BaseCommand):
       return (len(hits) > 0)
 
     def index_index_documents(self):
-        docs = IndexDocument.objects.all()
+        docs = IndexDocument.objects.filter(pk=26070)
         es_indexer = EsIndexer()
         for doc in docs:
-            time.sleep(2)
             if(not self.check_if_in_es(doc)):
+                time.sleep(2)
                 try:
                     link = doc.link
                     source = get_domain_from_url(link)
                     response = get_page_content_response(link)
-                    file_type = get_file_type(doc.link, response)[1]
                     if(response == None): continue
                     else:
+                        file_type = get_file_type(doc.link, response)[1]
                         if("text/html" in file_type):
                             content = response.content
                             es_indexer.create_mapping_index(link, source, 'Computer Science',

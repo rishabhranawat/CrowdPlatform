@@ -146,10 +146,10 @@ TODO: Change the name (make sure there aren't occurences)
 def download_pdf_file(download_url, name, response):
 	
 	# create unique file name
-        time = str(datetime.now())
-	f_name = 'pdfBin/'+name+time
-        file = open(f_name, 'w')
-	file.write(response.content)
+        t = str(time.time())
+	f_name = 'pdfBin/'+name+t
+        file = open(f_name, 'w+')
+        file.write(response.content)
         file.close()
 
         file = open(f_name, 'r')
@@ -163,6 +163,7 @@ def download_pdf_file(download_url, name, response):
 	
 
 def get_file_type(url, response):
+        print(url, response)
         if('content-type' in response.headers):
             ct = response.headers['content-type']
         else:

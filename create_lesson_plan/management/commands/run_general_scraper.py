@@ -24,8 +24,9 @@ class Command(BaseCommand):
 	
 	def handle(self, *args, **options):
 		seeds = self.get_seed_links('seeds_generator/ml_seeds_nov.txt')
-                #seeds = ["https://cs.nyu.edu/~khot/CSCI-GA.3520-001-2017/hw3.pdf"]
-		res_seeds = []
+                #seeds = ["http://papers.nips.cc/paper/2526-learning-the-k-in-k-means.pdf"]
+		#seeds = ["https://www.knewton.com/wp-content/uploads/knewton-adaptive-learning-whitepaper.pdf"]
+                res_seeds = []
                 for each_link in seeds:
                     num = len(IndexDocument.objects.filter(link=each_link))
                     if(num == 0): 

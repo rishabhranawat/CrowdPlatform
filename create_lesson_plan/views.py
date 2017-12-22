@@ -111,10 +111,10 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 Quries es using the search_elastic module.
 '''
 def get_index_results(input_title, lesson_outline, phase):
-    #es = ElasticsearchOfflineDocuments()
-    #hits = es.generate_search_urls(input_title, lesson_outline, phase)
-    es = SearchES()
-    hits = es.generate_search_urls(lesson_outline, phase)
+    es = ElasticsearchOfflineDocuments()
+    hits = es.generate_search_urls(input_title, lesson_outline, phase)
+    #es = SearchES()
+    #hits = es.generate_search_urls(lesson_outline, phase)
     links = []
     for hit in hits:
         link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}

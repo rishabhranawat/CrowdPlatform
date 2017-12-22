@@ -16,7 +16,7 @@ class GeneralSeedScraper:
         file_type = get_file_type(link, response)[1]
         try:
             if("text/html" in file_type):
-                if(level == 2):
+                if(level == 2 or level == 1):
                     content = response.content
                     self.es_indexer.index_document(link, source, subject, 'engage/evaluate', content, '', '')
                 return True

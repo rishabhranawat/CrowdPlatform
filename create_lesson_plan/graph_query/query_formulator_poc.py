@@ -13,7 +13,7 @@ class GraphQueryFormulator:
             closest_node=self.kg.node[closest_node_label]
             if(closest_node["NodeType"] == "TopicNode"):
                 self.kg.add_node(query, NodeType="ConceptNode")
-                self.kg.add_edges_from([closest_node_label, query])
+                self.kg.add_edges_from([(closest_node_label, query)])
             elif(closest_node["NodeType"] == "ConceptNode"):
                 self.kg.add_node(query, NodeType="ConceptNode")
                 print(list(self.kg.predecessors(closest_node_label))[0])
