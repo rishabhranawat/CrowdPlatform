@@ -8,8 +8,7 @@ class SearchMappingGenerator:
                 "bool":{
                     "must_not":[],
                     "must":[],
-                    "should":[],
-                    "minimum_should_match": 1
+                    "should":[]
                 }
             }
         }

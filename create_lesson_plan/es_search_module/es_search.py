@@ -6,7 +6,8 @@ es = Elasticsearch()
 class SearchES:
     
     def add_relevant_terms_mapping(self, s, relevant_terms, query):
-        s.add_bool_condition("must", "match_phrase", "content", "*"+query+"*")
+        print(query, relevant_terms)
+        s.add_bool_condition("must", "match_phrase", "content", "*"+query.lower()+"*")
         for term in relevant_terms:
             ts = term.split(",")
             for each in ts:
@@ -21,28 +22,29 @@ class SearchES:
         return
     
     def generate_relevant_query_maps(self, query, relevant_terms, phase):
+        print("GENERATE", phase, query, relevant_terms)
         search_mappings = []
          
         if(phase==1):
             
-            s = SearchMappingGenerator()
-            self.add_relevant_terms_mapping(s, relevant_terms, query)
-            s.add_bool_condition("must", "wildcard", "link", "*wikipedia*")
-            s.add_bool_condition("must_not", "wildcard", "link", "*edit*")
-            s.add_bool_condition("must_not", "wildcard", "link", "*&oldid*")
-            search_mappings.append((s.body, 20))
+            s1 = SearchMappingGenerator()
+            self.add_relevant_terms_mapping(s1, relevant_terms, query)
+            #s1.add_bool_condition("must", "wildcard", "link", "*wikipedia*")
+            #s1.add_bool_condition("must_not", "wildcard", "link", "*edit*")
+            #s1.add_bool_condition("must_not", "wildcard", "link", "*&oldid*")
+            search_mappings.append((s1.body, 20))
            
-            s = SearchMappingGenerator()
-            self.add_relevant_terms_mapping(s, relevant_terms, query) 
-            s.add_bool_condition("must_not", "wildcard", "link", "*wikipedia*")
-            s.add_bool_condition("must", "wildcard", "link", "*edu*")
-            search_mappings.append((s.body, 5))
+            s2 = SearchMappingGenerator()
+            self.add_relevant_terms_mapping(s2, relevant_terms, query) 
+            s2.add_bool_condition("must_not", "wildcard", "link", "*wikipedia*")
+            s2.add_bool_condition("must", "wildcard", "link", "*edu*")
+            #search_mappings.append((s2.body, 5))
             
-            s = SearchMappingGenerator()
-            self.add_relevant_terms_mapping(s, relevant_terms, query)            
-            s.add_bool_condition("must_not", "wildcard", "link", "*wikipedia*")
-            s.add_bool_condition("must_not", "wildcard", "link", "*edu*")
-            search_mappings.append((s.body, 5)) 
+            s3 = SearchMappingGenerator()
+            self.add_relevant_terms_mapping(s3, relevant_terms, query)            
+            s3.add_bool_condition("must_not", "wildcard", "link", "*wikipedia*")
+            s3.add_bool_condition("must_not", "wildcard", "link", "*edu*")
+            #search_mappings.append((s3.body, 10)) 
         
         else:
             s = SearchMappingGenerator()
@@ -70,6 +72,7 @@ class SearchES:
         mappings = self.generate_relevant_query_maps(query, relevant_terms, phase)
         links = set()
         for mapping in mappings:
+            print(phase, mapping, query)
             results = es.search(index="offline_content", body=mapping[0], size=mapping[1])
             print(results["hits"]["total"])
             for hit in results["hits"]["hits"]:
