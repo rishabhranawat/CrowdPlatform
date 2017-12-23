@@ -20,13 +20,14 @@ class ElasticsearchOfflineDocuments():
 	def get_required_links(self, hits):
 		links = []
 		for hit in hits:
-                        link = str(hit.link)
-			if(hit.meta.score > 10 and "syllabus" not in link):
-                            if("wikipedia" in link):
-                                if("edit" not in link): 
-                                    links.append(link) 
-                            else:                             
-                                links.append(hit.link)
+                    link = str(hit.link.encode('utf-8'))
+                    print(link, hit.meta.score)
+                    if(hit.meta.score > 2 and "syllabus" not in link):
+                        if("wikipedia" in link):
+                            if("edit" not in link): 
+                                links.append(link) 
+                        else:                             
+                            links.append(hit.link)
 		return set(links)
 
         def get_diversity_links(self, phase):
@@ -36,7 +37,7 @@ class ElasticsearchOfflineDocuments():
                     q_edu_pdf = Q("wildcard", link="*.pdf*")
                     q_random = ~q_wiki & ~q_edu
 
-                    query_types= [(q_wiki, 20), (q_edu, 10), (q_random, 10)]
+                    query_types= [(q_wiki, 10), (q_edu, 10), (q_random, 10)]
                     return query_types
                 else:
                     print('here1')
@@ -61,15 +62,15 @@ class ElasticsearchOfflineDocuments():
 
 	def generate_search_urls(self, input_title, lesson_outline, phase=1, source=""):
 		s = Search(using=client, index="offline_content")
-		lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
-                print(lesson_outline)
+		print("LESSON OUTLINE", lesson_outline)
+                lesson_outline_q = self.get_query_lesson_outline(lesson_outline)
 		results = set()
 		query_types = self.get_diversity_links(phase)
                 for each_type in query_types:
 		    query = lesson_outline_q & each_type[0]
 		    res = s.query(query)[:each_type[1]]
 		    hits = res.execute()
-		    results |= self.get_required_links(hits)
+                    results |= self.get_required_links(hits)
 
 		return results
 

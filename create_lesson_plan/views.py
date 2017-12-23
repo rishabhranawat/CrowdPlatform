@@ -111,10 +111,10 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 Quries es using the search_elastic module.
 '''
 def get_index_results(input_title, lesson_outline, phase):
-    es = ElasticsearchOfflineDocuments()
-    hits = es.generate_search_urls(input_title, lesson_outline, phase)
-    #es = SearchES()
-    #hits = es.generate_search_urls(lesson_outline, phase)
+    #es = ElasticsearchOfflineDocuments()
+    #hits = es.generate_search_urls(input_title, lesson_outline, phase)
+    es = SearchES()
+    hits = es.generate_search_urls(lesson_outline, phase)
     links = []
     for hit in hits:
         link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}
@@ -175,7 +175,6 @@ def get_relevant_queries_sent2vec(query):
             dets = process.stdout.readline().split(" ")
             val = " ".join(dets[2:])
             if(len(val) > 1 and val != " "):
-                print(val)
                 l.append((float(dets[0]), val))
         if(l[0][0] > 0.7):
             return l[0][1]

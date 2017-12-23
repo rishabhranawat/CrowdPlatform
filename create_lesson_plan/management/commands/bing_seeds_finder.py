@@ -42,22 +42,24 @@ class Command(BaseCommand):
 		return l
 
 	def get_links_query(self, query, f):
-		results = bing_search(query, 20)
-		for each_link in results:
-			try:
-				resp = requests.get(each_link['Url'])
-				f.write(resp.url.encode('utf-8'))
-				f.write("\n")
-			except Exception, e:
-				print("random error", e)
-				continue
+                typ = ["homework", "exams", "problem sets"]
+		for each in typ:
+                    results = bing_search(query+" "+each, 10)
+                    for each_link in results:
+                        try:
+                                resp = requests.get(each_link['Url'])
+                                f.write(resp.url.encode('utf-8'))
+                                f.write("\n")
+                        except Exception, e:
+                                print("random error", e)
+                                continue
 		return
 
 	def handle(self, *args, **options): 
 		# get query nodes
 		queries = self.get_graph_nodes()
 		
-		f = open('seeds_generator/ml_seeds_nov.txt', 'a')
+		f = open('seeds_generator/evaluate_seeds.txt', 'a')
 		
 		for query in queries:
 			self.get_links_query(query, f)
