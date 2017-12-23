@@ -14,6 +14,12 @@ class SearchES:
                 s.add_bool_condition("should", "match_phrase", "content", mod_term)
         return
     
+    def add_relevant_evaluate_mapping(self, s):
+        typs = ["homework", "problems", "final", "midterm", "solution"]
+        for term in typs:
+            s.add_bool_condition("should", "match_phrase", "content", term)
+        return
+    
     def generate_relevant_query_maps(self, query, relevant_terms, phase):
         search_mappings = []
          
@@ -43,16 +49,19 @@ class SearchES:
             self.add_relevant_terms_mapping(s, relevant_terms, query)
             s.add_bool_condition("should", "wildcard", "link", "*hw*")
             s.add_bool_condition("should", "wildcard", "link", "*homework*")
+            self.add_relevant_evaluate_mapping(s)
             search_mappings.append((s.body, 5))
             
             s = SearchMappingGenerator()
             self.add_relevant_terms_mapping(s, relevant_terms, query)
             s.add_bool_condition("must", "wildcard", "link", "*midterm*")
+            self.add_relevant_evaluate_mapping(s)
             search_mappings.append((s.body, 5))
                 
             s = SearchMappingGenerator()
             self.add_relevant_terms_mapping(s, relevant_terms, query)
             s.add_bool_condition("must", "wildcard", "link", "*final*")
+            self.add_relevant_evaluate_mapping(s)
             search_mappings.append((s.body, 5))
         return search_mappings
 
