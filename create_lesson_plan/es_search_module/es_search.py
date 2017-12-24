@@ -29,22 +29,22 @@ class SearchES:
             
             s1 = SearchMappingGenerator()
             self.add_relevant_terms_mapping(s1, relevant_terms, query)
-            #s1.add_bool_condition("must", "wildcard", "link", "*wikipedia*")
-            #s1.add_bool_condition("must_not", "wildcard", "link", "*edit*")
-            #s1.add_bool_condition("must_not", "wildcard", "link", "*&oldid*")
-            search_mappings.append((s1.body, 20))
+            s1.add_bool_condition("must", "wildcard", "link", "*wikipedia*")
+            s1.add_bool_condition("must_not", "wildcard", "link", "*edit*")
+            s1.add_bool_condition("must_not", "wildcard", "link", "*&oldid*")
+            search_mappings.append((s1.body, 5))
            
             s2 = SearchMappingGenerator()
             self.add_relevant_terms_mapping(s2, relevant_terms, query) 
             s2.add_bool_condition("must_not", "wildcard", "link", "*wikipedia*")
             s2.add_bool_condition("must", "wildcard", "link", "*edu*")
-            #search_mappings.append((s2.body, 5))
+            search_mappings.append((s2.body, 5))
             
             s3 = SearchMappingGenerator()
             self.add_relevant_terms_mapping(s3, relevant_terms, query)            
             s3.add_bool_condition("must_not", "wildcard", "link", "*wikipedia*")
             s3.add_bool_condition("must_not", "wildcard", "link", "*edu*")
-            #search_mappings.append((s3.body, 10)) 
+            search_mappings.append((s3.body, 10)) 
         
         else:
             s = SearchMappingGenerator()
