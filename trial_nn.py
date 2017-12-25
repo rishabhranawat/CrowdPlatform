@@ -1,18 +1,22 @@
-from sklearn.neighbors import NearestNeighbors
-import numpy as np
+import simhash
+from create_lesson_plan.models import lesson, Engage_Urls, Evaluate_Urls
+import requests
 
-precomputed_vectors_file = open("/home/ec2-user/collective_store_one/researchModels/models/precomputed.txt", "r")
-nodes_file  = open("/home/ec2-user/collective_store_one/CrowdPlatform/seeds_generator/kg_nodes.txt", "r")
-nodes = []
-vectors = []
-for node in nodes_file.readlines():
-    nodes.append(node.replace("\n", ""))
+hashes = []
 
-for vec in precomputed_vectors_file.readlines():
-    v = vec.strip().split(" ")
-    a = [float(i) for i in v]
-    vectors.append(a)
+# Number of blocks to use (more in the next section)
+blocks = 4
+# Number of bits that may differ in matching pairs
+distance = 3
 
-arr = np.array(vectors)
-nbrs = NearestNeighbors(n_neighbors=1, algorithm='ball_tree').fit(arr)
-print(arr)
+l = lesson.objects.get(course_name='Machine Learning 3', lesson_title='Mixture Models')
+
+eng_urls = Enagage_Urls.objects.filter(lesson_fk=l)
+eva_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
+
+for u in eng_urls:
+    resp = requests.get(u.link)
+    hashes.append(simhash.compute(resp.content))
+
+matches = simhash.find_all(hashes, blocks, distance)
+print(matches)

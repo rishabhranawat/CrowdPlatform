@@ -36,6 +36,7 @@ from create_lesson_plan.pyms_cog import bing_search
 from create_lesson_plan.graph_query.query_formulator_poc import GraphQueryFormulator
 from create_lesson_plan.es_search_module.es_search import SearchES
 
+from simhash import fingerprint, simpair_indices
 # list of subjects
 subjects = ['Computer Science']
 # list of education levels
@@ -111,11 +112,8 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
 Quries es using the search_elastic module.
 '''
 def get_index_results(input_title, lesson_outline, phase):
-    #es = ElasticsearchOfflineDocuments()
-    #hits = es.generate_search_urls(input_title, lesson_outline, phase)
     es = SearchES()
     hits = es.generate_search_urls(lesson_outline, phase)
-    print("HERE", len(hits), phase)
     links = []
     for hit in hits:
         link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}
@@ -199,7 +197,6 @@ def start_subprocess_sent2vec():
 
         process.stdout.readline()
 
-        #cache.set(sent2Vec_process_key, process)
         collective_cache[sent2Vec_process_key] = process
         collective_cache[sent2Vec_mutex_key] = Lock()
         return True
@@ -208,6 +205,30 @@ def start_subprocess_sent2vec():
         collective_cache[sent2Vec_process_key] = None
         return start_subprocess_sent2vec()
 
+from HTMLParser import HTMLParser
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+
+def get_hash(content):
+    h = hashlib.sha256()
+    h.update(content)
+    val_bytes = bytearray(h.digest())
+    n = 0
+    for byte in val_bytes:
+         n = n<<8 | byte
+    return n
 '''
 Responsible for generation of lesson plans -- integrates
 the entire search engine cycle.
@@ -216,14 +237,25 @@ TODO: Need to clean up the garbage code from the ancient past.
 '''
 class GenerateLessonPlan(View):
     form = GenerateLessonPlanForm()
-
+    
     def remove_url_anchor(self, url):
         return url[:url.index('#')] if '#' in url else url
-    
+   
+    def clean_wikipedia(self, link):
+        wiki_stops = ["edit", "oldid", "action=info", "printable=yes",
+                   "Special:", "action=" ]
+        for each in wiki_stops:
+            if each in link: return None
+        return link
+
     def clean_anchors(self, links):
         l = set()
         f = []
         for link in links:
+            if("wikipedia" in link.display_url):
+                r = self.clean_wikipedia(link.display_url)
+                if(r == None): continue
+            
             clean_url = self.remove_url_anchor(link.display_url)
             if(clean_url not in l):
                 link.display_url = clean_url
@@ -234,19 +266,18 @@ class GenerateLessonPlan(View):
         return f
 
     def detect_dups(self, links):
-        # the following is for edge cases but as of now
-        # not in use. Need fix.
-        hashes = set()
-        l = []
-        for link in links:
-            response = requests.get(link.display_url).content
-            h = hashlib.sha256()
-            h.update(response)
-            hash = h.hexdigest()
-            if(hash not in hashes):
-                hashes.add(hash)
-                l.append(link)
-        return l
+        hashes = []
+        for each in links:
+            cont = strip_tags(requests.get(each.display_url).content)
+            hashes.append(map(get_hash, cont))
+        print(len(hashes), len(links))
+        ind = simpair_indices(hashes, 1)
+        print(ind)
+        for ip in ind:
+            for i in ip:
+                print(links[i].display_url)
+            print('next')
+        
 
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})
@@ -288,6 +319,7 @@ class GenerateLessonPlan(View):
             dups = outputs['dups']
             item_id = 0 
             output_links = self.clean_anchors(outputs['links'])
+            #self.detect_dups(output_links)
             for url in output_links:
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
                                 desc=url.desc, title=url.title, display_url=self.remove_url_anchor(url.display_url))
