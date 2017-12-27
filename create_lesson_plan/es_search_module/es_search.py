@@ -22,11 +22,9 @@ class SearchES:
         return
     
     def generate_relevant_query_maps(self, query, relevant_terms, phase):
-        print("GENERATE", phase, query, relevant_terms)
         search_mappings = []
          
-        if(phase==1):
-            
+        if(phase==1):    
             s1 = SearchMappingGenerator()
             self.add_relevant_terms_mapping(s1, relevant_terms, query)
             s1.add_bool_condition("must", "wildcard", "link", "*wikipedia*")
