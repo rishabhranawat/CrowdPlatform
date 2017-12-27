@@ -42,7 +42,7 @@ class Command(BaseCommand):
 		return l
 
 	def get_links_query(self, query, f):
-                typ = ["homework", "exams", "problem sets"]
+                typ = ["homework final exams filetype:pdf", "filetype:pdf"]
 		for each in typ:
                     results = bing_search(query+" "+each, 10)
                     for each_link in results:
@@ -59,7 +59,7 @@ class Command(BaseCommand):
 		# get query nodes
 		queries = self.get_graph_nodes()
 		
-		f = open('seeds_generator/evaluate_seeds.txt', 'a')
+		f = open('seeds_generator/seeds_pdf.txt', 'a')
 		
 		for query in queries:
 			self.get_links_query(query, f)

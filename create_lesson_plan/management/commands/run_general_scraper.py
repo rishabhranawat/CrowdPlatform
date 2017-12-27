@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
 	
 	def handle(self, *args, **options):
-		seeds = self.get_seed_links('seeds_generator/evaluate_seeds.txt')
+		seeds = self.get_seed_links('seeds_generator/seeds_pdf.txt')
                 res_seeds = []
                 for each_link in seeds:
                     num = len(IndexDocument.objects.filter(link=each_link))
