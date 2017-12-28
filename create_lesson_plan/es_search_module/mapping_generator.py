@@ -12,6 +12,7 @@ class SearchMappingGenerator:
                 }
             }
         }
+
    
     def replace_map(self, body):
         self.body = body    

@@ -43,6 +43,11 @@ class SearchES:
             s3.add_bool_condition("must_not", "wildcard", "link", "*wikipedia*")
             s3.add_bool_condition("must_not", "wildcard", "link", "*edu*")
             search_mappings.append((s3.body, 10)) 
+
+            s4 = SearchMappingGenerator()
+            self.add_relevant_terms_mapping(s4, relevant_terms, query)
+            s4.add_bool_condition("must", "wildcard", "link", "*.pdf*")
+            search_mappings.append(s4, 5)
         
         else:
             s = SearchMappingGenerator()
@@ -63,6 +68,9 @@ class SearchES:
             s.add_bool_condition("must", "wildcard", "link", "*final*")
             self.add_relevant_evaluate_mapping(s)
             search_mappings.append((s.body, 5))
+
+            
+
         return search_mappings
 
     def generate_search_urls(self, relevant_terms, phase=1):
