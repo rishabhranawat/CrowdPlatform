@@ -47,7 +47,7 @@ class SearchES:
             s4 = SearchMappingGenerator()
             self.add_relevant_terms_mapping(s4, relevant_terms, query)
             s4.add_bool_condition("must", "wildcard", "link", "*.pdf*")
-            search_mappings.append(s4, 5)
+            search_mappings.append(s4.body, 5)
         
         else:
             s = SearchMappingGenerator()
@@ -68,8 +68,6 @@ class SearchES:
             s.add_bool_condition("must", "wildcard", "link", "*final*")
             self.add_relevant_evaluate_mapping(s)
             search_mappings.append((s.body, 5))
-
-            
 
         return search_mappings
 
