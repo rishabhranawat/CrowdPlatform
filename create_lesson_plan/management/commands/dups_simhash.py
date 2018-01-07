@@ -1,31 +1,34 @@
 from django.core.management.base import BaseCommand
 
-
-
-import simhash
 from create_lesson_plan.models import lesson, Engage_Urls, Evaluate_Urls
 import requests
 
 class Command(BaseCommand):
+
+    def get_shingles(self, f, size):
+        shingles = set()
+        buf = f
+        for i in range(0, len(buf)-size+1):
+            yield buf[i:i+size]
+
+    def jaccard(self, set1, set2):
+        x = len(set1.intersection(set2))
+        y = len(set1.union(set2))
+
+        return x/float(y)
+
     def handle(self, *args, **options):
-
-        hashes = []
-
-        # Number of blocks to use (more in the next section)
-        blocks = 4
-        # Number of bits that may differ in matching pairs
-        distance = 3
+        SHINGLE_SIZE = 5
 
         l = lesson.objects.get(course_name='Machine Learning 3', lesson_title='Mixture Models')
 
-        eng_urls = Engage_Urls.objects.filter(lesson_fk=l)
-        eva_urls = Evaluate_Urls.objects.filter(lesson_fk=l)
+        eng_url = Engage_Urls.objects.filter(lesson_fk=l)[0]
+        eva_url = Evaluate_Urls.objects.filter(lesson_fk=l)[0]
 
-        for u in eng_urls:
-            resp = requests.get(u.url)
-            h = simhash.shingle(resp.content)
-            print(h)
-            hashes.append(simhash.compute(h))
+        f1 = requests.get(eng_url.url).content
+        f2 = requests.get(eva_url.url).content
 
-        matches = simhash.find_all(hashes, blocks, distance)
-        print(matches)
+        shingles1 = set(get_shingles(f1, size=SHINGLE_SIZE))
+        shingles2 = set(get_shingles(f2, size=SHINGLE_SIZE))
+
+        print(jaccard(shingles1, shingles2))
