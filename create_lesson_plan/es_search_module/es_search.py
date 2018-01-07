@@ -78,17 +78,17 @@ class SearchES:
         return search_mappings
 
     def detect_dups(self, links):
-        shingles = []
+        content = []
         for link in links:
-            cont = request.get(link).content
-            shingles.append(self.dups_detector.get_shingles(cont))
+            cont = requests.get(link).content
+            content.append(cont)
 
         dup_sets = []
         for i in range(0, len(links), 1):
             per_dup_set = [links[i]]
             for j in range(0, len(links), 1):
                 if(i == j): continue
-                if(self.dups_detector.jaccard(shingles[i], shingles[j]) > 0.7):
+                if(self.dups_detector.detect(content[i], content[j]) > 0.7):
                     per_dup_set.append(links[j])
             dup_sets.append(per_dup_set)
 
@@ -112,4 +112,4 @@ class SearchES:
                 print(score, link)
                 links.add(link)
 
-        return self.detect_dups(links)
+        return self.detect_dups(list(links))

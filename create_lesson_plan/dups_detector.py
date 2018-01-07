@@ -1,9 +1,8 @@
 class DuplicateDetector:
 
 	def __init__(self):
-		self.SHINGLE_SIZE = 5
-
-	def get_shingles(f):
+		self.SHINGLE_SIZE = 100
+	def get_shingles(self, f):
 		shingles = set()
 		buf = f
 		for i in range(0, len(buf)-self.SHINGLE_SIZE+1):
