@@ -25,8 +25,12 @@ class Command(BaseCommand):
         eng_url = Engage_Urls.objects.filter(lesson_fk=l)[0]
         eva_url = Evaluate_Urls.objects.filter(lesson_fk=l)[0]
 
-        f1 = requests.get(eng_url.url).content
-        f2 = requests.get(eva_url.url).content
+        eng_u = "https://www.edureka.co/blog/k-means-clustering-algorithm/"
+        eva_u = "https://www.edureka.co/blog/k-means-clustering-algorithm/#SignUp"
+
+
+        f1 = requests.get(eng_u).content
+        f2 = requests.get(eva_u).content
 
         shingles1 = set(self.get_shingles(f1, size=SHINGLE_SIZE))
         shingles2 = set(self.get_shingles(f2, size=SHINGLE_SIZE))
