@@ -28,7 +28,7 @@ class Command(BaseCommand):
         f1 = requests.get(eng_url.url).content
         f2 = requests.get(eva_url.url).content
 
-        shingles1 = set(get_shingles(f1, size=SHINGLE_SIZE))
-        shingles2 = set(get_shingles(f2, size=SHINGLE_SIZE))
+        shingles1 = set(self.get_shingles(f1, size=SHINGLE_SIZE))
+        shingles2 = set(self.get_shingles(f2, size=SHINGLE_SIZE))
 
-        print(jaccard(shingles1, shingles2))
+        print(self.jaccard(shingles1, shingles2), eng_url.url, eva_url.url)
