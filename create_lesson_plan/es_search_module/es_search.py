@@ -1,10 +1,16 @@
+import requests
+
 from elasticsearch import Elasticsearch
 from mapping_generator import SearchMappingGenerator
+from create_lesson_plan.dups_detector import DuplicateDetector
 
 es = Elasticsearch()
 
 class SearchES:
     
+    def __init__(self):
+        self.dups_detector = DuplicateDetector()
+
     def add_relevant_terms_mapping(self, s, relevant_terms, query):
         print(query, relevant_terms)
         s.add_bool_condition("must", "match_phrase", "content", "*"+query.lower()+"*")
@@ -71,6 +77,27 @@ class SearchES:
 
         return search_mappings
 
+    def detect_dups(self, links):
+        shingles = []
+        for link in links:
+            cont = request.get(link).content
+            shingles.append(self.dups_detector.get_shingles(cont))
+
+        dup_sets = []
+        for i in range(0, len(links), 1):
+            per_dup_set = [links[i]]
+            for j in range(0, len(links), 1):
+                if(i == j): continue
+                if(self.dups_detector.jaccard(shingles[i], shingles[j]) > 0.7):
+                    per_dup_set.append(links[j])
+            dup_sets.append(per_dup_set)
+
+        absolute_unique_links = set()
+        for per in dup_sets:
+            absolute_unique_links.add(per[0])
+        print("DETECT DUPS", absolute_unique_links)
+        return absolute_unique_links
+
     def generate_search_urls(self, relevant_terms, phase=1):
         query, relevant_terms = relevant_terms[0], relevant_terms[1:]
         mappings = self.generate_relevant_query_maps(query, relevant_terms, phase)
@@ -84,4 +111,5 @@ class SearchES:
                 score = hit["_score"]
                 print(score, link)
                 links.add(link)
-        return links
+
+        return self.detect_dups(links)
