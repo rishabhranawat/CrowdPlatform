@@ -18,4 +18,4 @@ class DuplicateDetector:
 		shingles1 = set(self.get_shingles(content1))
 		shingles2 = set(self.get_shingles(content2))
 
-		return self.jaccard(shingles1, shingles2)>0.7
+		return self.jaccard(shingles1, shingles2)

@@ -229,15 +229,22 @@ def get_hash(content):
     for byte in val_bytes:
          n = n<<8 | byte
     return n
+
+def get_content(link): 
+    return requests.get(link.display_url).content
 '''
 Responsible for generation of lesson plans -- integrates
 the entire search engine cycle.
 
 TODO: Need to clean up the garbage code from the ancient past.
 '''
+from create_lesson_plan.dups_detector import DuplicateDetector
+
 class GenerateLessonPlan(View):
     form = GenerateLessonPlanForm()
-    
+    def __init__(self):		
+        self.dups_detector = DuplicateDetector()   
+ 
     def remove_url_anchor(self, url):
         return url[:url.index('#')] if '#' in url else url
    
@@ -265,14 +272,12 @@ class GenerateLessonPlan(View):
                 f.append(link)
         return f
 
-    def get_content(link):
-        return requests.get(link).content
 
     def detect_dups(self, links):
         start = time.time()
         content = []
         
-        pool = Pool(8)
+        p = Pool(8)
         content = list(p.map(get_content, links))
         p.close()
         p.join()
@@ -281,16 +286,21 @@ class GenerateLessonPlan(View):
         #     content.append(requests.get(link).content)
 
         dup_sets = []
+        visited = set()
         for i in range(0, len(links), 1):
             per_dup_set = [links[i]]
+            if(i in visited): continue
+            visited.add(i)
             for j in range(0, len(links), 1):
-                if(i == j): continue
+                if(i == j or j in visited): continue
                 if(self.dups_detector.detect(content[i], content[j]) > 0.7):
                     per_dup_set.append(links[j])
+                    visited.add(j)
             dup_sets.append(per_dup_set)
-
+        
         absolute_unique_links = set()
         for per in dup_sets:
+            print([p.display_url for p in per])
             absolute_unique_links.add(per[0])
         print("time taken for duplicate", time.time()-start)
         return absolute_unique_links
@@ -336,7 +346,7 @@ class GenerateLessonPlan(View):
             dups = outputs['dups']
             item_id = 0 
             output_links = self.clean_anchors(outputs['links'])
-            output_links = self.detect_dups(output_links)
+            #output_links = self.detect_dups(output_links)
             for url in output_links:
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
                                 desc=url.desc, title=url.title, 
@@ -402,7 +412,6 @@ class upload_lesson_plan(FormView):
       grade = request.POST['input_grade']
       bullets = request.POST['lesson_outline']
       files = request.FILES.getlist('myfiles[]')
-      print(files)
 
       l = lesson(user_name=request.user.username,
         subject=subject_name, course_name=course_name,
@@ -421,7 +430,6 @@ class user_profile(View):
         user = request.user
         # user = User.objects.get(username=user)
         lesson_plans = list(lesson.objects.filter(user_name=user, stage=1).order_by('course_name'))
-        print(user, lesson_plans)
         plans = {}
         
         for each_lesson_plan in lesson_plans:
@@ -431,7 +439,6 @@ class user_profile(View):
             else:
                 plans[lesson_plan_name] = [each_lesson_plan]
 
-        print(plans)
         context = {
             'user':user, 
             'lesson_plans':plans}
@@ -442,8 +449,6 @@ class UserLessonPlan(View):
     def get_details(self, pk):
         l = lesson.objects.get(pk=pk)
         engage_urls = Engage_Urls.objects.filter(lesson_fk=l).order_by('item_id')
-        for each in engage_urls:
-            print(each.display_url, each.url)
         evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l).order_by('item_id')
         return l, engage_urls, evaluate_urls
 
@@ -474,7 +479,6 @@ class UserLessonPlan(View):
 
     def move_link_phase(self, request, pk):
         link_id = request.POST['id']
-        print(link_id)
         typ = request.POST['type']
         change_to = request.POST['change_to']
         l = lesson.objects.get(pk=int(request.POST['pk']))
@@ -498,7 +502,6 @@ class UserLessonPlan(View):
 
 
     def save_new_link(self, request, pk):
-        print(request.POST)
         link = request.POST["fd[link]"]
         desc = request.POST["fd[link_desc]"]
         title = request.POST["fd[link_title]"]
@@ -542,8 +545,6 @@ class UserLessonPlan(View):
         return None
 
     def get_next_highest_id(self, urls, item_id):
-        for each in urls:
-            print(each.item_id, item_id)
         for i in range(0, len(urls), 1):
             each = urls[i]
             if(each.item_id != item_id and each.item_id > item_id):
@@ -608,23 +609,19 @@ def save_lesson_plan(request):
 
         input_title = input_title.lower()
         input_title = string.replace(input_title, '+', ' ')
-        # print input_title
         input_grade = request.POST['grade']
         input_bullets = request.POST['bullets']
         user_name = request.POST['user_name']
         # Create new lesson object
-        print(input_bullets)
         l = lesson(user_name=request.user.username, subject=subject_name, course_name=course_name,
                    lesson_title=input_title, grade=input_grade, bullets=input_bullets)
         l.save()
 
     # Lesson plan being saved already exists in database
         if len(l_list) > 0:
-                    # print 'length = ',len(l_list)
             exist = True
             l = l_list[0]
             if user_name == request.user.username:
-                # print "delete"
                 e = Engage_Urls.objects.filter(lesson_fk=l)
                 if len(e) > 0:
                     e.delete()
