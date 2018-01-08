@@ -345,8 +345,8 @@ class GenerateLessonPlan(View):
             engage_urls_length = []
             dups = outputs['dups']
             item_id = 0 
-            output_links_f = self.clean_anchors(outputs['links'])
-            output_links = self.detect_dups(output_links_f)
+            output_links = self.clean_anchors(outputs['links'])
+            #output_links = self.detect_dups(output_links)
             for url in output_links:
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
                                 desc=url.desc, title=url.title, 

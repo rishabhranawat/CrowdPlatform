@@ -103,12 +103,16 @@ class SearchES:
 			links.append(dets[0])
 
 		dup_sets = []
+                visited = set()
 		for i in range(0, len(links), 1):
 			per_dup_set = [links[i]]
-			for j in range(0, len(links), 1):
-				if(i == j): continue
+			if(i in visited): continue
+                        visited.add(i)
+                        for j in range(0, len(links), 1):
+				if(i == j or j in visited): continue
 				if(self.dups_detector.detect(content[i], content[j]) > 0.7):
 					per_dup_set.append(links[j])
+                                        visited.add(j)
 			dup_sets.append(per_dup_set)
 
 		absolute_unique_links = set()
@@ -132,5 +136,5 @@ class SearchES:
 		p.join()
 		
 		print("Time taken to get", time.time()-start)
-		collated_results = [item[0] for sublist in results for item in sublist]
-		return list(collated_results)
+		collated_results = [item for sublist in results for item in sublist]
+		return self.detect_dups(list(collated_results))
