@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 from create_lesson_plan.models import lesson, Engage_Urls, Evaluate_Urls
 import requests
+import time
 
 class Command(BaseCommand):
 
@@ -25,14 +26,19 @@ class Command(BaseCommand):
         eng_url = Engage_Urls.objects.filter(lesson_fk=l)[0]
         eva_url = Evaluate_Urls.objects.filter(lesson_fk=l)[0]
 
-        eng_u = "https://www.edureka.co/blog/k-means-clustering-algorithm/"
-        eva_u = "https://www.edureka.co/blog/k-means-clustering-algorithm/#SignUp"
+        eng_u = "https://en.wikipedia.org/wiki/Mixture_model"
+        eva_u = "https://en.wikipedia.org/wiki/Mixture_models"
 
 
         f1 = requests.get(eng_u).content
         f2 = requests.get(eva_u).content
 
+        start = time.time()
         shingles1 = set(self.get_shingles(f1, size=SHINGLE_SIZE))
         shingles2 = set(self.get_shingles(f2, size=SHINGLE_SIZE))
-
+        print("shingles", time.time()-start)
+        print(shingles1)
+        print(type(shingles1))
+        start = time.time()
         print(self.jaccard(shingles1, shingles2), eng_url.url, eva_url.url)
+        print(time.time()-start)

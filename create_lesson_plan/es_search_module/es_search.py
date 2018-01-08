@@ -11,16 +11,16 @@ from functools import partial
 es = Elasticsearch()
 
 def execute_query_get_results(mapping):
-	links = set()
-	results = es.search(index="offline_content", body=mapping[0], size=mapping[1])
-		for hit in results["hits"]["hits"]:
-		link = hit["_source"]["link"]
-		score = hit["_score"]
-				content = hit["_source"]["content"]
-				if("content" in hit["_source"]["attachment"]):
-			content = hit["_source"]["attachment"]["content"]
-			links.add((link, content))
-		return links
+        links = set()
+        results = es.search(index="offline_content", body=mapping[0], size=mapping[1])
+        for hit in results["hits"]["hits"]:
+            link = hit["_source"]["link"]
+            score = hit["_score"]
+            content = hit["_source"]["content"]
+            if("content" in hit["_source"]["attachment"]):
+                content = hit["_source"]["attachment"]["content"]
+            links.add((link, content))
+        return links
 
 
 class SearchES:
@@ -97,7 +97,7 @@ class SearchES:
 	def detect_dups(self, details):
 		start = time.time()
 		content = []
-				links = []
+		links = []
 		for dets in details:
 			content.append(dets[1])
 			links.append(dets[0])
