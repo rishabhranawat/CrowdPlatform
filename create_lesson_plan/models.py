@@ -8,6 +8,15 @@ from vote.models import VoteModel
 
 from search import OfflineDocumentIndex as OfflineDoc
 
+from elasticsearch.client import IndicesClient, IngestClient
+from django.conf import settings
+from elasticsearch import Elasticsearch
+from datetime import datetime
+import base64
+import json
+import uuid
+from elasticsearch_dsl import Search
+
 
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
 	'es_index_name', 'es_type_name', 'es_mapping'
@@ -117,18 +126,16 @@ class TestScore(models.Model):
 	test_score = models.IntegerField(default=0, null=False, blank=False)
 	lesson = models.ForeignKey(lesson)
 
-from elasticsearch.client import IndicesClient, IngestClient
-from django.conf import settings
-from elasticsearch import Elasticsearch
-from datetime import datetime
-import base64
-import json
-import uuid
-from elasticsearch_dsl import Search
+
 
 class IndexDocument(models.Model):
     link = models.CharField(max_length=2083, unique=True, default=uuid.uuid1)
     content_hash = models.TextField(unique=True, default=uuid.uuid1)
+
+    # def delete(self):
+    # 	es = Elasticsearch()
+    # 	doc = Search(using=es, index="offline_content", 
+    # 		doc_type="offline_document", body={"query":{"bool":{"must":["match_phrase":{"link":self.link}]}}})
     
 
 class OfflineDocument(models.Model):
@@ -186,6 +193,11 @@ def index_offline_document(instance, sender, **kwargs):
 
 def delete_offline_document(instance, sender, **kwargs):
 	instance.delete()
+
+def delete_index_document(instance, sender, **kwargs):
+	instance.delete()
+
+
 
 #post_save.connect(index_offline_document, sender=OfflineDocument)
 #pre_delete.connect(delete_offline_document, sender=OfflineDocument)	
