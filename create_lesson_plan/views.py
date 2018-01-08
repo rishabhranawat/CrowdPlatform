@@ -265,18 +265,35 @@ class GenerateLessonPlan(View):
                 f.append(link)
         return f
 
+    def get_content(link):
+        return requests.get(link).content
+
     def detect_dups(self, links):
-        hashes = []
-        for each in links:
-            cont = strip_tags(requests.get(each.display_url).content)
-            hashes.append(map(get_hash, cont))
-        print(len(hashes), len(links))
-        ind = simpair_indices(hashes, 1)
-        print(ind)
-        for ip in ind:
-            for i in ip:
-                print(links[i].display_url)
-            print('next')
+        start = time.time()
+        content = []
+        
+        pool = Pool(8)
+        content = list(p.map(get_content, links))
+        p.close()
+        p.join()
+
+        # for link in links:
+        #     content.append(requests.get(link).content)
+
+        dup_sets = []
+        for i in range(0, len(links), 1):
+            per_dup_set = [links[i]]
+            for j in range(0, len(links), 1):
+                if(i == j): continue
+                if(self.dups_detector.detect(content[i], content[j]) > 0.7):
+                    per_dup_set.append(links[j])
+            dup_sets.append(per_dup_set)
+
+        absolute_unique_links = set()
+        for per in dup_sets:
+            absolute_unique_links.add(per[0])
+        print("time taken for duplicate", time.time()-start)
+        return absolute_unique_links
         
 
     def get(self, request, *args, **kwargs):
@@ -319,29 +336,27 @@ class GenerateLessonPlan(View):
             dups = outputs['dups']
             item_id = 0 
             output_links = self.clean_anchors(outputs['links'])
-            #self.detect_dups(output_links)
+            output_links = self.detect_dups(output_links)
             for url in output_links:
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
-                                desc=url.desc, title=url.title, display_url=self.remove_url_anchor(url.display_url))
+                                desc=url.desc, title=url.title, 
+                                display_url=self.remove_url_anchor(url.display_url))
                 e.save()
                 engage_urls.append(e)
                 item_id += 1
-                print(url.url)
             
-            # for evalaute phase, run query set (explain type1 = 3)
             outputs = run_topic_search(dups, query_set, 2, input_title, input_grade)
             evaluate_urls = []
             dups = outputs['dups']
-            # print "evaluate %d"%len(outputs['links'])
             item_id = 0
             output_links = self.clean_anchors(outputs['links'])
             for url in output_links:
                 e = Evaluate_Urls(lesson_fk=l, item_id=item_id,
-                                  url=url.url, desc=url.desc, title=url.title, display_url=url.display_url)
+                                  url=url.url, desc=url.desc, title=url.title, 
+                                  display_url=url.display_url)
                 e.save()
                 evaluate_urls.append(e)
                 item_id += 1
-                print(url.url)
             lesson_pk = l.pk
             return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
           else:

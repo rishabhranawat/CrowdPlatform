@@ -13,14 +13,14 @@ es = Elasticsearch()
 def execute_query_get_results(mapping):
 	links = set()
 	results = es.search(index="offline_content", body=mapping[0], size=mapping[1])
-        for hit in results["hits"]["hits"]:
+		for hit in results["hits"]["hits"]:
 		link = hit["_source"]["link"]
 		score = hit["_score"]
-                content = hit["_source"]["content"]
-                if("content" in hit["_source"]["attachment"]):
-		    content = hit["_source"]["attachment"]["content"]
-	        links.add((link, content))
-        return links
+				content = hit["_source"]["content"]
+				if("content" in hit["_source"]["attachment"]):
+			content = hit["_source"]["attachment"]["content"]
+			links.add((link, content))
+		return links
 
 
 class SearchES:
@@ -95,9 +95,9 @@ class SearchES:
 		return search_mappings
 
 	def detect_dups(self, details):
-                start = time.time()
+		start = time.time()
 		content = []
-                links = []
+				links = []
 		for dets in details:
 			content.append(dets[1])
 			links.append(dets[0])
@@ -116,7 +116,7 @@ class SearchES:
 			absolute_unique_links.add(per[0])
 		print("DETECT DUPS", absolute_unique_links)
 		print("time taken for duplicate", time.time()-start)
-                return absolute_unique_links
+		return absolute_unique_links
 
 
 
@@ -124,13 +124,13 @@ class SearchES:
 		query, relevant_terms = relevant_terms[0], relevant_terms[1:]
 		mappings = self.generate_relevant_query_maps(query, relevant_terms, phase)
 		links = set()
-                
-                start = time.time()
+				
+		start = time.time()
 		p = Pool(4)
 		results = list(p.imap_unordered(execute_query_get_results, mappings))
 		p.close()
 		p.join()
 		
-                print("Time taken to get", time.time()-start)
-                collated_results = [item[0] for sublist in results for item in sublist]
+		print("Time taken to get", time.time()-start)
+		collated_results = [item[0] for sublist in results for item in sublist]
 		return list(collated_results)
