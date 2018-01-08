@@ -1,4 +1,5 @@
 import requests
+import time
 
 from elasticsearch import Elasticsearch
 from mapping_generator import SearchMappingGenerator
@@ -12,11 +13,14 @@ es = Elasticsearch()
 def execute_query_get_results(mapping):
 	links = set()
 	results = es.search(index="offline_content", body=mapping[0], size=mapping[1])
-	for hit in results["hits"]["hits"]:
+        for hit in results["hits"]["hits"]:
 		link = hit["_source"]["link"]
 		score = hit["_score"]
-		links.add(link)
-	return links
+                content = hit["_source"]["content"]
+                if("content" in hit["_source"]["attachment"]):
+		    content = hit["_source"]["attachment"]["content"]
+	        links.add((link, content))
+        return links
 
 
 class SearchES:
@@ -90,11 +94,13 @@ class SearchES:
 
 		return search_mappings
 
-	def detect_dups(self, links):
+	def detect_dups(self, details):
+                start = time.time()
 		content = []
-		for link in links:
-			cont = requests.get(link).content
-			content.append(cont)
+                links = []
+		for dets in details:
+			content.append(dets[1])
+			links.append(dets[0])
 
 		dup_sets = []
 		for i in range(0, len(links), 1):
@@ -109,7 +115,8 @@ class SearchES:
 		for per in dup_sets:
 			absolute_unique_links.add(per[0])
 		print("DETECT DUPS", absolute_unique_links)
-		return absolute_unique_links
+		print("time taken for duplicate", time.time()-start)
+                return absolute_unique_links
 
 
 
@@ -117,10 +124,13 @@ class SearchES:
 		query, relevant_terms = relevant_terms[0], relevant_terms[1:]
 		mappings = self.generate_relevant_query_maps(query, relevant_terms, phase)
 		links = set()
-
+                
+                start = time.time()
 		p = Pool(4)
-		results = list(pool.imap_unordered(execute_query_get_results, mappings))
+		results = list(p.imap_unordered(execute_query_get_results, mappings))
 		p.close()
 		p.join()
 		
-		return self.detect_dups(list(set(results)))
+                print("Time taken to get", time.time()-start)
+                collated_results = [item[0] for sublist in results for item in sublist]
+		return list(collated_results)
