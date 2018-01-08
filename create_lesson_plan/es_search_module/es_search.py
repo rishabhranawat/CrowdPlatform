@@ -4,6 +4,7 @@ import time
 from elasticsearch import Elasticsearch
 from mapping_generator import SearchMappingGenerator
 from create_lesson_plan.dups_detector import DuplicateDetector
+from create_lesson_plan.simhash_dups import Simhash, SimhashIndex
 
 from multiprocessing import Pool
 from functools import partial
@@ -121,6 +122,31 @@ class SearchES:
 		print("DETECT DUPS", absolute_unique_links)
 		print("time taken for duplicate", time.time()-start)
 		return absolute_unique_links
+	
+	def simhash_detect_dups(self, details):
+		links = {}
+		cont = {}
+
+		for i in range(0, len(details)):
+			links[i] = details[i][0]
+			cont[i] = details[i][1].decode('utf-8')
+
+		objs = [str(k), Simhash(v) for k, v in cont.items()]
+		index = SimhashIndex(objs, k=5)
+
+		visited = set()
+
+		all_dups_sets = []
+		for ind, content in cont.items():
+			if(ind not in visited):
+				dups = index.get_near_dups(content)
+				all_dups_sets.append(dups)
+				for each in dups: visited.add(int(ind))
+
+		absolute_unique_links = set()
+		for each in all_dups_sets:
+			absolute_unique_links.add(each[0])
+		return absolute_unique_links
 
 
 
@@ -137,4 +163,4 @@ class SearchES:
 		
 		print("Time taken to get", time.time()-start)
 		collated_results = [item for sublist in results for item in sublist]
-		return self.detect_dups(list(collated_results))
+		return self.simhash_detect_dups(list(collated_results))
