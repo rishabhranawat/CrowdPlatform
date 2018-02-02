@@ -172,6 +172,7 @@ def get_relevant_queries_sent2vec(query):
         l = []
         for i in range(0, 11, 1):
             dets = process.stdout.readline().split(" ")
+            print(dets)
             val = " ".join(dets[2:])
             if(len(val) > 1 and val != " "):
                 l.append((float(dets[0]), val))

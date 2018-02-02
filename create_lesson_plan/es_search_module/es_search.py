@@ -23,6 +23,9 @@ def execute_query_get_results(mapping):
             links.add((link, content))
         return links
 
+def get_simhash(kv):
+    k, v = kv[0], kv[1]
+    return (str(k), Simhash(v))
 
 class SearchES:
 	
@@ -111,7 +114,7 @@ class SearchES:
                         visited.add(i)
                         for j in range(0, len(links), 1):
 				if(i == j or j in visited): continue
-				if(self.dups_detector.detect(content[i], content[j]) > 0.7):
+				if(self.dups_detector.detect(content[i], content[j]) > 0.9):
 					per_dup_set.append(links[j])
                                         visited.add(j)
 			dup_sets.append(per_dup_set)
@@ -122,16 +125,18 @@ class SearchES:
 		print("DETECT DUPS", absolute_unique_links)
 		print("time taken for duplicate", time.time()-start)
 		return absolute_unique_links
+
 	
 	def simhash_detect_dups(self, details):
-		links = {}
+		start = time.time()
+                links = {}
 		cont = {}
 
 		for i in range(0, len(details)):
 			links[i] = details[i][0]
-			cont[i] = details[i][1].decode('utf-8')
-
-		objs = [str(k), Simhash(v) for k, v in cont.items()]
+			cont[i] = details[i][1]
+                
+                objs = [(str(k), Simhash(v)) for k, v in cont.items()]
 		index = SimhashIndex(objs, k=5)
 
 		visited = set()
@@ -139,14 +144,16 @@ class SearchES:
 		all_dups_sets = []
 		for ind, content in cont.items():
 			if(ind not in visited):
-				dups = index.get_near_dups(content)
+                                test_data = Simhash(content)
+				dups = index.get_near_dups(test_data)
 				all_dups_sets.append(dups)
 				for each in dups: visited.add(int(ind))
 
 		absolute_unique_links = set()
 		for each in all_dups_sets:
-			absolute_unique_links.add(each[0])
-		return absolute_unique_links
+			absolute_unique_links.add(links[int(each[0])])
+		print(time.time()-start)
+                return absolute_unique_links
 
 
 

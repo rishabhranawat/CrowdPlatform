@@ -11,7 +11,9 @@ class GraphQueryFormulator:
 
         def add_to_kg(self, closest_node_label, query):
             closest_node=self.kg.node[closest_node_label]
-            if(closest_node["NodeType"] == "TopicNode"):
+            if("NodeType" not in closest_node):
+                self.kg.add_node(query, NodeType="ConceptNode") 
+            elif(closest_node["NodeType"] == "TopicNode"):
                 self.kg.add_node(query, NodeType="ConceptNode")
                 self.kg.add_edges_from([(closest_node_label, query)])
             elif(closest_node["NodeType"] == "ConceptNode"):
