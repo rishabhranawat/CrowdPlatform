@@ -56,7 +56,6 @@ sent2Vec_mutex_key = 'sent2Vec_mutex'
 gqf_key = 'gqf'
 
 collective_cache = {sent2Vec_process_key:None, sent2Vec_mutex_key:None,gqf_key:GraphQueryFormulator()}
-sent2vec_cache = json.load(open("sent2vec.json"))
 
 
 class Links(object):
@@ -167,8 +166,6 @@ into a sentnn module.
 def get_relevant_queries_sent2vec(query):
     query = query.title()
 
-    if(query in sent2vec_cache):
-        return sent2vec_cache[query]
 
     process = collective_cache[sent2Vec_process_key]
     mutex = collective_cache[sent2Vec_mutex_key]
@@ -184,7 +181,6 @@ def get_relevant_queries_sent2vec(query):
             if(len(val) > 1 and val != " "):
                 l.append((float(dets[0]), val))
         if(l[0][0] > 0.7):
-            sent2vec_cache[query] = l[0][1]
             return l[0][1]
         else:
             gqf = collective_cache[gqf_key]
@@ -377,8 +373,6 @@ class GenerateLessonPlan(View):
                 evaluate_urls.append(e)
                 item_id += 1
             lesson_pk = l.pk
-            json.dump(sent2vec_cache, open("sent2vec.json", "w"))
-            sent2vec_cache = json.load(open("sent2vec.json"))
             return redirect('/create_lesson_plan/'+str(lesson_pk)+'/user_lesson_plan/1')
           else:
               return HttpResponse('input_title not found')

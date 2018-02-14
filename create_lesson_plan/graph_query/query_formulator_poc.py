@@ -6,7 +6,7 @@ import nltk
 
 class GraphQueryFormulator:
 	def __init__(self):
-        self.path = "create_lesson_plan/graph_query/graphs/knowledge_graph.gpickle" 
+                self.path = "create_lesson_plan/graph_query/graphs/knowledge_graph.gpickle" 
 		self.kg = nx.read_gpickle(self.path)
 
         def add_to_kg(self, closest_node_label, query):
