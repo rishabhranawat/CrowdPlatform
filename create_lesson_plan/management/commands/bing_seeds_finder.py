@@ -25,14 +25,14 @@ class Command(BaseCommand):
 		return res
 
 	def dump_visited_queries(self, nodes):
-		with open('seeds_generator/visited_queries.txt', 'a') as f:
+		with open('seeds_generator/visited_queries_os_feb.txt', 'a') as f:
 			for each_node in nodes:
 				f.write(each_node)
 				f.write("\n")
 		return
 
 	def get_graph_nodes(self):
-		visited_queries = self.get_existing('seeds_generator/visited_queries.txt')
+		visited_queries = self.get_existing('seeds_generator/visited_queries_os_feb.txt')
 		gqf = GraphQueryFormulator()
 		nodes = gqf.kg.nodes
 		l = []
@@ -42,9 +42,9 @@ class Command(BaseCommand):
 		return l
 
 	def get_links_query(self, query, f):
-                typ = ["homework final exams filetype:pdf", "filetype:pdf"]
+                typ = ["", "homework final exams filetype:pdf", "filetype:pdf"]
 		for each in typ:
-                    results = bing_search(query+" "+each, 10)
+                    results = bing_search(query+" "+each, 20)
                     for each_link in results:
                         try:
                                 resp = requests.get(each_link['Url'])
@@ -57,9 +57,9 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **options): 
 		# get query nodes
-		queries = self.get_graph_nodes()
+		queries = self.get_existing("seeds_generator/os_nodes.txt")
 		
-		f = open('seeds_generator/seeds_pdf.txt', 'a')
+		f = open('seeds_generator/seeds_os_feb.txt', 'a')
 		
 		for query in queries:
 			self.get_links_query(query, f)

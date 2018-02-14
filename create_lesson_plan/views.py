@@ -275,41 +275,7 @@ class GenerateLessonPlan(View):
                 link.title = clean_url
                 l.add(clean_url)
                 f.append(link)
-        return f
-
-
-    def detect_dups(self, links):
-        start = time.time()
-        content = []
-        
-        p = Pool(8)
-        content = list(p.map(get_content, links))
-        p.close()
-        p.join()
-
-        # for link in links:
-        #     content.append(requests.get(link).content)
-
-        dup_sets = []
-        visited = set()
-        for i in range(0, len(links), 1):
-            per_dup_set = [links[i]]
-            if(i in visited): continue
-            visited.add(i)
-            for j in range(0, len(links), 1):
-                if(i == j or j in visited): continue
-                if(self.dups_detector.detect(content[i], content[j]) > 0.7):
-                    per_dup_set.append(links[j])
-                    visited.add(j)
-            dup_sets.append(per_dup_set)
-        
-        absolute_unique_links = set()
-        for per in dup_sets:
-            print([p.display_url for p in per])
-            absolute_unique_links.add(per[0])
-        print("time taken for duplicate", time.time()-start)
-        return absolute_unique_links
-        
+        return f 
 
     def get(self, request, *args, **kwargs):
         return render(request, 'generate.html', {'form':self.form})

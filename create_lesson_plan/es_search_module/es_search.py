@@ -152,7 +152,7 @@ class SearchES:
 		absolute_unique_links = set()
 		for each in all_dups_sets:
 			absolute_unique_links.add(links[int(each[0])])
-		print(time.time()-start)
+		print("time taken to detect dups", time.time()-start)
                 return absolute_unique_links
 
 

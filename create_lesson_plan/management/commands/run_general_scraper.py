@@ -23,13 +23,13 @@ class Command(BaseCommand):
 
 	
 	def handle(self, *args, **options):
-		seeds = self.get_seed_links('seeds_generator/seeds_pdf.txt')
-        res_seeds = []
-        for each_link in seeds:
-            num = len(IndexDocument.objects.filter(link=each_link))
-            if(num == 0): 
-                res_seeds.append(each_link)
-        final_seeds = res_seeds
-        p = Pool(4)
-		func = partial(spawn_tasks)
-		p.map(func, final_seeds)
+		seeds = self.get_seed_links('seeds_generator/seeds_os_feb.txt')
+                res_seeds = []
+                for each_link in seeds:
+                    num = len(IndexDocument.objects.filter(link=each_link))
+                    if(num == 0): 
+                        res_seeds.append(each_link)
+                final_seeds = res_seeds
+                p = Pool(4)
+                func = partial(spawn_tasks)
+                p.map(func, final_seeds)
