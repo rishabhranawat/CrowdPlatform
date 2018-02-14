@@ -38,13 +38,20 @@
       </div>
     <h2>Generate a Lesson Plan</h2>
     <br></br>
-    <div class="loader"></div>
+    <img src="{% static 'images/loading.gif' %}" id="loader_img" style="display:none"/ >
 
     <form enctype="multipart/form-data" action="{% url 'clp:generate_lesson_plan' 1 %}" role="form" method = "post">
         {% csrf_token %}
         {% load bootstrap %}
         {{form|bootstrap}}
-        <button class="btn btn-primary" type="submit">{% trans "Generate A Lesson Plan" %}</button>
+        <button id="generate" class="btn btn-primary" type="submit">{% trans "Generate A Lesson Plan" %}</button>
     </form>
+    <script type="text/javascript">
+      $(document).ready(function(){
+          $("#generate").click(function(){
+              $("#loader_img").show();
+          });
+      });
+    </script>
 {% endblock %}
 </html>
