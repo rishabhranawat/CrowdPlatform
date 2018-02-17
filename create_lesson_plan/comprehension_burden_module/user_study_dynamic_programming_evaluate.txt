@@ -1,0 +1,8 @@
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00sc-introduction-to-computer-science-and-programming-spring-2011/unit-3/final-exam
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/recitation-videos/recitation-24-final-exam-review
+https://cyberzhg.gitbooks.io/clrs/Chapter_15_Dynamic_Programming/exercises_15.1.html
+http://algorithms.tutorialhorizon.com/dynamic-programming-rod-cutting-problem/
+https://gradebuddy.com/doc/478081/algorithm-strategies
+http://homepage.divms.uiowa.edu/~sriram/44/spring01/index.html
+https://www2.hawaii.edu/~janst/311/index.html
+http://homepage.divms.uiowa.edu/~sriram/44/spring01/final.html

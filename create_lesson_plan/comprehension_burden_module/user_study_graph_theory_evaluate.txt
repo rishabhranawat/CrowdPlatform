@@ -1,0 +1,8 @@
+https://stackoverflow.com/questions/47498270/my-bfs-algorithm-for-maze-solving-never-seems-to-hit-the-final-point
+https://www2.hawaii.edu/~janst/311/index.html
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/recitation-videos/recitation-24-final-exam-review
+https://gradebuddy.com/doc/1147542/practice-midterm
+https://www.docsity.com/en/binary-heap-data-structures-exams/298704/
+https://gradebuddy.com/doc/478081/algorithm-strategies
+http://homepage.divms.uiowa.edu/~sriram/44/spring01/index.html
+http://homepage.divms.uiowa.edu/~sriram/44/spring01/final.html
