@@ -1,0 +1,16 @@
+https://www.oshelponline.com/sitemap
+https://pwntoken.wordpress.com/2014/11/11/4-operating-system-process-state-diagram-and-cpu-scheduling-basics/
+https://en.wikipedia.org/wiki/Round-robin_scheduling
+https://en.wikipedia.org/wiki/Scheduling_(computing)
+https://en.wikipedia.org/w/index.php?title=Scheduling&redirect=no
+https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/LockSupport.html
+https://stackoverflow.com/q/46300440
+http://www.globalwebtutors.com/operating-systems-assignment-help
+https://en.wikipedia.org/wiki/Scheduling
+https://en.wikiversity.org/w/index.php?title=Operating_Systems/Scheduling&action=history
+https://linux.die.net/man/3/pthread_attr_setinheritsched
+https://www.cs.rutgers.edu/~pxk/416/notes/07-scheduling.html
+https://www.theoperationsmanagement.com/scheduling-3853
+https://linux.die.net/man/3/pthread_attr_setschedparam
+https://www.thefreedictionary.com/Scheele+Karl+Wilhelm
+https://www.tutorialspoint.com/operating_system/os_quick_guide.htm
