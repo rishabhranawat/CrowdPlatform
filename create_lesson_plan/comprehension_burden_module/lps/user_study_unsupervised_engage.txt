@@ -1,0 +1,9 @@
+https://stats.stackexchange.com/questions/76866/clustering-with-k-means-and-em-how-are-they-related
+http://stanford.edu/~cpiech/cs221/handouts/kmeans.html
+http://www.cs.utah.edu/~piyush/teaching/cs5350.html
+http://scikit-learn.org/stable/unsupervised_learning.html
+https://en.wikipedia.org/wiki/K-means_clustering
+https://stats.stackexchange.com/questions/tagged/gaussian-mixture
+http://www.teachingtree.co/cs/
+http://www.cs.cornell.edu/courses/cs6780/2015sp/
+http://www.cs.cornell.edu/courses/cs6780/2010fa/lectures.html

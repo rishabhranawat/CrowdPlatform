@@ -1,0 +1,5 @@
+https://cs.wmich.edu/~trenary/files/cs5300/RLBook/node27.html
+http://burlap.cs.brown.edu/index.html
+https://github.com/dennybritz/reinforcement-learning/tree/master/MDP
+http://citeseerx.ist.psu.edu/viewdoc/citations;jsessionid=C37E77FDAC2081FAC78BAE3E9854FB5F?doi=10.1.1.219.5585
+https://en.wikipedia.org/wiki/Reward_function

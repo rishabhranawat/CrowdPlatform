@@ -1,0 +1,13 @@
+http://www.sanfoundry.com/operating-system-mcqs-threads-ult-klt/
+http://www.cs.trinity.edu/~bmassing/Classes/CS3323_2014fall/Homeworks/HW02/Problems/homework/
+http://www.globalwebtutors.com/operating-systems-assignment-help
+https://en.wikipedia.org/wiki/Process_management_%28computing%29
+http://www.cim.mcgill.ca/~franco/OpSys-304-427/lecture-notes/node1.html
+https://linux.die.net/man/2/semop
+http://www.personal.kent.edu/~rmuhamma/OpSystems/Myos/processOperate.htm
+http://www.webassignmenthelp.com/operating-systems-assignment-help
+https://www.studytonight.com/operating-system/process-scheduling
+http://ecomputernotes.com/fundamental/disk-operating-system/what-is-semaphore
+http://www.cse.unsw.edu.au/~cs3231/07s1/example_exam_answers_updated.html
+http://www.informit.com/store/linux-kernel-development-9780672327209?w_ptgrevartcl=Linux+Kernel+Process+Management_370047
+https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem
