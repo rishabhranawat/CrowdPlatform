@@ -315,4 +315,4 @@ kg.add_edges_from([("Machine Learning", "Reinforcement Learning"),
     ("Reinforcement Learning", "Adversarial Machine Learning")
     ])
 
-nx.write_gpickle(kg, "graphs/knowledge_graph.gpickle")
+nx.write_gpickle(kg, "graphs/weighted_knowledge_graph.gpickle")
