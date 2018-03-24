@@ -136,8 +136,8 @@ class SearchES:
 				counter += 1
 		lp = LP(docs, index)
 		cb = CB(lp)
-		sequence = cb.get_cb(2, "linearWeighted", "alphabetical")
-		return sequence
+		sequence, doc_to_keys = cb.get_cb(2, "linearWeighted", "alphabetical")
+		return sequence, doc_to_keys
 
 
 	def generate_search_urls(self, relevant_terms, phase=1):
@@ -152,5 +152,5 @@ class SearchES:
 		
 		collated_results = [item for sublist in results for item in sublist]
 		unique_results = self.simhash_detect_dups(list(collated_results))
-		sequenced = self.sequence_links(list(collated_results), unique_results)
-		return sequenced
+		sequenced, doc_to_keys = self.sequence_links(list(collated_results), unique_results)
+		return sequenced, doc_to_keys

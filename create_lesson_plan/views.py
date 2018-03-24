@@ -29,7 +29,7 @@ from django.core.cache import cache
 from create_lesson_plan.models import lesson, lesson_plan, Engage_Urls
 from create_lesson_plan.models import Explain_Urls, Evaluate_Urls, MCQ
 from create_lesson_plan.models import FITB, Engage_Images, Explain_Images
-from create_lesson_plan.models import Evaluate_Images, Document, Image
+from create_lesson_plan.models import Evaluate_Images, Document, Image, Tag
 from create_lesson_plan.forms import *
 from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 from create_lesson_plan.pyms_cog import bing_search 
@@ -60,12 +60,13 @@ collective_cache = {sent2Vec_process_key:None, sent2Vec_mutex_key:None,gqf_key:G
 
 
 class Links(object):
-    def __init__(self, url, display_url, desc, value, title):
+    def __init__(self, url, display_url, desc, value, title, tags):
         self.url = url
         self.desc = desc
         self.value = value
         self.title = title
         self.display_url = display_url
+        self.tags = tags
 
 # determine if a search result is to be filtered, just based on its URL
 def isToBeFiltered(url, description, title):
@@ -104,7 +105,7 @@ def generateDictAndLinksList(results, duplicate_dict, new_link_list):
     
     for each_result in valid_result:
         l = Links(each_result['Url'], each_result['display_url'], each_result['Description'], -1,
-         each_result['title'])
+         each_result['title'], each_result['tags'])
         new_link_list.append(l)
 
     return valid_result, duplicate_dict, new_link_list
@@ -114,10 +115,10 @@ Quries es using the search_elastic module.
 '''
 def get_index_results(input_title, lesson_outline, phase):
     es = SearchES()
-    hits = es.generate_search_urls(lesson_outline, phase)
+    hits, doc_to_keys = es.generate_search_urls(lesson_outline, phase)
     links = []
     for hit in hits:
-        link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit}
+        link_dets = {'Url':hit, 'display_url':hit, 'Description':'', 'title':hit, 'tags': doc_to_keys[hit]}
         links.append(link_dets)
     return links
 
@@ -325,7 +326,15 @@ class GenerateLessonPlan(View):
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
                                 desc=url.desc, title=url.title, 
                                 display_url=self.remove_url_anchor(url.display_url))
+
                 e.save()
+
+                tags = url.tags
+                for each_tag in tags:
+                    if(not Tag.filter(lesson_fk=l, eng_url_fk=e, tag_name=each_tag).exists()):
+                        t = Tag(lesson_fk=l, eng_url_fk=e, tag_name=each_tag)
+                        t.save()
+
                 engage_urls.append(e)
                 item_id += 1
             
@@ -338,7 +347,15 @@ class GenerateLessonPlan(View):
                 e = Evaluate_Urls(lesson_fk=l, item_id=item_id,
                                   url=url.url, desc=url.desc, title=url.title, 
                                   display_url=url.display_url)
+
                 e.save()
+
+                tags = url.tags
+                for each_tag in tags:
+                    if(not Tag.filter(lesson_fk=l, eva_url_fk=e, ag_name=each_tag).exists()):
+                        t = Tag(lesson_fk=l, eva_url_fk=e, tag_name=each_tag)
+                        t.save()
+
                 evaluate_urls.append(e)
                 item_id += 1
             lesson_pk = l.pk
@@ -420,19 +437,34 @@ class user_profile(View):
 
 
 class UserLessonPlan(View):
+    def get_url_to_tag(self, url_to_tag, urls_query_set):
+        for each_url in urls_query_set:
+            url_to_tag[each_url] = Tag.objects.filter(lesson_fk=l, )
+
+
     def get_details(self, pk):
         l = lesson.objects.get(pk=pk)
         engage_urls = Engage_Urls.objects.filter(lesson_fk=l).order_by('item_id')
         evaluate_urls = Evaluate_Urls.objects.filter(lesson_fk=l).order_by('item_id')
-        return l, engage_urls, evaluate_urls
+
+        eng_url_to_tag = {}
+        for each_url in engage_urls:
+            eng_url_to_tag[each_url] = Tag.objects.filter(lesson_fk=l, eng_url_fk=each_url)
+
+        eva_url_to_tag = {}
+        for each_url in evaluate_urls:
+            eva_url_to_tag[each_url] = Tag.objects.filter(lesson_fk=l, eva_url_fk=each_url)
+
+        return l, engage_urls, evaluate_urls, eng_url_to_tag, eva_url_to_tag
 
    
     def get(self, request, pk, todo, *args, **kwargs):
         if(todo == '1'):
-            l, engage_urls, evaluate_urls = self.get_details(pk)
+            l, engage_urls, evaluate_urls, eng_url_to_tag, eva_url_to_tag = self.get_details(pk)
             form = ManualLinkAddition()
             return render(request, 'user_lesson_plan.html', {'l':l, 
-                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls, 'form':form})
+                'engage_urls':engage_urls, 'evaluate_urls':evaluate_urls,
+                'eng_url_to_tag':eng_url_to_tag, 'eva_url_to_tag': eva_url_to_tag, 'form':form})
 
     def post(self, request, pk, todo, *args, **kwargs):
         if(todo == '1'):

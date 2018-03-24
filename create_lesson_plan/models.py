@@ -127,6 +127,12 @@ class TestScore(models.Model):
 	lesson = models.ForeignKey(lesson)
 
 
+class Tag(models.Model):
+	tag_name = models.CharField(max_length=400)
+	eng_url_fk = models.ForeignKey(Engage_Urls, blank=True, null=True)
+	eva_url_fk = models.ForeignKey(Evaluate_Urls, blank=True, null=True)
+	lesson_fk = models.ForeignKey(lesson)
+
 
 class IndexDocument(models.Model):
     link = models.CharField(max_length=2083, unique=True, default=uuid.uuid1)
