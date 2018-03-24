@@ -134,7 +134,6 @@ def get_queries_knowledge_graph(query):
     else:
         query_node = query
     queries = gqf.get_queries(query, query_node)
-    print("here", queries)
     return queries
 
 '''
@@ -174,14 +173,12 @@ def get_relevant_queries_sent2vec(query):
         process.stdin.write(str(query)+"\n")
         time.sleep(0.5)
         l = []
-        print("here!")
         for i in range(0, 11, 1):
             dets = process.stdout.readline().split(" ")
             val = " ".join(dets[2:])
             if(len(val) > 1 and val != " "):
                 l.append((float(dets[0]), val))
         if(l[0][0] > 0.7):
-            print("here", l)
             return l[0][1]
         else:
             gqf = collective_cache[gqf_key]
