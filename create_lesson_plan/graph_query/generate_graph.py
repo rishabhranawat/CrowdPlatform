@@ -228,6 +228,8 @@ kg.add_edges_from([("Opearting Systems", "Threads"),
     ("Threads", "Implementing Threads in the Kernel")
     ])
 
+
+
 # Machine Learning
 kg.add_node("Machine Learning", NodeType="CourseNode")
 kg.add_edge("Computer Science", "Machine Learning")

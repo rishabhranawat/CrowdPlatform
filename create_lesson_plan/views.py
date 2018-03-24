@@ -92,7 +92,6 @@ def contains(url, course_list, input_bullets, input_title, subject_list):
 
 def generateDictAndLinksList(results, duplicate_dict, new_link_list):
     valid_result = []
-    print(results)
     for r in results:
         if r['Url'] not in duplicate_dict and \
             not isToBeFiltered(r['Url'], r['Description'], r['title']):
@@ -135,6 +134,7 @@ def get_queries_knowledge_graph(query):
     else:
         query_node = query
     queries = gqf.get_queries(query, query_node)
+    print("here", queries)
     return queries
 
 '''
@@ -174,13 +174,14 @@ def get_relevant_queries_sent2vec(query):
         process.stdin.write(str(query)+"\n")
         time.sleep(0.5)
         l = []
+        print("here!")
         for i in range(0, 11, 1):
             dets = process.stdout.readline().split(" ")
-            print(dets)
             val = " ".join(dets[2:])
             if(len(val) > 1 and val != " "):
                 l.append((float(dets[0]), val))
         if(l[0][0] > 0.7):
+            print("here", l)
             return l[0][1]
         else:
             gqf = collective_cache[gqf_key]
@@ -188,6 +189,7 @@ def get_relevant_queries_sent2vec(query):
             closest_label = l[0][1].replace("\n", "").strip()
             gqf.add_to_kg(closest_label, new_label) 
             return query
+        return query
 
 '''
 Starts a subprocess that runs the sent2Vec c++ implementation.

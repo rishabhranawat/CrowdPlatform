@@ -24,7 +24,7 @@ BASE_DIR = PACKAGE_ROOT
 SECRET_KEY = 'yi0u3dg&2)ncjryzk7%j^=v3k2le310=vz^xd4*9b-!72!wykp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 SITE_ID = int(os.environ.get("SITE_ID", 1))
