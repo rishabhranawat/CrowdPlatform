@@ -18,6 +18,9 @@ class LP:
 	def __init__(self, filepath):
 		self.content, self.index = self.get_lpd(filepath)
 
+	def __init__(self, docs, index):
+		self.content, self.index = docs, index
+
 	def get_lpd(self, filepath):
 		f = open(filepath, 'r')
 		l = f.readlines()
