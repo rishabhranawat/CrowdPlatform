@@ -35,6 +35,7 @@ from create_lesson_plan.search_elastic import ElasticsearchOfflineDocuments
 from create_lesson_plan.pyms_cog import bing_search 
 from create_lesson_plan.graph_query.query_formulator_poc import GraphQueryFormulator
 from create_lesson_plan.es_search_module.es_search import SearchES
+from create_lesson_plan.comprehension_burden_module.comprehension_burden import LP, SequenceGenerator, CB
 
 from simhash import fingerprint, simpair_indices
 # list of subjects
@@ -319,7 +320,7 @@ class GenerateLessonPlan(View):
             dups = outputs['dups']
             item_id = 0 
             output_links = self.clean_anchors(outputs['links'])
-            #output_links = self.detect_dups(output_links)
+
             for url in output_links:
                 e = Engage_Urls(lesson_fk=l, item_id=item_id, url=self.remove_url_anchor(url.url),
                                 desc=url.desc, title=url.title, 

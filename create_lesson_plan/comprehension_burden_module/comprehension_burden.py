@@ -488,6 +488,15 @@ class CB:
 		s = SequenceGenerator(self.kg, related_concepts, concept_to_score)
 		return self.get_cb_for_sequence(typ, s, doc_to_concepts, doc_to_keys)
 
+	def get_sequenced_documents_present(self, top_n, typ, base_arrangement):
+		doc_to_concepts, doc_to_keys, related_concepts = self.get_doc_to_key_concepts(top_n)
+
+		concept_to_score = self.get_concept_to_global_score(related_concepts, doc_to_keys)
+		related_concepts = self.get_base_arrangement(related_concepts, concept_to_score, base_arrangement)
+		s = SequenceGenerator(self.kg, related_concepts, concept_to_score)
+		linear_weighted_sequence = s.get_linear_weighted_sequence()
+		docs_sequence =  s.arrange_docs(linear_weighted_sequence, doc_to_keys)
+		return docs_sequence
 
 # lp = LP('lps/engage/user_study_graph_theory_engage.txt')
 # cb =CB(lp)
