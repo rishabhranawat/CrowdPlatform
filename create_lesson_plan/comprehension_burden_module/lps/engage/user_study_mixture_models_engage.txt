@@ -1,0 +1,18 @@
+https://shapeofdata.wordpress.com/2013/07/16/mixture-models/
+http://scikit-learn.org/stable/modules/mixture.html
+https://en.wikipedia.org/wiki/MLPACK_(C%2B%2B_library)
+http://www.cs.utah.edu/~piyush/teaching/cs5350.html
+https://en.wikipedia.org/wiki/Mixture_models
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/readings
+http://citeseer.ist.psu.edu/search;jsessionid=64675D96C847A59666AC7C8F7B2FAF7C?q=gaussian mixture&submit=Search&sort=rlv&t=doc
+https://stats.stackexchange.com/q/63320
+https://en.wikipedia.org/wiki/Adaptive_resonance_theory
+https://edurev.in/studytube/A-GenerativeDiscriminative-Learning-Algorithm-for-Image-Classification-Research-Paper/80593ef0-e079-4f45-861b-843c9bb46fcf_p
+http://www.powershow.com/view/21510b-MDU0M/EM_Algorithm_and_Mixture_of_Gaussians_powerpoint_ppt_presentation
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00sc-introduction-to-computer-science-and-programming-spring-2011/unit-3/lecture-20-more-clustering/
+https://www.edureka.co/blog/k-means-clustering-algorithm/
+https://en.wikipedia.org/wiki/Consensus_clustering
+https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx
+http://home.deib.polimi.it/matteucc/Clustering/tutorial_html/index.html
+https://en.wikipedia.org/wiki/Cluster_(statistics)
+https://docs.microsoft.com/en-us/sql/analysis-services/data-mining/microsoft-sequence-clustering-algorithm-technical-reference

@@ -12,16 +12,20 @@ from functools import partial
 es = Elasticsearch()
 
 def execute_query_get_results(mapping):
-        links = set()
-        results = es.search(index="offline_content", body=mapping[0], size=mapping[1])
-        for hit in results["hits"]["hits"]:
-            link = hit["_source"]["link"]
-            score = hit["_score"]
-            content = hit["_source"]["content"]
-            if("content" in hit["_source"]["attachment"]):
-                content = hit["_source"]["attachment"]["content"]
-            links.add((link, content))
-        return links
+		links = set()
+		results = es.search(index="offline_content", body=mapping[0], size=mapping[1])
+		for hit in results["hits"]["hits"]:
+			link = hit["_source"]["link"]
+			score = hit["_score"]
+			content = hit["_source"]["content"]
+			if("content" in hit["_source"]["attachment"]):
+				content = hit["_source"]["attachment"]["content"]
+			links.add((link, content))
+		return links
+
+def get_simhash(kv):
+	k, v = kv[0], kv[1]
+	return (str(k), Simhash(v))
 
 class SearchES:
 	
@@ -92,16 +96,16 @@ class SearchES:
 			search_mappings.append((s.body, 5))
 
 		return search_mappings
-	
+
 	def simhash_detect_dups(self, details):
-                links = {}
+		start = time.time()
+		links = {}
 		cont = {}
 
 		for i in range(0, len(details)):
 			links[i] = details[i][0]
 			cont[i] = details[i][1]
-               
-                 
+                
                 objs = [(str(k), Simhash(v)) for k, v in cont.items()]
 		index = SimhashIndex(objs, k=5)
 		visited = set()
@@ -109,7 +113,7 @@ class SearchES:
 		all_dups_sets = []
 		for ind, content in cont.items():
 			if(ind not in visited):
-                                test_data = Simhash(content)
+				test_data = Simhash(content)
 				dups = index.get_near_dups(test_data)
 				all_dups_sets.append(dups)
 				for each in dups: visited.add(int(ind))
@@ -117,9 +121,7 @@ class SearchES:
 		absolute_unique_links = set()
 		for each in all_dups_sets:
 			absolute_unique_links.add(links[int(each[0])])
-                return absolute_unique_links
-
-
+		return absolute_unique_links
 
 	def generate_search_urls(self, relevant_terms, phase=1):
 		query, relevant_terms = relevant_terms[0], relevant_terms[1:]

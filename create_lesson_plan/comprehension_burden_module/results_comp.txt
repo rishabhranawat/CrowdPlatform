@@ -1,0 +1,64 @@
+user_study_graph_theory_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0095660988042823, 'random': 1.3575729793738798, 'dfs': 1.4624299575478652, 'bfs': 1.360295802227154})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 0.9536158755382106, 'random': 1.254869072126786, 'dfs': 1.427038911944098, 'bfs': 1.4948641023395857})
+('random', {'bfs': 1.3874045388224523, 'linearWeighted': 1.0, 'random': 1.382388471670575, 'linear': 1.1131586343273947, 'dfs': 1.4290467417021249})
+
+
+user_study_divide_conquer_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0, 'random': 1.0376409147192323, 'dfs': 1.000354686538646, 'bfs': 1.0155184677669662})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 0.9672510087646429, 'random': 0.9668990545643372, 'dfs': 0.945360726630347, 'bfs': 0.9596908871557803})
+('random', {'bfs': 0.973891968450634, 'linearWeighted': 1.0, 'random': 1.0622553330135032, 'linear': 0.9781551878760636, 'dfs': 0.9586984601504697})
+
+
+user_study_scheduling_algorithms_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0, 'random': 1.7657004830917875, 'dfs': 2.3260869565217392, 'bfs': 2.119565217391304})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 2.5, 'random': 2.431763285024154, 'dfs': 3.0362318840579716, 'bfs': 2.8297101449275366})
+('random', {'bfs': 2.018115942028986, 'linearWeighted': 1.0, 'random': 1.9993961352657006, 'linear': 2.072463768115942, 'dfs': 2.3260869565217392})
+
+
+user_study_dynamic_programming_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0, 'random': 1.4846997447983867, 'dfs': 1.7039120794327527, 'bfs': 1.4155786996374025})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 0.9806304419623505, 'random': 1.3397881091635881, 'dfs': 1.7556673641705676, 'bfs': 1.661087803977556})
+('random', {'bfs': 1.4299487100897672, 'linearWeighted': 1.0, 'random': 1.400317638860119, 'linear': 0.9892557200974478, 'dfs': 1.5967596162173832})
+
+
+user_study_supervised_learning.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.053924649484513, 'random': 1.0926428734071052, 'dfs': 1.1343840378395087, 'bfs': 1.1855204309581842})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 1.2093426620701946, 'random': 1.2061406830904347, 'dfs': 1.2189701542706013, 'bfs': 1.36169811896838})
+('random', {'bfs': 1.1434856216084262, 'linearWeighted': 1.0, 'random': 1.2659951759613302, 'linear': 1.0756203254930123, 'dfs': 1.1197682951898102})
+
+
+user_study_clustering_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0208267090620031, 'random': 0.9399159663865547, 'dfs': 1.0749299719887955, 'bfs': 1.0749299719887955})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 1.38719812249224, 'random': 1.2241274888333713, 'dfs': 1.1132939662351427, 'bfs': 1.1132939662351427})
+('random', {'bfs': 1.1201138112902818, 'linearWeighted': 1.0, 'random': 1.3970853206147325, 'linear': 0.9985842985842984, 'dfs': 1.1201138112902818})
+
+
+user_study_mixture_models_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 0.9582366589327146, 'random': 1.4810794387360513, 'dfs': 1.0247486465583915, 'bfs': 1.0942437299745884})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 1.5932773109243699, 'random': 1.4599659863945582, 'dfs': 1.808165266106443, 'bfs': 1.5745518207282914})
+('random', {'bfs': 1.6298132586367882, 'linearWeighted': 1.0, 'random': 1.7866006402561023, 'linear': 1.355182072829132, 'dfs': 1.7337348272642392})
+
+
+user_study_threads_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0, 'random': 1.584615384615385, 'dfs': 1.0, 'bfs': 1.0})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 1.0, 'random': 1.4256410256410257, 'dfs': 1.0, 'bfs': 1.0})
+('random', {'bfs': 0.8472222222222222, 'linearWeighted': 1.0, 'random': 1.1673076923076924, 'linear': 1.0, 'dfs': 0.8472222222222222})
+
+
+user_study_unsupervised_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.028917687629623, 'random': 1.2086485692647735, 'dfs': 1.3856254555393712, 'bfs': 1.352066376661563})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 1.107250915992882, 'random': 1.1091257104256502, 'dfs': 1.2818008034047295, 'bfs': 1.303567000421103})
+('random', {'bfs': 1.2712232842958278, 'linearWeighted': 1.0, 'random': 1.0750042008461633, 'linear': 1.0605047210583889, 'dfs': 1.2762457177396824})
+
+
+user_study_sorting_algorithms_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0, 'random': 1.1441428853699156, 'dfs': 0.8171818104835296, 'bfs': 0.9701160132102634})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 1.0995765941231264, 'random': 1.140450786123578, 'dfs': 1.135320518248793, 'bfs': 1.025243458379202})
+('random', {'bfs': 0.9979366020267028, 'linearWeighted': 1.0, 'random': 1.0436451482391018, 'linear': 1.0408219719423035, 'dfs': 0.9266661021254974})
+
+
+user_study_processes_engage.txt
+('maximizer', {'linearWeighted': 1.0, 'linear': 1.0, 'random': 0.9268635724331927, 'dfs': 1.0, 'bfs': 0.5063291139240507})
+('alphabetical', {'linearWeighted': 1.0, 'linear': 1.5801687763713081, 'random': 1.088607594936709, 'dfs': 0.4050632911392405, 'bfs': 0.5063291139240507})
+('random', {'bfs': 0.5063291139240507, 'linearWeighted': 1.0, 'random': 0.8945147679324895, 'linear': 1.0, 'dfs': 0.6033755274261603})

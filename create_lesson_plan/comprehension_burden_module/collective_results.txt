@@ -1,0 +1,153 @@
+## Alphabetical
+('bfs', 1.2921859835529532)
+('linearWeighted', 1.0)
+('linear', 0.9536158755382106)
+('dfs', 1.1492576962017702)
+
+
+user_study_divide_conquer_engage.txt
+('bfs', 1.005825277119782)
+('linearWeighted', 1.0)
+('linear', 0.9672510087646429)
+('dfs', 1.0102150826965914)
+
+
+user_study_dynamic_programming_engage.txt
+('bfs', 1.1249239062194998)
+('linearWeighted', 1.0)
+('linear', 0.9806304419623505)
+('dfs', 1.1990906785607038)
+
+
+user_study_supervised_learning.txt
+('bfs', 1.4022914931715926)
+('linearWeighted', 1.0)
+('linear', 1.2093426620701946)
+('dfs', 1.4022914931715926)
+
+
+user_study_clustering_engage.txt
+('bfs', 1.2692444545385722)
+('linearWeighted', 1.0)
+('linear', 1.38719812249224)
+('dfs', 1.4011999394352335)
+
+
+user_study_mixture_models_engage.txt
+('bfs', 2.070840336134454)
+('linearWeighted', 1.0)
+('linear', 1.5932773109243699)
+('dfs', 2.1506722689075635)
+
+
+user_study_threads_engage.txt
+('bfs', 0.9538461538461538)
+('linearWeighted', 1.0)
+('linear', 1.0)
+('dfs', 0.9538461538461538)
+
+
+user_study_unsupervised_engage.txt
+('bfs', 1.4108239315279416)
+('linearWeighted', 1.0)
+('linear', 1.107250915992882)
+('dfs', 1.4108239315279416)
+
+
+user_study_sorting_algorithms_engage.txt
+('bfs', 1.219049030400542)
+('linearWeighted', 1.0)
+('linear', 1.0995765941231264)
+('dfs', 1.2654035058006605)
+
+
+user_study_scheduling_algorithms_engage.txt
+('bfs', 3.134057971014493)
+('linearWeighted', 1.0)
+('linear', 2.5)
+('dfs', 3.134057971014493)
+
+
+user_study_processes_engage.txt
+('bfs', 1.4599156118143461)
+('linearWeighted', 1.0)
+('linear', 1.5801687763713081)
+('dfs', 1.4599156118143461)
+
+
+## Random
+user_study_graph_theory_engage.txt
+('bfs', 1.3115832457923258)
+('linearWeighted', 1.0)
+('linear', 1.1169087332820737)
+('dfs', 1.4442653797053484)
+
+
+user_study_divide_conquer_engage.txt
+('bfs', 1.091474536247832)
+('linearWeighted', 1.0)
+('linear', 0.9954695355041059)
+('dfs', 1.0282136346437725)
+
+
+user_study_dynamic_programming_engage.txt
+('bfs', 1.2578802263773736)
+('linearWeighted', 1.0)
+('linear', 1.170673168929455)
+('dfs', 1.3449014929450078)
+
+
+user_study_supervised_learning.txt
+('bfs', 1.1753560741392821)
+('linearWeighted', 1.0)
+('linear', 1.09027763737664)
+('dfs', 1.2425963582579707)
+
+
+user_study_clustering_engage.txt
+('bfs', 1.063759557877205)
+('linearWeighted', 1.0)
+('linear', 1.0397620309385014)
+('dfs', 1.3185138920433037)
+
+
+user_study_mixture_models_engage.txt
+('bfs', 1.7655740924882457)
+('linearWeighted', 1.0)
+('linear', 1.1479762825470483)
+('dfs', 1.5324169213960397)
+
+
+user_study_threads_engage.txt
+('bfs', 1.0245726495726497)
+('linearWeighted', 1.0)
+('linear', 1.1292735042735043)
+('dfs', 0.8388888888888889)
+
+
+user_study_unsupervised_engage.txt
+('bfs', 1.1568479222030523)
+('linearWeighted', 1.0)
+('linear', 1.0628150134561485)
+('dfs', 1.1281269586049902)
+
+
+user_study_sorting_algorithms_engage.txt
+('bfs', 1.0804259463121346)
+('linearWeighted', 1.0)
+('linear', 1.0672269737770625)
+('dfs', 1.110487293119184)
+
+
+user_study_scheduling_algorithms_engage.txt
+('bfs', 2.3206521739130435)
+('linearWeighted', 1.0)
+('linear', 1.9492753623188406)
+('dfs', 2.3278985507246377)
+
+
+user_study_processes_engage.txt
+('bfs', 1.2538677918424754)
+('linearWeighted', 1.0)
+('linear', 1.072433192686357)
+('dfs', 1.1673699015471168)

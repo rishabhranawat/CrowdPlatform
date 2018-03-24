@@ -1,0 +1,12 @@
+https://onlinecourses.science.psu.edu/stat501/node/375
+http://www.biostathandbook.com/simplelogistic.html
+https://edurev.in/studytube/Machine-Learning-Generative-discriminative-classifiers-Linear-regression-Decomposition-of-error-into-bias,-variance,-unavoidable/20f443dd-ef59-4302-966d-cb843103cdc6_p
+https://onlinecourses.science.psu.edu/stat504/node/217
+https://docs.microsoft.com/en-us/sql/analysis-services/data-mining/microsoft-logistic-regression-algorithm-technical-reference
+https://datascienceplus.com/category/regression-models
+https://www.statistics.com/logistic-regression/
+https://stats.idre.ucla.edu/stata/dae/logistic-regression/
+https://www.r-bloggers.com/how-to-perform-a-logistic-regression-in-r/
+https://onlinecourses.science.psu.edu/stat504/node/164
+https://www.medcalc.org/manual/logistic_regression.php
+https://stats.stackexchange.com/a/288290

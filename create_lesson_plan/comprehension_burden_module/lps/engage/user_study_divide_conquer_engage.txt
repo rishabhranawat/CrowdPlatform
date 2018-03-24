@@ -1,0 +1,8 @@
+https://dzone.com/articles/algorithm-week-strassens
+http://www.teachingtree.co/cs/
+https://www.geeksforgeeks.org/analysis-algorithm-set-4-master-method-solving-recurrences/
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-3-divide-and-conquer-strassen-fibonacci-polynomial-multiplication
+https://en.wikipedia.org/wiki/Category:Optimization_algorithms_and_methods
+https://mitpress.mit.edu/books/introduction-algorithms
+http://web.engr.oregonstate.edu/~huanlian/teaching/cs570/
+https://www.tutorialspoint.com/data_structures_algorithms/divide_and_conquer.htm
