@@ -255,7 +255,7 @@ class CB:
 	Get kg labels
 	'''
 	def get_kg_labels(self):
-		kg_path = "../graph_query/graphs/weighted_knowledge_graph.gpickle"
+		kg_path = "create_lesson_plan/graph_query/graphs/weighted_knowledge_graph.gpickle"
 		kg = nx.read_gpickle(kg_path)
 		return [str(x) for x in list(kg.nodes())[1:]], kg
 

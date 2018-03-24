@@ -106,7 +106,7 @@ class SearchES:
 			links[i] = details[i][0]
 			cont[i] = details[i][1]
                 
-        objs = [(str(k), Simhash(v)) for k, v in cont.items()]
+                objs = [(str(k), Simhash(v)) for k, v in cont.items()]
 		index = SimhashIndex(objs, k=5)
 		visited = set()
 
@@ -136,8 +136,10 @@ class SearchES:
 				counter += 1
 		lp = LP(docs, index)
 		cb = CB(lp)
-		sequence, doc_to_keys = cb.get_cb(2, "linearWeighted", "alphabetical")
+
+		sequence, doc_to_keys = cb.get_sequenced_documents_present(2, "linearWeighted", "alphabetical")
 		return sequence, doc_to_keys
+
 
 
 	def generate_search_urls(self, relevant_terms, phase=1):
@@ -151,6 +153,7 @@ class SearchES:
 		p.join()
 		
 		collated_results = [item for sublist in results for item in sublist]
-		unique_results = self.simhash_detect_dups(list(collated_results))
+		unique_results = list(self.simhash_detect_dups(list(collated_results)))
 		sequenced, doc_to_keys = self.sequence_links(list(collated_results), unique_results)
 		return sequenced, doc_to_keys
+
