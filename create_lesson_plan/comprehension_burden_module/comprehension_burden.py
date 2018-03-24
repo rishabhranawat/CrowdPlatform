@@ -96,8 +96,8 @@ class SequenceGenerator:
 					gn.neighbors.append(label_node[ne])
 		
 		graph = []
-		for k, v in label_node.items():
-			graph.append(v)
+		for each in self.nodes:
+			graph.append(label_node[each])
 		return graph
 
 	def get_bfs_sequence(self):
@@ -133,9 +133,7 @@ class SequenceGenerator:
 			self.dfs(node, visited, sequence)
 		return sequence
 
-
-
-	def get_linear_sequence(self):
+	def get_linear_weighted_sequence(self):
 		parents = []
 		for each in self.nodes:
 			if(each in self.kg.nodes 
@@ -163,7 +161,59 @@ class SequenceGenerator:
 			if each not in linear:
 				linear.append(each)
 		
+		return linear		
+
+	def get_linear_sequence(self):
+		parents = []
+		for each in self.nodes:
+			if(each in self.kg.nodes and self.kg.nodes[each]["NodeType"] == "TopicNode"):
+				parents.append(each)
+		
+		linear = []
+		for p in parents:
+			linear.append(p)
+			children = self.kg.neighbors(p)
+			for c in children:
+				if c in self.nodes and self.kg.nodes[c]["NodeType"] == "ConceptNode":
+					linear.append(c)
+		
+		for each in self.nodes:
+			if each not in linear:
+				linear.append(each)
+		
 		return linear
+
+	def get_lws(self, prev, current_label, sequence):
+		if(len(prev) == 0): return
+		new_prev = []
+		for p in prev:
+			if(p not in sequence):
+				sequence.append(p)
+
+				for c in self.kg.neighbors(p):
+					if(c in self.nodes and self.kg.nodes[c]["NodeType"] == current_label):
+						new_prev.append(c)
+						sequence.append(c)
+		for each in new_prev:
+			self.get_lws(new_prev, "SubConceptNode", sequence)
+
+	def start(self):
+		prev = []
+		for each in self.nodes:
+			if(each in self.kg.nodes 
+				and self.kg.nodes[each]["NodeType"] == "TopicNode"):
+				prev.append(each)
+		sequence = []
+		self.get_lws(prev, "ConceptNode", sequence)
+
+		for each in self.nodes:
+			if each not in sequence:
+				sequence.append(each)
+			
+		return sequence
+
+	def get_base_sequence(self):
+		return self.nodes
 
 	def get_random_sequence(self):
 		vals = list(self.nodes)
@@ -378,55 +428,68 @@ class CB:
 		docs_sequence = []
 		if(typ == "linear"):
 			linear_sequence = s.get_linear_sequence()
-			print("linear")
-			print(linear_sequence)
-			print("\n")
+			print("linear", linear_sequence)
 			docs_sequence = s.arrange_docs(linear_sequence, doc_to_keys)
-		elif(typ == "random"):
+		elif("random" in typ):
 			random_sequence = s.get_random_sequence()
 			docs_sequence = s.arrange_docs(random_sequence, doc_to_keys)
 		elif(typ == "bfs"):
 			bfs_sequence = s.get_bfs_sequence()
-			print("bfs")
-			print(bfs_sequence)
-			print("\n")
+			# print('bfs', bfs_sequence)
 			docs_sequence = s.arrange_docs(bfs_sequence, doc_to_keys)
 		elif(typ == "dfs"):
 			dfs_sequence = s.get_dfs_sequence()
 			docs_sequence = s.arrange_docs(dfs_sequence, doc_to_keys)
+		elif(typ == "base"):
+			base_sequence = s.get_base_sequence()
+			docs_sequence = s.arrange_docs(base_sequence, doc_to_keys)
+		elif(typ == "linearWeighted"):
+			linear_weighted_sequence = s.get_linear_weighted_sequence()
+			print('weighted', linear_weighted_sequence)
+			docs_sequence =  s.arrange_docs(linear_weighted_sequence, doc_to_keys)
+		elif(typ == "start"):
+			start = s.start()
+
 		return self.lp_cb(docs_sequence, doc_to_concepts, doc_to_keys)
 
-	def get_normalized_ordering(self, related_concepts):
-		return sorted(list(related_concepts)), None
-	
-	def get_maximized_ordering(self, related_concepts, doc_to_keys):
+	def get_base_arrangement(self, related_concepts, concept_to_score, typ):
+		if(typ == "alphabetical"):
+			return sorted(list(related_concepts))
+		elif(typ == "maximizer"):
+			sorted_concept_to_score = sorted(concept_to_score.items(), key=operator.itemgetter(1), reverse=True)
+			return [x[0] for x in sorted_concept_to_score]
+		elif("random" in typ):
+			vals = list(related_concepts)
+			r = []
+			while(vals):
+				s = randomlib.choice(vals)
+				r.append(s)
+				vals.remove(s)
+			return r
+
+	def get_concept_to_global_score(self, related_concepts, doc_to_keys):
 		concept_to_score = {}
 		for each_concept in related_concepts:
 			concept_score = 0.0
 			for each_document in doc_to_keys.keys():
 				concept_score += self.get_significance_score(each_concept, each_document)
 			concept_to_score[each_concept] = concept_score
+		return concept_to_score
 
-		sorted_concept_to_score = sorted(concept_to_score.items(), key=operator.itemgetter(1))
-		return [x[0] for x in sorted_concept_to_score], concept_to_score
 
-	def get_cb(self, top_n, typ):
+	def get_cb(self, top_n, typ, base_arrangement):
 		doc_to_concepts, doc_to_keys, related_concepts = self.get_doc_to_key_concepts(top_n)
-		related_concepts, concept_to_score = self.get_maximized_ordering(related_concepts, doc_to_concepts)
 
+		concept_to_score = self.get_concept_to_global_score(related_concepts, doc_to_keys)
+		related_concepts = self.get_base_arrangement(related_concepts, concept_to_score, base_arrangement)
 		s = SequenceGenerator(self.kg, related_concepts, concept_to_score)
-
-		scores = {}
-		for each in typ:
-			scores[each] = self.get_cb_for_sequence(each, s, doc_to_concepts, doc_to_keys)
-
-		n = scores["linear"]
-		for k,v in scores.items():
-			scores[k] = v/n
-		return scores
+		return self.get_cb_for_sequence(typ, s, doc_to_concepts, doc_to_keys)
 
 
-
-
+# lp = LP('lps/engage/user_study_graph_theory_engage.txt')
+# cb =CB(lp)
+# linear = cb.get_cb(2, "linear", "alphabetical")
+# lw = cb.get_cb(2, "linearWeighted", "alphabetical")
+# print(linear/lw, lw/lw)
 
 
