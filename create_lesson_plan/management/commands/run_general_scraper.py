@@ -30,6 +30,6 @@ class Command(BaseCommand):
                     if(num == 0): 
                         res_seeds.append(each_link)
                 final_seeds = res_seeds
-                p = Pool(4)
+                p = Pool(2)
                 func = partial(spawn_tasks)
                 p.map(func, final_seeds)

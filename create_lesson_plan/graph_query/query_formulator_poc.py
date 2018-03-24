@@ -11,6 +11,7 @@ class GraphQueryFormulator:
 
         def add_to_kg(self, closest_node_label, query):
             closest_node=self.kg.node[closest_node_label]
+            print(closest_node)
             if("NodeType" not in closest_node):
                 self.kg.add_node(query, NodeType="ConceptNode") 
             elif(closest_node["NodeType"] == "TopicNode"):
@@ -18,8 +19,9 @@ class GraphQueryFormulator:
                 self.kg.add_edges_from([(closest_node_label, query)])
             elif(closest_node["NodeType"] == "ConceptNode"):
                 self.kg.add_node(query, NodeType="ConceptNode")
-                print(list(self.kg.predecessors(closest_node_label))[0])
-                self.kg.add_edges_from([(list(self.kg.predecessors(closest_node_label))[0], query)])
+                l = list(self.kg.predecessors(closest_node_label))
+                if(len(l)):
+                    self.kg.add_edges_from([(list(self.kg.predecessors(closest_node_label))[0], query)])
             nx.write_gpickle(self.kg, self.path)
             self.kg = nx.read_gpickle(self.path)            
         '''

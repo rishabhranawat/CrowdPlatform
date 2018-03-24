@@ -33,7 +33,6 @@ class SearchES:
 		self.dups_detector = DuplicateDetector()
 
 	def add_relevant_terms_mapping(self, s, relevant_terms, query):
-		print(query, relevant_terms)
 		s.add_bool_condition("must", "match_phrase", "content", "*"+query.lower()+"*")
 		for term in relevant_terms:
 			ts = term.split(",")
@@ -106,10 +105,9 @@ class SearchES:
 		for i in range(0, len(details)):
 			links[i] = details[i][0]
 			cont[i] = details[i][1]
-				
-		objs = [(str(k), Simhash(v)) for k, v in cont.items()]
+                
+                objs = [(str(k), Simhash(v)) for k, v in cont.items()]
 		index = SimhashIndex(objs, k=5)
-
 		visited = set()
 
 		all_dups_sets = []
@@ -123,22 +121,17 @@ class SearchES:
 		absolute_unique_links = set()
 		for each in all_dups_sets:
 			absolute_unique_links.add(links[int(each[0])])
-		print("time taken to detect dups", time.time()-start)
 		return absolute_unique_links
-
-
 
 	def generate_search_urls(self, relevant_terms, phase=1):
 		query, relevant_terms = relevant_terms[0], relevant_terms[1:]
 		mappings = self.generate_relevant_query_maps(query, relevant_terms, phase)
 		links = set()
 				
-		start = time.time()
 		p = Pool(4)
 		results = list(p.imap_unordered(execute_query_get_results, mappings))
 		p.close()
 		p.join()
 		
-		print("Time taken to get", time.time()-start)
 		collated_results = [item for sublist in results for item in sublist]
 		return self.simhash_detect_dups(list(collated_results))
