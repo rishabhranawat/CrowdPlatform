@@ -99,12 +99,12 @@
                         {% for t in eng_url_to_tag[enlink] %}
                           <span class="label label-info">{{t}}</span>
                         {% endfor %}
-                        <span style="color:black;" id='domainId+{{enlink.url}}'>
+                        <span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
                             document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
                           </script>
                         </span>
-                        <span style="color:red;" id ='fileType+{{enlink.url}}'> 
+                        <span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
                           <script text="text/javascript">
                             // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
                             var fileType = (extractFileType('{{enlink.url}}'));
@@ -163,12 +163,12 @@
                       {% for t in eva_url_to_tag[enlink] %}
                           <span class="label label-info">{{t}}</span>
                         {% endfor %}
-                        <span style="color:black;" id='domainId+{{enlink.url}}'>
+                        <span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
                             document.getElementById('domainId+{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
                           </script>
                         </span>
-                        <span style="color:red;" id ='fileType+{{enlink.url}}'> 
+                        <span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
                           <script text="text/javascript">
                             // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
                             var fileType = (extractFileType('{{enlink.url}}'));
