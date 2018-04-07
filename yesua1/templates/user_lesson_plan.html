@@ -96,8 +96,12 @@
                   <div class="col-xs-12 col-md-11">
 
                         <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
-                        {% for t in eng_url_to_tag[enlink] %}
-                          <span class="label label-info">{{t}}</span>
+                        {% for t, v in eng_url_to_tag.items %}
+			  {% if t.url == enlink.url %}
+				{% for each_tag in v%}
+			  	<span class="label label-info">{{each_tag.tag_name}}</span>
+				{% endfor %}
+			  {% endif %}
                         {% endfor %}
                         <span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
                           <script text="text/javascript">
@@ -160,10 +164,16 @@
             <td>
               <div class="col-md-11" >
                   <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
-                      {% for t in eva_url_to_tag[enlink] %}
-                          <span class="label label-info">{{t}}</span>
+                        {% for t, v in eva_url_to_tag.items %}
+			  {% if t.url == enlink.url %}
+				{% for each_tag in v%}
+			  	<span class="label label-info">{{each_tag.tag_name}}</span>
+				{% endfor %}
+			  {% endif %}
                         {% endfor %}
+
                         <span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
+
                           <script text="text/javascript">
                             document.getElementById('domainId+{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
                           </script>

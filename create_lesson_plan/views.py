@@ -328,7 +328,7 @@ class GenerateLessonPlan(View):
 
                 tags = url.tags
                 for each_tag in tags:
-                    if(not Tag.filter(lesson_fk=l, eng_url_fk=e, tag_name=each_tag).exists()):
+                    if(not Tag.objects.filter(lesson_fk=l, eng_url_fk=e, tag_name=each_tag).exists()):
                         t = Tag(lesson_fk=l, eng_url_fk=e, tag_name=each_tag)
                         t.save()
 
@@ -349,7 +349,7 @@ class GenerateLessonPlan(View):
 
                 tags = url.tags
                 for each_tag in tags:
-                    if(not Tag.filter(lesson_fk=l, eva_url_fk=e, ag_name=each_tag).exists()):
+                    if(not Tag.objects.filter(lesson_fk=l, eva_url_fk=e, tag_name=each_tag).exists()):
                         t = Tag(lesson_fk=l, eva_url_fk=e, tag_name=each_tag)
                         t.save()
 

@@ -15,11 +15,11 @@ import operator
 Lesson Plan Object
 '''
 class LP:
-	def __init__(self, filepath):
-		self.content, self.index = self.get_lpd(filepath)
+	#def __init__(self, filepath):
+	#	self.content, self.index = self.get_lpd(filepath)
 
-	# def __init__(self, docs, index):
-	# 	self.content, self.index = docs, index
+	def __init__(self, docs, index):
+	    self.content, self.index = docs, index
 
 	def get_lpd(self, filepath):
 		f = open(filepath, 'r')
@@ -499,10 +499,5 @@ class CB:
 		docs_sequence =  s.arrange_docs(linear_weighted_sequence, doc_to_keys)
 		return docs_sequence, doc_to_keys
 
-lp = LP('lps/engage/user_study_graph_theory_engage.txt')
-cb =CB(lp)
-linear = cb.get_cb(2, "linear", "alphabetical")
-# lw = cb.get_cb(2, "linearWeighted", "alphabetical")
-# print(linear/lw, lw/lw)
 
 
