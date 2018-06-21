@@ -37,7 +37,6 @@ from create_lesson_plan.graph_query.query_formulator_poc import GraphQueryFormul
 from create_lesson_plan.es_search_module.es_search import SearchES
 from create_lesson_plan.comprehension_burden_module.comprehension_burden import LP, SequenceGenerator, CB
 
-from simhash import fingerprint, simpair_indices
 # list of subjects
 subjects = ['Computer Science']
 # list of education levels
