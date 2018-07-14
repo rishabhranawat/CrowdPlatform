@@ -31,7 +31,7 @@ class AddQuestions(View):
     	questions = MCQ.objects.filter(lesson=lesson.objects.get(pk=pk))
     	l = lesson.objects.get(pk=pk)
     	f = AddMCQQuestions()
-        return render(request, 'question_entry.html', {'lesson':l, 'form':f, 'questions':questions})
+        return render(request, 'questions/question_entry.html', {'lesson':l, 'form':f, 'questions':questions})
 
     def post(self, request, pk, *args, **kwargs):
     	if('submit' in request.POST):
@@ -63,7 +63,7 @@ class AnswerQuestions(View):
 				'option_d':each.optiond
 				}
 			forms.append(AnswerQuestionsForm(initial=initial))
-		return render(request, 'answer_questions.html', {'forms':forms, 'lesson':l})
+		return render(request, 'questions/answer_questions.html', {'forms':forms, 'lesson':l})
 
 	def post(self, request, pk, *args, **kwargs):
 		pks = request.POST['question_pk']
