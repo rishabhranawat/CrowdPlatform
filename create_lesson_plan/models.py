@@ -6,7 +6,7 @@ from django.utils import timezone
 from vote.managers import VotableManager
 from vote.models import VoteModel
 
-from search import OfflineDocumentIndex as OfflineDoc
+# from search import OfflineDocumentIndex as OfflineDoc
 
 from elasticsearch.client import IndicesClient, IngestClient
 from django.conf import settings
