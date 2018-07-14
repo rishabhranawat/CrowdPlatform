@@ -153,10 +153,7 @@ def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade)
     return output
 
 
-# use this to create a new lesson plan
-def create_lesson_plan(request):
-    dropdown_options = {'subjects': subjects, 'grades': grades}
-    return render(request, 'form.html', dropdown_options)
+
 
 '''
 Uses the running subprocess to stdin and read stdout.
