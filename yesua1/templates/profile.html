@@ -17,22 +17,38 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
 
     <div class="container">
-        {{user.user_name}}
-            <div class="col-lg-12">
-                <h2 class="page-header">Your Lesson Plans</h2>
+            <div class="row">
+                <ul class="list-group">
+                  <li class="list-group-item">User: <strong>{{request.user}}</strong></li>
+                  <li class="list-group-item">Email: <strong>{{request.user.email}}</strong></li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <blockquote class="blockquote">
+  <p class="mb-0">Following are your lesson plans:</p>
+</blockquote>
             </div>
             {% for course_name, l in lesson_plans.items %}
                 <div class="row">
-                    <h4><strong>Course:{{ course_name }}</strong></h4>
-                    {% for lp in l %}
-                        <div class="col-md-4 col-sm-6">
-                            <h4><i class="glyphicon glyphicon-plus-sign"></i><a href="{% url 'clp:user_lesson_plan' lp.pk 1 %}">{{lp.lesson_title}}</a></h4>
-                            <div class="col-md-12 col-sm-12" style="background-color: white;">
-                                <p><strong>Lesson Outline:<strong></p>
-                                <p>{{lp.bullets}}</p>
-                            </div>
+                    <h4><strong>{{ course_name }}</strong></h4>
+                  <div class="row">
+                {% for each_lesson in l %}
+                <div class="col-sm-6 col-md-4">
+                    <div id="lp_thumbnail" class="thumbnail">
+                        <a href="{% url 'clp:user_lesson_plan' each_lesson.pk 1 %}">
+                        <div class="caption">
+                            <h3>{{each_lesson.lesson_title}}</h3>
+                            <h4><span class="label label-danger">Keywords: {{each_lesson.bullets}}</span></h4>
+                            <span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
+                            <span class="label label-info">Community Score: {{each_lesson.score}}</span>
                         </div>
-                    {% endfor %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
                 </div>
             {% endfor %}    
 

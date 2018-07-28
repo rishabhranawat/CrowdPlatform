@@ -94,6 +94,20 @@ body {
         min-width: 485px;
     }
 }
+
+#lp_cards:hover{
+	background-color: #F8F8F8;
+}
+
+a, a:hover, a:active, a:visited, a:focus {
+	text-decoration: none;
+}
+
+#lp_thumbnail {
+	text-decoration: none;
+}
+
+
 	</style>
 
 	<div class="container">
@@ -129,21 +143,21 @@ body {
 			</div>
 		</div>
 		{% for course_name, lessons in context.items %}
-			<p>{{lessons.size}}</p>
-			
 			<div class="row">
 				<h3>{{course_name}}</h3>
 			</div>
 			<div class="row">
 				{% for each_lesson in lessons %}
 				<div class="col-sm-6 col-md-4">
-					<div class="thumbnail">
+					<div id="lp_thumbnail" class="thumbnail">
+						<a href="{% url 'clp:user_lesson_plan' each_lesson.pk 1 %}">
 						<div class="caption">
 							<h3>{{each_lesson.lesson_title}}</h3>
-							<p>{{each_lesson.bullets}}</p>
-							<p>{{each_lesson.user_name}}</p>
-							<p>{{each_lesson.score}}</p>
+							<h4><span class="label label-danger">{{each_lesson.bullets}}</span></h4>
+							<span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
+							<span class="label label-info">Community Score: {{each_lesson.score}}</span>
 						</div>
+						</a>
 					</div>
 				</div>
 				{% endfor %}

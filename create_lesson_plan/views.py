@@ -824,7 +824,7 @@ class IndexView(View):
             each_lesson = lesson.objects.filter(Q(course_name__icontains=each_course, 
                 stage=1)).order_by('-score')
             context[each_course] =  each_lesson[:4] if len(each_lesson) >= 4 else each_lesson
-
+            
         return render(request, template, {"context":context})
 
     def post(self, request, *args, **kwargs):
