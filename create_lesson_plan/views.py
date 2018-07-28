@@ -812,6 +812,38 @@ def save_lesson_plan(request):
     
     return redirect('/create_lesson_plan/profile/')
 
+class IndexView(View):
+    form = SearchResultsForm()
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        courses = ["Machine Learning", "Algorithms", "Operating Systems"]
+        template = "homepage.html"
+
+        for each_course in courses:
+            each_lesson = lesson.objects.filter(Q(course_name__icontains=each_course, 
+                stage=1)).order_by('-score')
+            context[each_course] =  each_lesson[:4] if len(each_lesson) >= 4 else each_lesson
+
+        return render(request, template, {"context":context})
+
+    def post(self, request, *args, **kwargs):
+        if(request.method == 'POST'):
+            subject = request.POST['subject_name']
+            course_name = request.POST['course_name']
+            input_grade = request.POST['input_grade']
+            input_title = request.POST['input_title']
+
+            lessons = lesson.objects.filter(Q(subject = subject, 
+                course_name__icontains=course_name,
+                lesson_title__icontains=input_title,
+                grade=input_grade, stage=1)).order_by('-score')
+            
+            return render(request, 'search_results_terse.html', 
+                {'lessons':lessons})
+
+
+
 class SearchLessonPlans(View):
     form = SearchResultsForm()
 

@@ -1,12 +1,10 @@
 {% extends "theme_bootstrap/base.html" %}
 
 {% load staticfiles %}
-<!-- {% load metron_tags %}
+{% load metron_tags %}
 {% load i18n %}
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
- -->
+
+
 {% block nav %}
 <!-- {% block site_brand %}<a class="navbar-brand" href="{% url "home" %}">CollectiveTeach</a>{% endblock %} -->
 {% endblock %}
@@ -16,6 +14,8 @@
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+
     <link href="{% static "pinax/css/theme.css" %}" rel="stylesheet">
     <link href="{% static "css/site.css" %}" rel="stylesheet">
     {% block extra_style %}{% endblock %}
@@ -39,9 +39,7 @@
 
 
 {% block script_base %}
-    <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
-    <script src="{% block jquery_src %}{% static "jquery/js/jquery-2.1.1.min.js" %}{% endblock %}"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
+
     <script src="{% static "pinax/js/theme.js" %}"></script>
     {% block extra_script %}{% endblock %}
 {% endblock %}

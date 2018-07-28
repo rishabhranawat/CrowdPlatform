@@ -17,17 +17,16 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
-from create_lesson_plan import views as v
-
+from create_lesson_plan.views import SearchLessonPlans, IndexView
 from django.contrib import admin
 
 
 urlpatterns = [
-    url(r"^$", TemplateView.as_view(template_name="homepage.html"), name="home"),
+    url(r"^$", IndexView.as_view(), name="home"),
     url(r"^admin/", include(admin.site.urls)),
     url(r"^account/", include("account.urls")),
     url(r"^create_lesson_plan/",include("create_lesson_plan.urls",namespace="clp")),
-    url(r"^search_lesson_plan/",v.SearchLessonPlans.as_view(), name="search_lesson_plan"),
+    url(r"^search_lesson_plan/",SearchLessonPlans.as_view(), name="search_lesson_plan"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

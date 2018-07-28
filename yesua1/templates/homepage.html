@@ -11,184 +11,174 @@
 {% block banner %}
    
 
-    {% if user.is_authenticated %}
-        {% url "clp:create_lesson_plan" as create_lesson_plan_url %}
-        {% url "submit_question" as submit_question_url %}
-        {% url "upload" as upload_url %}
-        {% url "search_lesson_plan" as search_lp_url %}
-        {% url "search_questions" as search_q_url %}
-        {% url "generate_question_paper" as generate_question_paper_url %}
+	{% if user.is_authenticated %}
+		{% url "clp:create_lesson_plan" as create_lesson_plan_url %}
+		{% url "submit_question" as submit_question_url %}
+		{% url "upload" as upload_url %}
+		{% url "search_lesson_plan" as search_lp_url %}
+		{% url "search_questions" as search_q_url %}
+		{% url "generate_question_paper" as generate_question_paper_url %}
 
-                
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+				
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <title>CollectiveTeach</title>
+	<title>CollectiveTeach</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
 
-    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
+	<style type="text/css">
+body {
+    padding-top: 50px;
+}
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn-group .form-horizontal .btn[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
 
-    <div id="wrapper">
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 500px;
+    }
+}
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Welcome, {{user.username}}!</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-primary">
-                        
-                        <a href="{% url 'clp:generate_lesson_plan' 0 %}">
-                        <div class="panel-heading">
-                            <div class="row" style="background-image: url(../site_media/static/images/updown2.png); background-size:30px 30px; background-repeat: no-repeat; background-position: left; cursor: move;margin-left:10px">
-                                <div class="col-xs-3" >
-                                    <i class="fa fa-plus fa-1x"></i>
-                                </div>
-                                <div class="col-xs-9 text-center" >
-                                
-                                    <div style="margin-left:-100px;" >Generate a New Lesson plan</div>
-                                
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-primary">
-                        <a href="{% url 'clp:upload_lesson_plan' %}">
-                        <div class="panel-heading">
-                            <div class="row" style="background-image: url(../site_media/static/images/updown2.png); background-size:30px 30px; background-repeat: no-repeat; background-position: left; cursor: move;margin-left:10px">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-arrow-up fa-1x"></i>
-                                </div>
-                                <div class="col-xs-9 text-center    ">
-                                    <div style="margin-left:-100px;">Upload a Lesson plan</div>
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-primary">
-                        <a href="{{search_lp_url}}">
-                        <div class="panel-heading">
-                            <div class="row" style="background-image: url(../site_media/static/images/updown2.png); background-size:30px 30px; background-repeat: no-repeat; background-position: left; cursor: move;margin-left:10px">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-list fa-1x"></i>
-                                </div>
-                                <div class="col-xs-9 text-center    ">
-                                    <div style="margin-left:-120px;">Search a Lesson plan</div>
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                </div>
-                <!--<div class="col-lg-4 col-md-6">
-                    <div class="panel panel-primary">
-                        <a href="{{search_q_url}}">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-list fa-1x"></i>
-                                </div>
-                                <div class="col-xs-9 text-center    ">
-                                    <div>Question Bank</div>
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                </div>-->
-                <!--<div class="col-lg-4 col-md-6">
-                    <div class="panel panel-primary">
-                        <a href="{{generate_question_paper_url}}">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-list fa-1x"></i>
-                                </div>
-                                <div class="col-xs-9 text-center    ">
-                                    <div>Generate Question Paper</div>
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                </div>-->
-            </div>
+@media screen and (max-width:  767px){
+	#adv-search{
+		width: 485px;
+		margin: 0 auto;
+	}
+
+	.dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 485px;
+    }
+}
+	</style>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search for...">
+					<div class="input-group-btn">
+	 					<div class="btn-group" role="group">
+							<div class="dropdown dropdown-lg">
+                            	
+                            	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+
+                            	<!-- Dropdown menu form!-->
+								<div class="dropdown-menu dropdown-menu-right" role="menu">
+									<form class="form-horizontal" role="form">
+										 <div class="form-group">
+											<label for="contain">Author</label>
+											<input class="form-control" type="text" />
+										</div>
+									<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+									</form>
+								</div>
 
 
+							</div>
+                        <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 
-            <div>
-            <!--- /#row -->
-        
-    </div>
-    <!-- /#wrapper -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% for course_name, lessons in context.items %}
+			<p>{{lessons.size}}</p>
+			
+			<div class="row">
+				<h3>{{course_name}}</h3>
+			</div>
+			<div class="row">
+				{% for each_lesson in lessons %}
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<div class="caption">
+							<h3>{{each_lesson.lesson_title}}</h3>
+							<p>{{each_lesson.bullets}}</p>
+							<p>{{each_lesson.user_name}}</p>
+							<p>{{each_lesson.score}}</p>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			
+		{% endfor %}
 
-    <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>
+	</div>
 
-    <!-- jQuery Version 1.11.0 -->
-    <script src="{% static "js/jquery-1.11.0.js" %}"></script>
+	{% else %}
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="{% static "js/plugins/metisMenu/metisMenu.min.js" %}"></script>
+	<title>CollectiveTeach</title>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="{% static "js/sb-admin-2.js" %}"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
-
-
-
-    {% else %}
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>CollectiveTeach</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-        {% url "account_login" as login_url %}
-        {% url "account_signup" as signup_url %}
-         <h1>{% trans "Welcome to CollectiveTeach" %}</h1>
-    <p>
-        {% blocktrans %}
-        <b>CollectiveTeach</b> is a crowdsourced learning platform aimed at 
-    augmenting your teaching and learning experience. By
-        using CollectiveTeach, you can make your teaching magical!
-        Are you ready?
-    {% endblocktrans %}
-    </p>
-        <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-default">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to try out the site.{% endblocktrans %}</p>
-    {% endif %}
+		{% url "account_login" as login_url %}
+		{% url "account_signup" as signup_url %}
+		 <h1>{% trans "Welcome to CollectiveTeach" %}</h1>
+	<p>
+		{% blocktrans %}
+		<b>CollectiveTeach</b> is a crowdsourced learning platform aimed at 
+	augmenting your teaching and learning experience. By
+		using CollectiveTeach, you can make your teaching magical!
+		Are you ready?
+	{% endblocktrans %}
+	</p>
+		<p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-default">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to try out the site.{% endblocktrans %}</p>
+	{% endif %}
 {% endblock %}
