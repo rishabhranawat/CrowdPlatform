@@ -95,12 +95,12 @@ class SearchES:
 			search_mappings.append((s.body, 5))
 
 		return search_mappings
-        
-        def get_features(self, s):
-            width = 3
-            s = s.lower()
-            s = re.sub(r'[^\w]+', '', s)
-            return [s[i:i + width] for i in range(max(len(s)-width+1, 1))]           
+		
+		def get_features(self, s):
+			width = 3
+			s = s.lower()
+			s = re.sub(r'[^\w]+', '', s)
+			return [s[i:i + width] for i in range(max(len(s)-width+1, 1))]           
  
 	def simhash_detect_dups(self, details):
 		links = {}
@@ -109,12 +109,12 @@ class SearchES:
 		for i in range(0, len(details)):
 			links[i] = details[i][0]
 			cont[i] = details[i][1]
-                
-                t = time.time() 
-                objs = [(str(k), Simhash(self.get_features(v))) for k, v in cont.items()]
+				
+				t = time.time() 
+				objs = [(str(k), Simhash(self.get_features(v))) for k, v in cont.items()]
 		index = SimhashIndex(objs, k=3)
 		print('Time taken to build index', time.time()-t)
-                visited = set()
+				visited = set()
 
 		all_dups_sets = []
 		for ind, content in cont.items():
@@ -128,23 +128,23 @@ class SearchES:
 		for each in all_dups_sets:
 			absolute_unique_links.add(links[int(each[0])])
 		return absolute_unique_links
-        
-        def simhash_imple(self, details):
-            links = {}
-            cont = {}
+		
+		def simhash_imple(self, details):
+			links = {}
+			cont = {}
 
-            t = time.time()
-            hashes = []
-            for i in range(0, len(details)):
-                links[i] = details[i][0]
-                cont[i] = details[i][1]
-                hashes.append(simhash.compute(cont[i]))
-            
-            blocks = 4
-            distance = 3
-            
-            matches = simhash.find_all(hashes, blocks, distance)
-            print("Simhash implementaiton", time.time()-t,len(matches))
+			t = time.time()
+			hashes = []
+			for i in range(0, len(details)):
+				links[i] = details[i][0]
+				cont[i] = details[i][1]
+				hashes.append(simhash.compute(cont[i]))
+			
+			blocks = 4
+			distance = 3
+			
+			matches = simhash.find_all(hashes, blocks, distance)
+			print("Simhash implementaiton", time.time()-t,len(matches))
 
 	def sequence_links(self, details, unique_links):
 		docs = {}
@@ -171,19 +171,14 @@ class SearchES:
 		links = set()
 				
 		t = time.time()
-                p = Pool(4)
+		p = Pool(4)
 		results = list(p.imap_unordered(execute_query_get_results, mappings))
 		p.close()
 		p.join()
-                print(time.time() - t)
-		
+	  
 		collated_results = [item for sublist in results for item in sublist]
 		t = time.time()
-                print(len(collated_results))
-                #unique_results = list(self.simhash_detect_dups(list(collated_results)))
-		unique_results = list(collated_results)
-                self.simhash_imple(list(collated_results))
-                print(time.time() - t, len(unique_results))
-                sequenced, doc_to_keys = self.sequence_links(list(collated_results), unique_results)
+		unique_results = list(self.simhash_detect_dups(list(collated_results)))
+		sequenced, doc_to_keys = self.sequence_links(list(collated_results), unique_results)
 		return sequenced, doc_to_keys
 
