@@ -39,15 +39,13 @@ a, a:hover, a:active, a:visited, a:focus {
                 </ul>
             </div>
 
-            <div class="row">
-                <blockquote class="blockquote">
-  <p class="mb-0">Following are your lesson plans:</p>
-</blockquote>
-            </div>
+            <br></br>
             {% for course_name, l in lesson_plans.items %}
                 <div class="row">
-                    <h4><strong>Course: {{ course_name }}</strong></h4>
-                  <div class="row">
+                <blockquote class="blockquote">
+                    <p class="mb-0"><strong>Course: {{course_name}}</strong></p>
+                </blockquote>
+                <div class="row">
                 {% for each_lesson in l %}
                 <div class="col-sm-6 col-md-4">
                     <div id="lp_thumbnail" class="thumbnail">

@@ -11,90 +11,86 @@
 
   <head>
 
-    <title>Search Results</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<title>Search Results</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
-    <!-- Our own CSS -->
-    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+	<!-- Our own CSS -->
+	<link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
 
-    <!-- Latest compiled and minified JavaScript -->
+	<!-- Latest compiled and minified JavaScript -->
 
 
-    <!-- Table drag and drop -->
-    
+	<!-- Table drag and drop -->
+	
   </head>
 
   <body>
 
 
-    {% block banner %}
-<h2>Search Lesson Plan</h2>
+	{% block banner %}
 
    {% url "clp:search_results" as search_results_url %}
 
-       <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	   <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
-    <!-- Our own CSS -->
-    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
-      <form action="{{search_results_url}}" method="POST">      
-      
-    <div class="container">
-      <div id="debugArea" style="float: right">&nbsp;</div>
-      
-      <!-- First Div -->
-      <table class="table table-hover" id="table1">
-
-        <thead>
-          <tr>
-            <th>Results</th>
-          </tr>
-        </thead>
-
-        <tbody>
-    {% if lessons %}
-	  {% for lesson in lessons %}
-          <!--- search result -->
-          <tr id="lesson_{{forloop.counter}}">
-            <td>
-              <a href="{% url 'clp:display_search_lesson_plan' lesson.pk %}"><div class="col-md-12 clickable-link" id="{{ lesson.id }}">
-                   <p>Course: {{ lesson.course_name }}</p>
-                   <p>Title: {{ lesson.lesson_title }}</p>
-                   <p>Author: {{ lesson.user_name }} </p>
-                   <p>Grade: {{ lesson.grade }}</p>
-                   <p>Rating: {{lesson.score}}</p>
-              </div></a>
-            </td>
-          </tr> 
-          <!-- search result ends -->
-          {% endfor %}
-    {% endif %}
-
-          
-
-        </tbody>
-
-      </table>
-
-       <!--{% blocktrans %}<input type="submit" id="save" class="btn btn-primary"></input>{% endblocktrans %} -->
-      <br/>
-      </form>
-     
-    <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-    </div>
+	<!-- Our own CSS -->
+	<link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+	  <form action="{{search_results_url}}" method="POST">      
+	  
+	<div class="container">
+		
+			
+		<div class="row">
+			<form enctype="multipart/form-data" action="{% url 'search_lesson_plan' %}" role="form" method = "post">
+				{% csrf_token %}
+				{% load bootstrap %}
+				{{form|bootstrap}}
+				<button class="btn btn-primary" type="submit">{% trans "Search Lesson Plan" %}</button>
+			</form>
+		</div>
+		<br>
+		{% if lessons %}
+		<div class="row">
+			<blockquote class="blockquote">
+				<p class="mb-0"><strong>Results:</strong></p>
+			</blockquote>
+		</div>
 
 
-    {% endblock %}
-    
+
+		<div class="row">
+
+			
+				{% for each_lesson in lessons %}
+				<div class="col-sm-6 col-md-4">
+				  <div id="lp_thumbnail" class="thumbnail">
+					<a href="{% url 'clp:display_search_lesson_plan' each_lesson.pk %}">
+					<div class="caption" id="{{ each_lesson.id }}">
+					  <h3>{{each_lesson.lesson_title}}</h3>
+					  {% for each_bullet in each_lesson.bullets_as_list %}
+						<span class="label label-danger">{{each_bullet}}</span>&nbsp;
+					  {% endfor %}
+					  <br></br>
+					  <span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
+					  <span class="label label-info">Community Score: {{each_lesson.score}}</span>
+					</div>
+					</a>
+				  </div>
+				</div>
+				{% endfor %}
+			{% endif %}	 
+		</div>
+	</div>
+	{% endblock %}
+	
   </body>
 </html>
 

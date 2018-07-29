@@ -10,6 +10,10 @@
 
 <ul class="nav navbar-nav pull-right">
     {% if request.user.is_authenticated %}
+        <li>
+            <a href="/create_lesson_plan/generate_lesson_plan/1">{% trans "Generate" %}</a>
+        </li>
+
         <p class="navbar-text">
             <a href="/create_lesson_plan/profile/"><i class="fa fa-user"></i> {% user_display request.user %}</a>
         </p>
