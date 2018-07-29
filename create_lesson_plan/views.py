@@ -823,24 +823,20 @@ class IndexView(View):
         for each_course in courses:
             each_lesson = lesson.objects.filter(Q(course_name__icontains=each_course, 
                 stage=1)).order_by('-score')
-            context[each_course] =  each_lesson[:4] if len(each_lesson) >= 4 else each_lesson
-        
+            
+            unique_list = []
+            unique_lesson_titles = set()
+            for l in each_lesson:
+                if(l.lesson_title.lower() not in unique_lesson_titles):
+                    unique_lesson_titles.add(l.lesson_title.lower())
+                    unique_list.append(l)
+            if(len(unique_list) <= 6):
+                context[each_course] = each_lesson
+            else:
+                context[each_course] = unique_list        
         return render(request, template, {"context":context, "form":self.form})
 
     def post(self, request, *args, **kwargs):
-        # if(request.method == 'POST'):
-        #     subject = request.POST['subject_name']
-        #     course_name = request.POST['course_name']
-        #     input_grade = "Undergraduate"
-        #     input_title = request.POST['input_title']
-
-        #     lessons = lesson.objects.filter(Q(subject = subject, 
-        #         course_name__icontains=course_name,
-        #         lesson_title__icontains=input_title,
-        #         grade=input_grade, stage=1)).order_by('-score')
-            
-        #     return render(request, template, {"context":context, "subject": "subject", 
-        #         "course_name": course_name, "title": input_title})
         return HttpResponse("hey!")
 
 
