@@ -24,7 +24,7 @@ def execute_query_get_results(mapping):
 			if("content" in hit["_source"]["attachment"]):
 				content = hit["_source"]["attachment"]["content"]
 			links.add((link, content))
-		return links
+                return links
 
 class SearchES:
 	
@@ -48,7 +48,7 @@ class SearchES:
 	
 	def generate_relevant_query_maps(self, query, relevant_terms, phase):
 		search_mappings = []
-		 
+		print("here") 
 		if(phase==1):    
 			s1 = SearchMappingGenerator()
 			self.add_relevant_terms_mapping(s1, relevant_terms, query)
@@ -96,7 +96,7 @@ class SearchES:
 
 		return search_mappings
 		
-		def get_features(self, s):
+	def get_features(self, s):
 			width = 3
 			s = s.lower()
 			s = re.sub(r'[^\w]+', '', s)
@@ -110,11 +110,9 @@ class SearchES:
 			links[i] = details[i][0]
 			cont[i] = details[i][1]
 				
-				t = time.time() 
-				objs = [(str(k), Simhash(self.get_features(v))) for k, v in cont.items()]
+		objs = [(str(k), Simhash(self.get_features(v))) for k, v in cont.items()]
 		index = SimhashIndex(objs, k=3)
-		print('Time taken to build index', time.time()-t)
-				visited = set()
+		visited = set()
 
 		all_dups_sets = []
 		for ind, content in cont.items():
@@ -129,23 +127,6 @@ class SearchES:
 			absolute_unique_links.add(links[int(each[0])])
 		return absolute_unique_links
 		
-		def simhash_imple(self, details):
-			links = {}
-			cont = {}
-
-			t = time.time()
-			hashes = []
-			for i in range(0, len(details)):
-				links[i] = details[i][0]
-				cont[i] = details[i][1]
-				hashes.append(simhash.compute(cont[i]))
-			
-			blocks = 4
-			distance = 3
-			
-			matches = simhash.find_all(hashes, blocks, distance)
-			print("Simhash implementaiton", time.time()-t,len(matches))
-
 	def sequence_links(self, details, unique_links):
 		docs = {}
 		index = {}
@@ -170,15 +151,14 @@ class SearchES:
 		mappings = self.generate_relevant_query_maps(query, relevant_terms, phase)
 		links = set()
 				
-		t = time.time()
 		p = Pool(4)
 		results = list(p.imap_unordered(execute_query_get_results, mappings))
 		p.close()
 		p.join()
 	  
 		collated_results = [item for sublist in results for item in sublist]
-		t = time.time()
-		unique_results = list(self.simhash_detect_dups(list(collated_results)))
-		sequenced, doc_to_keys = self.sequence_links(list(collated_results), unique_results)
+		#unique_results = list(self.simhash_detect_dups(list(collated_results)))
+		unique_results = [each[0] for each in collated_results]
+                sequenced, doc_to_keys = self.sequence_links(list(collated_results), unique_results)
 		return sequenced, doc_to_keys
 
