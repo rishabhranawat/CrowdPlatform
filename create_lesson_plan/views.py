@@ -824,23 +824,24 @@ class IndexView(View):
             each_lesson = lesson.objects.filter(Q(course_name__icontains=each_course, 
                 stage=1)).order_by('-score')
             context[each_course] =  each_lesson[:4] if len(each_lesson) >= 4 else each_lesson
-            
-        return render(request, template, {"context":context})
+        
+        return render(request, template, {"context":context, "form":self.form})
 
     def post(self, request, *args, **kwargs):
-        if(request.method == 'POST'):
-            subject = request.POST['subject_name']
-            course_name = request.POST['course_name']
-            input_grade = request.POST['input_grade']
-            input_title = request.POST['input_title']
+        # if(request.method == 'POST'):
+        #     subject = request.POST['subject_name']
+        #     course_name = request.POST['course_name']
+        #     input_grade = "Undergraduate"
+        #     input_title = request.POST['input_title']
 
-            lessons = lesson.objects.filter(Q(subject = subject, 
-                course_name__icontains=course_name,
-                lesson_title__icontains=input_title,
-                grade=input_grade, stage=1)).order_by('-score')
+        #     lessons = lesson.objects.filter(Q(subject = subject, 
+        #         course_name__icontains=course_name,
+        #         lesson_title__icontains=input_title,
+        #         grade=input_grade, stage=1)).order_by('-score')
             
-            return render(request, 'search_results_terse.html', 
-                {'lessons':lessons})
+        #     return render(request, template, {"context":context, "subject": "subject", 
+        #         "course_name": course_name, "title": input_title})
+        return HttpResponse("hey!")
 
 
 
@@ -848,22 +849,24 @@ class SearchLessonPlans(View):
     form = SearchResultsForm()
 
     def get(self, request, *args, **kwargs):
-        return render(request, 'search.html', {'form':self.form})
+        return render(request, 'search_results_terse.html', {'form':self.form})
 
     def post(self, request, *args, **kwargs):
+
         if(request.method == 'POST'):
             subject = request.POST['subject_name']
             course_name = request.POST['course_name']
-            input_grade = request.POST['input_grade']
+            input_grade = "Undergraduate"
             input_title = request.POST['input_title']
 
+            form = SearchResultsForm({"subject_name": subject, "course_name": course_name, "input_title":input_title})
             lessons = lesson.objects.filter(Q(subject = subject, 
                 course_name__icontains=course_name,
                 lesson_title__icontains=input_title,
                 grade=input_grade, stage=1)).order_by('-score')
             
             return render(request, 'search_results_terse.html', 
-                {'lessons':lessons})
+                {'lessons':lessons, "form":form})
 
 
 class DisplaySearchLessonPlan(View):

@@ -36,7 +36,7 @@ class SearchResultsForm(forms.Form):
 	subject_name = forms.CharField(label='Subject Name')
 	course_name = forms.CharField(label='Course Name', required=False)
 	input_title = forms.CharField(label='Lesson Title', required=False)
-	input_grade = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, required=False)
+	# input_grade = forms.ChoiceField(label='Grade', choices=GRADE_CHOICES, required=False)
 
 class ManualLinkAddition(forms.Form):
 	LINK_CHOICES = (

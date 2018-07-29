@@ -37,114 +37,90 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 	<style type="text/css">
-body {
-    padding-top: 50px;
-}
-.dropdown.dropdown-lg .dropdown-menu {
-    margin-top: -1px;
-    padding: 6px 20px;
-}
-.input-group-btn .btn-group {
-    display: flex !important;
-}
-.btn-group .btn {
-    border-radius: 0;
-    margin-left: -1px;
-}
-.btn-group .btn:last-child {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-.btn-group .form-horizontal .btn[type="submit"] {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-.form-horizontal .form-group {
-    margin-left: 0;
-    margin-right: 0;
-}
-.form-group .form-control:last-child {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-}
+		#lp_thumbnail:hover{
+			background-color: #F8F8F8;
+		}
 
-@media screen and (min-width: 768px) {
-    #adv-search {
-        width: 500px;
-        margin: 0 auto;
-    }
-    .dropdown.dropdown-lg {
-        position: static !important;
-    }
-    .dropdown.dropdown-lg .dropdown-menu {
-        min-width: 500px;
-    }
-}
+		a, a:hover, a:active, a:visited, a:focus {
+			text-decoration: none;
+		}
 
-@media screen and (max-width:  767px){
-	#adv-search{
-		width: 485px;
-		margin: 0 auto;
-	}
+		#lp_thumbnail {
+			text-decoration: none;
+		}
 
-	.dropdown.dropdown-lg {
-        position: static !important;
-    }
-    .dropdown.dropdown-lg .dropdown-menu {
-        min-width: 485px;
-    }
-}
-
-#lp_thumbnail:hover{
-	background-color: #F8F8F8;
-}
-
-a, a:hover, a:active, a:visited, a:focus {
-	text-decoration: none;
-}
-
-#lp_thumbnail {
-	text-decoration: none;
-}
+		#search_bar{
+			display: none;
+		}
 
 
+		#search_bar {
+			height: 50%;
+			width: 50%;
+		    display: none;
+		    position: fixed;
+		    z-index: 1;
+		    top:25%;
+		    left: 25%;
+		    margin: auto;
+		}
+
+		/*.overlay-content {
+		    position: relative;
+		    top: 46%;
+		    width: 80%;
+		    text-align: center;
+		    margin-top: 30px;
+		    margin: auto;
+		}*/
+
+		@media only screen and (max-width: 600px) {
+    		#search_bar {
+		        height: 100%;
+				width: 100%;
+			    display: none;
+			    position: fixed;
+			    z-index: 1;
+			    top:25%;
+			    left:0;
+		    }
+		}
+
+		#close_button {
+			display: none;
+
+		}
 	</style>
 
+	<script type="text/javascript">
+		function hide_search_bar(){
+			$("#search_bar").fadeOut();
+			$("#main").fadeTo("fast", 1.0);
+			$("#search_button").fadeIn(0.0001);
+			$("#close_button").fadeOut(0.0001);
+		}
+		function show_search_bar(){
+			$("#search_bar").fadeIn();
+			$("#main").fadeTo("slow", 0.1);
+			$("#search_button").fadeOut(0.0001);
+			$("#close_button").fadeIn(0.0001);
+		}
+	</script>
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Search for...">
-					<div class="input-group-btn">
-	 					<div class="btn-group" role="group">
-							<div class="dropdown dropdown-lg">
-                            	
-                            	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-
-                            	<!-- Dropdown menu form!-->
-								<div class="dropdown-menu dropdown-menu-right" role="menu">
-									<form class="form-horizontal" role="form">
-										 <div class="form-group">
-											<label for="contain">Author</label>
-											<input class="form-control" type="text" />
-										</div>
-									<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-
-									</form>
-								</div>
-
-
-							</div>
-                        <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-
-						</div>
-					</div>
-				</div>
+			<div class="col-lg-6 col-lg-offset-3 col-md-offset-3 col-xs-12">
+				<button id="search_button" type="button" class="btn btn-primary btn-block" onClick=show_search_bar()>Search</button>
 			</div>
 		</div>
+		<button id="close_button" type="button" class="btn btn-primary" onClick=hide_search_bar()>Close</button>
+	</div>
+	<br>
+	<div id="main", class="container">
 		{% for course_name, lessons in context.items %}
 			<div class="row">
-				<h3>{{course_name}}</h3>
+				<blockquote class="blockquote">
+                    <p class="mb-0"><strong>{{course_name}}</strong></p>
+                </blockquote>
 			</div>
 			<div class="row">
 				{% for each_lesson in lessons %}
@@ -153,11 +129,11 @@ a, a:hover, a:active, a:visited, a:focus {
 						<a href="{% url 'clp:user_lesson_plan' each_lesson.pk 1 %}">
 						<div class="caption">
 							<h3>{{each_lesson.lesson_title}}</h3>
-                            {% for each_bullet in each_lesson.bullets_as_list %}
-                              <span class="label label-danger">{{each_bullet}}</span>&nbsp;
-                            {% endfor %}
-                            <br></br>
-                            <span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
+							{% for each_bullet in each_lesson.bullets_as_list %}
+							  <span class="label label-danger">{{each_bullet}}</span>&nbsp;
+							{% endfor %}
+							<br></br>
+							<span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
 							<span class="label label-info">Community Score: {{each_lesson.score}}</span>
 						</div>
 						</a>
@@ -168,6 +144,21 @@ a, a:hover, a:active, a:visited, a:focus {
 			
 		{% endfor %}
 
+	</div>
+
+	<div id="search_bar" class="container">
+		<div class="row">
+			<form enctype="multipart/form-data" action="{% url 'search_lesson_plan' %}" role="form" method = "post">
+				{% csrf_token %}
+				{% load bootstrap %}
+				{{form|bootstrap}}
+				<div class="row">
+					<div class="col-xs-12 col-lg-6 col-md-6 col-lg-offset-3 col-md-offset-3">
+						<button class="btn btn-primary btn-block" type="submit">{% trans "Search Lesson Plan" %}</button>
+					</div>
+			</div>
+			</form>
+		</div>
 	</div>
 
 	{% else %}
