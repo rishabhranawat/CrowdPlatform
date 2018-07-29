@@ -11,368 +11,367 @@
 
   <head>
 
-    <title>Results</title>
+	<title>Results</title>
   </head>
 
   <body>
 
-    {% block banner %}
+	{% block banner %}
 
-      <h2>{{l.course_name}} <span> : {{l.lesson_title}} 
-        <button class="btn btn-primary" value="Save Lesson Plan" onclick="save_lesson_plan();">
-          Save Lesson Plan
-        </button>
-        <a  href="/create_lesson_plan/{{l.pk}}/add_questions/"> 
-          <button class="btn btn-success">
-            Add Questions
-          </button>
-        </a>
-      </h2> 
+	  <h2>{{l.course_name}} <span> : {{l.lesson_title}} 
+		<button class="btn btn-primary" value="Save Lesson Plan" onclick="save_lesson_plan();">
+		  Save Lesson Plan
+		</button>
+		<a  href="/create_lesson_plan/{{l.pk}}/add_questions/"> 
+		  <button class="btn btn-success">
+			Add Questions
+		  </button>
+		</a>
+	  </h2> 
 
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <script type="text/javascript">
-      function extractDomain(url) {
-          var domain;
-          if (url.indexOf("://") > -1) {domain = url.split('/')[2];}
-          else {domain = url.split('/')[0];}
-          
-          domain = domain.split(':')[0];
-          return domain;
-      }
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<script type="text/javascript">
+	  function extractDomain(url) {
+		  var domain;
+		  if (url.indexOf("://") > -1) {domain = url.split('/')[2];}
+		  else {domain = url.split('/')[0];}
+		  
+		  domain = domain.split(':')[0];
+		  return domain;
+	  }
 
-      function extractFileType(url){
-        url = url.substr(1 + url.lastIndexOf('/'));
-        url = url.split('?')[0];
-        fileType = url.split('#')[0].split('.')[1];
-        // if(fileType.indexOf("html") > -1){
-        //   return null;
-        // }
-        return fileType;
-      }
-    </script>
+	  function extractFileType(url){
+		url = url.substr(1 + url.lastIndexOf('/'));
+		url = url.split('?')[0];
+		fileType = url.split('#')[0].split('.')[1];
+		// if(fileType.indexOf("html") > -1){
+		//   return null;
+		// }
+		return fileType;
+	  }
+	</script>
 
-    <!-- Our own CSS -->
-    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+	<!-- Our own CSS -->
+	<link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
 
-    <div class="modal fade" id="errorModal" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title" id="modal-header">Error!</h4>
-            </div>
-            <div class="modal-body" id="modal-body">
-              <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    
-      <!-- First Div -->
-      {% if engage_urls %}
-      <div class="container">
-        <table class="table table-hover" id="table1" name="table1">
+	<div class="modal fade" id="errorModal" role="dialog">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			  <h4 class="modal-title" id="modal-header">Error!</h4>
+			</div>
+			<div class="modal-body" id="modal-body">
+			  <p>Some text in the modal.</p>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		  
+		</div>
+	  </div>
+	
+	  <!-- First Div -->
+	  {% if engage_urls %}
+	  <div class="container">
+		<table class="table table-hover" id="table1" name="table1">
 
-          <thead>
-            <tr>
-              <th>Engage</th>
-            </tr>
-          </thead>
+		  <thead>
+			<tr>
+			  <th>Engage</th>
+			</tr>
+		  </thead>
 
+		  <tbody>
+			{% for enlink in engage_urls %}
+			<tr id="engage_{{enlink.item_id}}_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
+						{% for t, v in eng_url_to_tag.items %}
+							  {% if t.url == enlink.url %}
+									{% for each_tag in v%}
+									<span class="label label-info">{{each_tag.tag_name}}</span>
+									{% endfor %}
+							  {% endif %}
+						{% endfor %}
+						<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('{{enlink.url}}'));
+						  	</script>
+						</span>&nbsp;
 
-
-          <tbody>
-
-            {% for enlink in engage_urls %}
-            <!--</tr> -->
-            <tr id="engage_{{enlink.item_id}}_row">
-              <td>
-                  <div class="col-xs-12 col-md-11">
-
-                        <h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
-                        {% for t, v in eng_url_to_tag.items %}
-			  {% if t.url == enlink.url %}
-				{% for each_tag in v%}
-			  	<span class="label label-info">{{each_tag.tag_name}}</span>
-				{% endfor %}
-			  {% endif %}
-                        {% endfor %}
-                        <span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
-                          <script text="text/javascript">
-                            document.getElementById('domainId+'+'{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
-                          </script>
-                        </span>
-                        <span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
-                          <script text="text/javascript">
-                            // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
-                            var fileType = (extractFileType('{{enlink.url}}'));
-                            if(fileType != null){
-                              document.getElementById('fileType+'+'{{enlink.url}}').innerHTML="("+fileType+")";
-                            }
-                          </script>
-                        </span >
-                        <p>{{ enlink.desc }}</p>  
-                  </div>
-                  <div class="col-md-1">
-                <input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
-            
-                  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
-               
-                  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'ḍown');" width="15" height="15"/>
+						<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('{{enlink.url}}'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p>{{ enlink.desc }}</p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'ḍown');" width="15" height="15"/>
 
 
-              <button onclick="reorder_phase({{enlink.pk}}, 'engage', 'evaluate');" type="button" class="btn btn-default">
-                  Move to Evaluate
-              </button>
-               
-              </div>
-                </td>
-            </tr> 
-        {% endfor %}
-        </tbody>
-      </table>
-      </div>
-      {% endif %}
+			  <button onclick="reorder_phase({{enlink.pk}}, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  Move to Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		{% endfor %}
+		</tbody>
+	  </table>
+	  </div>
+	  {% endif %}
 
-      
-      <!-- third div -->
-      {% if evaluate_urls %}
-      <table class="table table-hover" id="table3">
+	  
+	  <!-- third div -->
+	  {% if evaluate_urls %}
+	  <table class="table table-hover" id="table3">
 
-        <thead>
-          <tr>
-            <th>Evaluate</th>
-          </tr>
-        </thead>
+		<thead>
+		  <tr>
+			<th>Evaluate</th>
+		  </tr>
+		</thead>
 
-        <tbody>
-          <!--- search result -->
-          {% for enlink in evaluate_urls %}
-          <!--- search result -->
-           <!--<tr> -->
-            <input type="hidden" id="evaluateurl_{{enlink.item_id}}" name="evaluateurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
-            <input type="hidden" id="evaluatedesc_{{enlink.item_id}}" name="evaluatedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
-            <input type="hidden" id="evaluatetitle_{{enlink.item_id}}" name="evaluatetitle_{{enlink.item_id}}" value="{{enlink.title}}"/>
-          <!--</tr> -->
-          <tr id="evaluate_{{enlink.item_id}}_row">
-            <td>
-              <div class="col-md-11" >
-                  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
-                        {% for t, v in eva_url_to_tag.items %}
-                  			  {% if t.url == enlink.url %}
-                    				{% for each_tag in v%}
-                    			  	<span class="label label-info">{{each_tag.tag_name}}</span>
-                    				{% endfor %}
-                  			  {% endif %}
-                        {% endfor %}
+		<tbody>
+		  <!--- search result -->
+		  {% for enlink in evaluate_urls %}
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_{{enlink.item_id}}" name="evaluateurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
+			<input type="hidden" id="evaluatedesc_{{enlink.item_id}}" name="evaluatedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
+			<input type="hidden" id="evaluatetitle_{{enlink.item_id}}" name="evaluatetitle_{{enlink.item_id}}" value="{{enlink.title}}"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_{{enlink.item_id}}_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
+						{% for t, v in eva_url_to_tag.items %}
+							  {% if t.url == enlink.url %}
+									{% for each_tag in v%}
+									<span class="label label-info">{{each_tag.tag_name}}</span>
+									{% endfor %}
+							  {% endif %}
+						{% endfor %}
+						<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('{{enlink.url}}'));
+						  	</script>
+						</span>&nbsp;
 
-                        <span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
-
-                          <script text="text/javascript">
-                            document.getElementById('domainId+{{enlink.url}}').innerHTML = extractDomain('{{enlink.url}}');
-                          </script>
-                        </span>
-                        <span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
-                          <script text="text/javascript">
-                            // document.getElementById('fileType'+'{{enlink.url}}').innerHTML = 
-                            var fileType = (extractFileType('{{enlink.url}}'));
-                            if(fileType != null){
-                              document.getElementById('fileType+'+'{{enlink.url}}').innerHTML="("+fileType+")";
-                            }
-                          </script>
-                        </span >
-                  <p>{{ enlink.desc }}</p>
-              </div>
-              <div class="col-md-1">
-                <input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'evaluate');" width="20" height="20"/>
+						<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('{{enlink.url}}'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p>{{ enlink.desc }}</p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'evaluate');" width="20" height="20"/>
   
-                  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'up');" width="15" height="15"/>
-                
-                  <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'down');" width="15" height="15"/>
+				  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'down');" width="15" height="15"/>
 
 
-              <button onclick="reorder_phase({{enlink.pk}}, 'evaluate', 'engage');" type="button" class="btn btn-default">Move to Engage
-              </button>
-              </div>
-            </td>
-          </tr> 
+			  <button onclick="reorder_phase({{enlink.pk}}, 'evaluate', 'engage');" type="button" class="btn btn-default">Move to Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
   
-          {% endfor %}  
+		  {% endfor %}  
 
-        </tbody>
-      </table>
+		</tbody>
+	  </table>
    
-      {% endif %}
-      <h4>Add A Link</h4>
-          <form  id="newlink" enctype="multipart/form-data" onsubmit="add_new_link()" role="form" method = "post">
-        {% csrf_token %}
-        {% load bootstrap %}
-        {{form|bootstrap}}
-        <button class="btn btn-primary" type="submit">{% trans "Add to your Lesson Plan" %}</button>
-    </form>
+	  {% endif %}
+	  <h4>Add A Link</h4>
+		  <form  id="newlink" enctype="multipart/form-data" onsubmit="add_new_link()" role="form" method = "post">
+		{% csrf_token %}
+		{% load bootstrap %}
+		{{form|bootstrap}}
+		<button class="btn btn-primary" type="submit">{% trans "Add to your Lesson Plan" %}</button>
+	</form>
 
-      <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	  <script type="text/javascript" src="{% static "js/jquery-1.7.1.js" %}"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-      <script type="text/javascript">
-         function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
+	  <script type="text/javascript">
+		 function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+				var cookies = document.cookie.split(';');
+				for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
 
-        function objectifyForm(formArray) {//serialize data function
-          var returnArray = {};
-          for (var i = 0; i < formArray.length; i++){
-            returnArray[formArray[i]['name']] = formArray[i]['value'];
-          }
-          return returnArray;
-        }
-        function add_new_link(){
-          var fd = ($('#newlink').serializeArray());
-          var csrf_token = getCookie('csrftoken');
-          var data = {'csrfmiddlewaretoken': csrf_token, 'fd': objectifyForm(fd)};
+		function objectifyForm(formArray) {//serialize data function
+		  var returnArray = {};
+		  for (var i = 0; i < formArray.length; i++){
+			returnArray[formArray[i]['name']] = formArray[i]['value'];
+		  }
+		  return returnArray;
+		}
+		function add_new_link(){
+		  var fd = ($('#newlink').serializeArray());
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'csrfmiddlewaretoken': csrf_token, 'fd': objectifyForm(fd)};
 
-          var url = "{% url 'clp:user_lesson_plan' l.pk 6 %}";
-          if(data != null){
-              $.ajax({ 
-                  data: data ,
-                  type: "POST",
-                  url: url,
-                  success: function(response) {
-                    location.reload();
-                  },
-                  error: function(e, x, r) {
-                      console.log("Failed!");
-                  }
-              });
-          }
-          return false;
-        }
+		  var url = "{% url 'clp:user_lesson_plan' l.pk 6 %}";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
 
-        function delete_url_collection(link_id, type, up_down){
-          var up_down = up_down || null;
-          var csrf_token = getCookie('csrftoken');
-          var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
+		function delete_url_collection(link_id, type, up_down){
+		  var up_down = up_down || null;
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
 
-          var url = "{% url 'clp:user_lesson_plan' l.pk 2 %}";
-          if(data != null){
-              $.ajax({ 
-                  data: data ,
-                  type: "POST",
-                  url: url,
-                  success: function(response) {
-                    console.log(response);
-                    location.reload();
-                  },
-                  error: function(e, x, r) {
-                      console.log("Failed!");
-                  }
-              });
-          }
-          return false;
-        }
+		  var url = "{% url 'clp:user_lesson_plan' l.pk 2 %}";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					console.log(response);
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
 
-        function reorder_collection(link_id, type, up_down){
-          var up_down = up_down || null;
-          var csrf_token = getCookie('csrftoken');
-          var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
+		function reorder_collection(link_id, type, up_down){
+		  var up_down = up_down || null;
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
 
-          var url = "{% url 'clp:user_lesson_plan' l.pk 3 %}";
-          if(data != null){
-              $.ajax({ 
-                  data: data ,
-                  type: "POST",
-                  url: url,
-                  success: function(response) {
-                    console.log(response);
-                    location.reload();
-                  },
-                  error: function(e, x, r) {
-                      console.log("Failed!");
-                  }
-              });
-          }
-          return false;
-        }
+		  var url = "{% url 'clp:user_lesson_plan' l.pk 3 %}";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					console.log(response);
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
 
-        function save_lesson_plan(){
-          
-          var csrf_token = getCookie('csrftoken');
-          var data = {'csrfmiddlewaretoken': csrf_token};
+		function save_lesson_plan(){
+		  
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'csrfmiddlewaretoken': csrf_token};
 
-          var url = "{% url 'clp:user_lesson_plan' l.pk 4 %}";
-          if(data != null){
-              $.ajax({ 
-                  data: data ,
-                  type: "POST",
-                  url: url,
-                  success: function(response) {
-                    var modal_header = document.getElementById("modal-header");
-                    var modal_body = document.getElementById("modal-body");
-                    if(response == "saved"){
-                        modal_header.innerHTML = "Saved.";
-                        modal_body.innerHTML = "<a href=/create_lesson_plan/profile/> Go to your profile </a>"
-                        $("#errorModal").modal();
-                       //location.href="/create_lesson_plan/profile/";
-                    } else {
-                      console.log(response);
-                      location.reload();
-                    }
-                  },
-                  error: function(e, x, r) {
-                      console.log("Failed!");
-                  }
-              });
-          }
-          return false;
-        }
+		  var url = "{% url 'clp:user_lesson_plan' l.pk 4 %}";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					var modal_header = document.getElementById("modal-header");
+					var modal_body = document.getElementById("modal-body");
+					if(response == "saved"){
+						modal_header.innerHTML = "Saved.";
+						modal_body.innerHTML = "<a href=/create_lesson_plan/profile/> Go to your profile </a>"
+						$("#errorModal").modal();
+					   //location.href="/create_lesson_plan/profile/";
+					} else {
+					  console.log(response);
+					  location.reload();
+					}
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
 
-        function reorder_phase(link_id, type, change_to){
-          var csrf_token = getCookie('csrftoken');
-          var data = {'id':link_id , 'type': type , 'change_to':change_to, 'csrfmiddlewaretoken': csrf_token, 'pk': {{l.pk}} };
+		function reorder_phase(link_id, type, change_to){
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'id':link_id , 'type': type , 'change_to':change_to, 'csrfmiddlewaretoken': csrf_token, 'pk': {{l.pk}} };
 
-          var url = "{% url 'clp:user_lesson_plan' l.pk 5 %}";
-          if(data != null){
-              $.ajax({ 
-                  data: data ,
-                  type: "POST",
-                  url: url,
-                  success: function(response) {
-                    location.reload();
-                  },
-                  error: function(e, x, r) {
-                      console.log("Failed!");
-                  }
-              });
-          }
-          return false;
-        }
-
-
-
-      </script>
-
-    </div>
+		  var url = "{% url 'clp:user_lesson_plan' l.pk 5 %}";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
 
 
-    {% endblock %}
-    
+
+	  </script>
+
+	</div>
+
+
+	{% endblock %}
+	
   </body>
 </html>
 
