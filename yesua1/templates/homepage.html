@@ -153,8 +153,11 @@ a, a:hover, a:active, a:visited, a:focus {
 						<a href="{% url 'clp:user_lesson_plan' each_lesson.pk 1 %}">
 						<div class="caption">
 							<h3>{{each_lesson.lesson_title}}</h3>
-							<h4><span class="label label-danger">{{each_lesson.bullets}}</span></h4>
-							<span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
+                            {% for each_bullet in each_lesson.bullets_as_list %}
+                              <span class="label label-danger">{{each_bullet}}</span>&nbsp;
+                            {% endfor %}
+                            <br></br>
+                            <span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
 							<span class="label label-info">Community Score: {{each_lesson.score}}</span>
 						</div>
 						</a>

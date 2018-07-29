@@ -32,6 +32,9 @@ class lesson(VoteModel, models.Model):
 	stage = models.IntegerField(default=0)
 	score = models.IntegerField(default=0)
 
+	def bullets_as_list(self):
+		return self.bullets.split('\n')
+
 	class Meta:
 		es_index_name = 'create_lesson_plan'
 		es_type_name = 'lesson'
@@ -40,6 +43,7 @@ class lesson(VoteModel, models.Model):
 				'user_name' : {'type': 'string', 'index':'not_analyzed'},
 			},
 		}
+
 	
 
 class lesson_plan(models.Model):
