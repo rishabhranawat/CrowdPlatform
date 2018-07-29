@@ -8,6 +8,15 @@
 <!-- Don't know the purpose of the following line -->
 {% block body_class %}home{% endblock %}
 
+
+
+<body>
+{% block banner %}
+    <!-- Header files [To-Do (Rish): Format is weird as of now. Fix it later]-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
 <style type="text/css">
 a, a:hover, a:active, a:visited, a:focus {
     text-decoration: none;
@@ -17,21 +26,11 @@ a, a:hover, a:active, a:visited, a:focus {
     text-decoration: none;
 }
 
-span {
-    text-overflow: ellipsis;
-    overflow: hidden;
+#lp_thumbnail:hover{
+    background-color: #F8F8F8;
 }
 
 </style>
-
-<body>
-{% block banner %}
-    <!-- Header files [To-Do (Rish): Format is weird as of now. Fix it later]-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
-
     <div class="container">
             <div class="row">
                 <ul class="list-group">
@@ -47,7 +46,7 @@ span {
             </div>
             {% for course_name, l in lesson_plans.items %}
                 <div class="row">
-                    <h4><strong>{{ course_name }}</strong></h4>
+                    <h4><strong>Course: {{ course_name }}</strong></h4>
                   <div class="row">
                 {% for each_lesson in l %}
                 <div class="col-sm-6 col-md-4">
@@ -58,6 +57,7 @@ span {
                             {% for each_bullet in each_lesson.bullets_as_list %}
                               <span class="label label-danger">{{each_bullet}}</span>&nbsp;
                             {% endfor %}
+                            <br></br>
                             <span class="label label-primary">Curated by: {{each_lesson.user_name}}</span>
                             <span class="label label-info">Community Score: {{each_lesson.score}}</span>
                         </div>
