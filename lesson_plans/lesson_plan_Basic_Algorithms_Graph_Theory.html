@@ -1,0 +1,2527 @@
+  <html>
+  
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>CrowdLessonPlans | Create Lesson Plan</title>
+        
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+
+        
+
+        
+            <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+            <!--[if lt IE 9]>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <![endif]-->
+        
+
+        
+    
+
+    </head>
+    <body class="home" id="" >
+        <div class="">
+
+            
+                <header>
+                    <div class="navbar navbar-default navbar-fixed-top">
+                        <div class="container">
+                        
+                            <div class="navbar-header">
+                                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                    <span class="fa fa-bars"></span>
+                                </button>
+                                <a class="navbar-brand" href="/">CollectiveTeach</a>
+                            </div>
+                            <div class="collapse navbar-collapse navbar-responsive-collapse">
+                                
+<!-- <a class="navbar-brand" href="/">CollectiveTeach</a> -->
+
+                                
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <!-- Our own CSS -->
+    <link rel="stylesheet" href="/site_media/static/css/style.css" type="text/css">
+
+<ul class="nav navbar-nav pull-right">
+    
+        <li><a href="/account/login/">Log in</a></li>
+        
+            <li><a href="/account/signup/">Sign up</a></li>
+        
+    
+</ul>
+
+<form id="accountLogOutForm" style="display: none;" action="/account/logout/" method="POST">
+    <input type='hidden' name='csrfmiddlewaretoken' value='NAiY0yFpLZPRSvSJ5hXwJAviBoiW52DPOofbKDV0Aplqv2ItVcOfkp9m1sFcmObo' />
+</form>
+
+                            </div>
+                        
+                        </div>
+                    </div>
+                </header>
+            
+
+            
+                <section id="content_body">
+                    <div class="container">
+                        
+
+
+                        
+<br></br>
+<br></br>
+    
+    
+
+	  <h2>Machine Learning latest <span> : Mixture Models 
+		<button class="btn btn-primary" value="Save Lesson Plan" onclick="save_lesson_plan();">
+		  Save Lesson Plan
+		</button>
+		<a  href="/create_lesson_plan/375/add_questions/"> 
+		  <button class="btn btn-success">
+			Add Questions
+		  </button>
+		</a>
+	  </h2> 
+
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<script type="text/javascript">
+	  function extractDomain(url) {
+		  var domain;
+		  if (url.indexOf("://") > -1) {domain = url.split('/')[2];}
+		  else {domain = url.split('/')[0];}
+		  
+		  domain = domain.split(':')[0];
+		  return domain;
+	  }
+
+	  function extractFileType(url){
+		url = url.substr(1 + url.lastIndexOf('/'));
+		url = url.split('?')[0];
+		fileType = url.split('#')[0].split('.')[1];
+		// if(fileType.indexOf("html") > -1){
+		//   return null;
+		// }
+		return fileType;
+	  }
+	</script>
+
+	<!-- Our own CSS -->
+	<link rel="stylesheet" href="/site_media/static/css/style.css" type="text/css">
+
+	<div class="modal fade" id="errorModal" role="dialog">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			  <h4 class="modal-title" id="modal-header">Error!</h4>
+			</div>
+			<div class="modal-body" id="modal-body">
+			  <p>Some text in the modal.</p>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		  
+		</div>
+	  </div>
+	
+	  <!-- First Div -->
+	  
+	  <div class="container">
+		<table class="table table-hover" id="table1" name="table1">
+
+		  <thead>
+			<tr>
+			  <th>Engage</th>
+			</tr>
+		  </thead>
+
+		  <tbody>
+			
+			<tr id="engage_0_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/lecture-notes" target="_blank">https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/lecture-notes</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/lecture-notes'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/lecture-notes'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/lecture-notes'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/lecture-notes'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_0" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(0, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_0_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(0, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_0_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(0, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3388, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_1_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://edurev.in/studytube/A-GenerativeDiscriminative-Learning-Algorithm-for-Image-Classification-Research-Paper/80593ef0-e079-4f45-861b-843c9bb46fcf_p" target="_blank">https://edurev.in/studytube/A-GenerativeDiscriminative-Learning-Algorithm-for-Image-Classification-Research-Paper/80593ef0-e079-4f45-861b-843c9bb46fcf_p</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://edurev.in/studytube/A-GenerativeDiscriminative-Learning-Algorithm-for-Image-Classification-Research-Paper/80593ef0-e079-4f45-861b-843c9bb46fcf_p'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://edurev.in/studytube/A-GenerativeDiscriminative-Learning-Algorithm-for-Image-Classification-Research-Paper/80593ef0-e079-4f45-861b-843c9bb46fcf_p'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://edurev.in/studytube/A-GenerativeDiscriminative-Learning-Algorithm-for-Image-Classification-Research-Paper/80593ef0-e079-4f45-861b-843c9bb46fcf_p'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://edurev.in/studytube/A-GenerativeDiscriminative-Learning-Algorithm-for-Image-Classification-Research-Paper/80593ef0-e079-4f45-861b-843c9bb46fcf_p'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_1" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(1, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_1_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(1, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_1_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(1, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3389, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_2_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="http://www.cs.utah.edu/~piyush/teaching/cs5350.html" target="_blank">http://www.cs.utah.edu/~piyush/teaching/cs5350.html</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+http://www.cs.utah.edu/~piyush/teaching/cs5350.html'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('http://www.cs.utah.edu/~piyush/teaching/cs5350.html'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+http://www.cs.utah.edu/~piyush/teaching/cs5350.html'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('http://www.cs.utah.edu/~piyush/teaching/cs5350.html'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_2" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(2, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_2_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(2, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_2_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(2, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3390, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_3_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/readings" target="_blank">https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/readings</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/readings'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/readings'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/readings'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-867-machine-learning-fall-2006/readings'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_3" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(3, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_3_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(3, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_3_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(3, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3391, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_4_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://shapeofdata.wordpress.com/2013/07/16/mixture-models/" target="_blank">https://shapeofdata.wordpress.com/2013/07/16/mixture-models/</a></h4>
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://shapeofdata.wordpress.com/2013/07/16/mixture-models/'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://shapeofdata.wordpress.com/2013/07/16/mixture-models/'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://shapeofdata.wordpress.com/2013/07/16/mixture-models/'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://shapeofdata.wordpress.com/2013/07/16/mixture-models/'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_4" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(4, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_4_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(4, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_4_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(4, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3392, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_5_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="http://scikit-learn.org/stable/modules/mixture.html" target="_blank">http://scikit-learn.org/stable/modules/mixture.html</a></h4>
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+http://scikit-learn.org/stable/modules/mixture.html'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('http://scikit-learn.org/stable/modules/mixture.html'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+http://scikit-learn.org/stable/modules/mixture.html'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('http://scikit-learn.org/stable/modules/mixture.html'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_5" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(5, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_5_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(5, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_5_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(5, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3393, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_6_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://stats.stackexchange.com/q/63320" target="_blank">https://stats.stackexchange.com/q/63320</a></h4>
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://stats.stackexchange.com/q/63320'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://stats.stackexchange.com/q/63320'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://stats.stackexchange.com/q/63320'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://stats.stackexchange.com/q/63320'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_6" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(6, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_6_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(6, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_6_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(6, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3394, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_7_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="http://www.powershow.com/view/21510b-MDU0M/EM_Algorithm_and_Mixture_of_Gaussians_powerpoint_ppt_presentation" target="_blank">http://www.powershow.com/view/21510b-MDU0M/EM_Algorithm_and_Mixture_of_Gaussians_powerpoint_ppt_presentation</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+http://www.powershow.com/view/21510b-MDU0M/EM_Algorithm_and_Mixture_of_Gaussians_powerpoint_ppt_presentation'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('http://www.powershow.com/view/21510b-MDU0M/EM_Algorithm_and_Mixture_of_Gaussians_powerpoint_ppt_presentation'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+http://www.powershow.com/view/21510b-MDU0M/EM_Algorithm_and_Mixture_of_Gaussians_powerpoint_ppt_presentation'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('http://www.powershow.com/view/21510b-MDU0M/EM_Algorithm_and_Mixture_of_Gaussians_powerpoint_ppt_presentation'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_7" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(7, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_7_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(7, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_7_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(7, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3395, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_8_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://en.wikipedia.org/wiki/Mixture_model" target="_blank">https://en.wikipedia.org/wiki/Mixture_model</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://en.wikipedia.org/wiki/Mixture_model'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://en.wikipedia.org/wiki/Mixture_model'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://en.wikipedia.org/wiki/Mixture_model'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://en.wikipedia.org/wiki/Mixture_model'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_8" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(8, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_8_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(8, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_8_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(8, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3396, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_9_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://en.wikipedia.org/wiki/Mixture_models" target="_blank">https://en.wikipedia.org/wiki/Mixture_models</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://en.wikipedia.org/wiki/Mixture_models'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://en.wikipedia.org/wiki/Mixture_models'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://en.wikipedia.org/wiki/Mixture_models'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://en.wikipedia.org/wiki/Mixture_models'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_9" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(9, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_9_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(9, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_9_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(9, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3397, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_10_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://en.wikipedia.org/wiki/MLPACK_(C%2B%2B_library)" target="_blank">https://en.wikipedia.org/wiki/MLPACK_(C%2B%2B_library)</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://en.wikipedia.org/wiki/MLPACK_(C%2B%2B_library)'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://en.wikipedia.org/wiki/MLPACK_(C%2B%2B_library)'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://en.wikipedia.org/wiki/MLPACK_(C%2B%2B_library)'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://en.wikipedia.org/wiki/MLPACK_(C%2B%2B_library)'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_10" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(10, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_10_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(10, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_10_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(10, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3398, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_11_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://en.wikipedia.org/wiki/Gaussian_mixture_model" target="_blank">https://en.wikipedia.org/wiki/Gaussian_mixture_model</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://en.wikipedia.org/wiki/Gaussian_mixture_model'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://en.wikipedia.org/wiki/Gaussian_mixture_model'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://en.wikipedia.org/wiki/Gaussian_mixture_model'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://en.wikipedia.org/wiki/Gaussian_mixture_model'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_11" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(11, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_11_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(11, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_11_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(11, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3399, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_12_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://en.wikipedia.org/wiki/Adaptive_resonance_theory" target="_blank">https://en.wikipedia.org/wiki/Adaptive_resonance_theory</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://en.wikipedia.org/wiki/Adaptive_resonance_theory'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://en.wikipedia.org/wiki/Adaptive_resonance_theory'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://en.wikipedia.org/wiki/Adaptive_resonance_theory'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://en.wikipedia.org/wiki/Adaptive_resonance_theory'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_12" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(12, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_12_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(12, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_12_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(12, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3400, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_13_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://www.edureka.co/blog/k-means-clustering-algorithm/" target="_blank">https://www.edureka.co/blog/k-means-clustering-algorithm/</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://www.edureka.co/blog/k-means-clustering-algorithm/'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://www.edureka.co/blog/k-means-clustering-algorithm/'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://www.edureka.co/blog/k-means-clustering-algorithm/'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://www.edureka.co/blog/k-means-clustering-algorithm/'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_13" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(13, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_13_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(13, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_13_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(13, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3401, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_14_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://stats.stackexchange.com/q/232500" target="_blank">https://stats.stackexchange.com/q/232500</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://stats.stackexchange.com/q/232500'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://stats.stackexchange.com/q/232500'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://stats.stackexchange.com/q/232500'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://stats.stackexchange.com/q/232500'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_14" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(14, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_14_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(14, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_14_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(14, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3402, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_15_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx" target="_blank">https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_15" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(15, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_15_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(15, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_15_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(15, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3403, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_16_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering?noredirect=1" target="_blank">https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering?noredirect=1</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering?noredirect=1'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering?noredirect=1'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering?noredirect=1'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering?noredirect=1'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_16" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(16, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_16_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(16, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_16_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(16, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3404, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_17_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering" target="_blank">https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://stackoverflow.com/questions/34694062/empty-clusters-in-k-means-clustering'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_17" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(17, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_17_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(17, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_17_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(17, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3405, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_18_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://stats.stackexchange.com/questions/258585/how-does-different-ways-of-scaling-normalising-variables-in-k-means-clustering?noredirect=1" target="_blank">https://stats.stackexchange.com/questions/258585/how-does-different-ways-of-scaling-normalising-variables-in-k-means-clustering?noredirect=1</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://stats.stackexchange.com/questions/258585/how-does-different-ways-of-scaling-normalising-variables-in-k-means-clustering?noredirect=1'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://stats.stackexchange.com/questions/258585/how-does-different-ways-of-scaling-normalising-variables-in-k-means-clustering?noredirect=1'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://stats.stackexchange.com/questions/258585/how-does-different-ways-of-scaling-normalising-variables-in-k-means-clustering?noredirect=1'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://stats.stackexchange.com/questions/258585/how-does-different-ways-of-scaling-normalising-variables-in-k-means-clustering?noredirect=1'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_18" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(18, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_18_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(18, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_18_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(18, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3406, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+			<tr id="engage_19_row">
+			  <td>
+				  <div class="col-xs-12 col-md-11">
+						<h4><a href="https://stats.stackexchange.com/questions/198239/k-means-clustering-minimizes-conditional-variance" target="_blank">https://stats.stackexchange.com/questions/198239/k-means-clustering-minimizes-conditional-variance</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://stats.stackexchange.com/questions/198239/k-means-clustering-minimizes-conditional-variance'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://stats.stackexchange.com/questions/198239/k-means-clustering-minimizes-conditional-variance'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://stats.stackexchange.com/questions/198239/k-means-clustering-minimizes-conditional-variance'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://stats.stackexchange.com/questions/198239/k-means-clustering-minimizes-conditional-variance'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+						<p></p>  
+				  </div>
+				  <div class="col-md-1">
+				<input id = "explain_19" type="image" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(19, 'engage');" width="20" height="20"/>
+			
+				  <input id = "explain_19_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(19, 'engage', 'up');" width="15" height="15"/>
+			   
+				  <input id = "explain_19_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(19, 'engage', 'ḍown');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(3407, 'engage', 'evaluate');" type="button" class="btn btn-default">
+				  To Evaluate
+			  </button>
+			   
+			  </div>
+				</td>
+			</tr> 
+		
+		</tbody>
+	  </table>
+	  </div>
+	  
+
+	  
+	  <!-- third div -->
+	  
+	  <table class="table table-hover" id="table3">
+
+		<thead>
+		  <tr>
+			<th>Evaluate</th>
+		  </tr>
+		</thead>
+
+		<tbody>
+		  <!--- search result -->
+		  
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_0" name="evaluateurl_0" value="https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means"/>
+			<input type="hidden" id="evaluatedesc_0" name="evaluatedesc_0" value=""/>
+			<input type="hidden" id="evaluatetitle_0" name="evaluatetitle_0" value="https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_0_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means" target="_blank" display:block;width:400px;>https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://gradebuddy.com/doc/409796/unsupervised-learning-or-clustering-cont-k-means'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p></p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_0" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(0, 'evaluate');" width="20" height="20"/>
+  
+				  <input id = "evaluate_0_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(0, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_0_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(0, 'evaluate', 'down');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(957, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
+  
+		  
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_1" name="evaluateurl_1" value="https://gradebuddy.com/doc/3046054/lecture"/>
+			<input type="hidden" id="evaluatedesc_1" name="evaluatedesc_1" value=""/>
+			<input type="hidden" id="evaluatetitle_1" name="evaluatetitle_1" value="https://gradebuddy.com/doc/3046054/lecture"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_1_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="https://gradebuddy.com/doc/3046054/lecture" target="_blank" display:block;width:400px;>https://gradebuddy.com/doc/3046054/lecture</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://gradebuddy.com/doc/3046054/lecture'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://gradebuddy.com/doc/3046054/lecture'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://gradebuddy.com/doc/3046054/lecture'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://gradebuddy.com/doc/3046054/lecture'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p></p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_1" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(1, 'evaluate');" width="20" height="20"/>
+  
+				  <input id = "evaluate_1_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(1, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_1_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(1, 'evaluate', 'down');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(958, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
+  
+		  
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_2" name="evaluateurl_2" value="https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models"/>
+			<input type="hidden" id="evaluatedesc_2" name="evaluatedesc_2" value=""/>
+			<input type="hidden" id="evaluatetitle_2" name="evaluatetitle_2" value="https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_2_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models" target="_blank" display:block;width:400px;>https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('https://gradebuddy.com/doc/2358012/an-introduction-to-graphical-models'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p></p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_2" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(2, 'evaluate');" width="20" height="20"/>
+  
+				  <input id = "evaluate_2_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(2, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_2_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(2, 'evaluate', 'down');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(959, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
+  
+		  
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_3" name="evaluateurl_3" value="http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1"/>
+			<input type="hidden" id="evaluatedesc_3" name="evaluatedesc_3" value=""/>
+			<input type="hidden" id="evaluatetitle_3" name="evaluatetitle_3" value="http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_3_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1" target="_blank" display:block;width:400px;>http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1</a></h4>
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-index.php?page=Homework+1'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p></p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_3" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(3, 'evaluate');" width="20" height="20"/>
+  
+				  <input id = "evaluate_3_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(3, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_3_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(3, 'evaluate', 'down');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(960, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
+  
+		  
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_4" name="evaluateurl_4" value="http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html"/>
+			<input type="hidden" id="evaluatedesc_4" name="evaluatedesc_4" value=""/>
+			<input type="hidden" id="evaluatetitle_4" name="evaluatetitle_4" value="http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_4_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html" target="_blank" display:block;width:400px;>http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html</a></h4>
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('http://stanford.edu/~cpiech/cs221/homework/prog/visualCortex/visualCortex.html'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p></p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_4" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(4, 'evaluate');" width="20" height="20"/>
+  
+				  <input id = "evaluate_4_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(4, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_4_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(4, 'evaluate', 'down');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(961, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
+  
+		  
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_5" name="evaluateurl_5" value="http://stanford.edu/~cpiech/cs221/handouts/kmeans.html"/>
+			<input type="hidden" id="evaluatedesc_5" name="evaluatedesc_5" value=""/>
+			<input type="hidden" id="evaluatetitle_5" name="evaluatetitle_5" value="http://stanford.edu/~cpiech/cs221/handouts/kmeans.html"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_5_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="http://stanford.edu/~cpiech/cs221/handouts/kmeans.html" target="_blank" display:block;width:400px;>http://stanford.edu/~cpiech/cs221/handouts/kmeans.html</a></h4>
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+http://stanford.edu/~cpiech/cs221/handouts/kmeans.html'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('http://stanford.edu/~cpiech/cs221/handouts/kmeans.html'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+http://stanford.edu/~cpiech/cs221/handouts/kmeans.html'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('http://stanford.edu/~cpiech/cs221/handouts/kmeans.html'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p></p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_5" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(5, 'evaluate');" width="20" height="20"/>
+  
+				  <input id = "evaluate_5_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(5, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_5_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(5, 'evaluate', 'down');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(962, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
+  
+		  
+		  <!--- search result -->
+		   <!--<tr> -->
+			<input type="hidden" id="evaluateurl_6" name="evaluateurl_6" value="http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201"/>
+			<input type="hidden" id="evaluatedesc_6" name="evaluatedesc_6" value=""/>
+			<input type="hidden" id="evaluatetitle_6" name="evaluatetitle_6" value="http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201"/>
+		  <!--</tr> -->
+		  <tr id="evaluate_6_row">
+			<td>
+			  <div class="col-md-11" >
+				  <h4 ><a href="http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201" target="_blank" display:block;width:400px;>http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201</a></h4>
+						
+							  
+						
+							  
+						
+							  
+						
+							  
+									
+							  
+						
+							  
+						
+							  
+						
+							  
+						
+						<span class="label label-info" style="color:black;" id='domainId+http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201'>
+							<script text="text/javascript">
+						  		document.write(extractDomain('http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201'));
+						  	</script>
+						</span>&nbsp;
+
+						<span class="label label-info" style="color:red;" id ='fileType+http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201'> 
+						  <script text="text/javascript">
+							var fileType = (extractFileType('http://i2c.cs.uh.edu/class/fall2016-cloud/tiki-print.php?page=Homework%201'));
+							if(fileType != null){
+							  document.write("("+fileType+")");
+							}
+							else {
+								document.write("(html)")
+							}
+						  </script>
+						</span >
+				  <p></p>
+			  </div>
+			  <div class="col-md-1">
+				<input type="image" id = "evaluate_6" class="img-responsive item-delete link_item" src="/site_media/static/images/delete.png" onclick="delete_url_collection(6, 'evaluate');" width="20" height="20"/>
+  
+				  <input id = "evaluate_6_up" type="image" class="img-responsive item-up link_item" src="/site_media/static/images/Up.png" onclick="reorder_collection(6, 'evaluate', 'up');" width="15" height="15"/>
+				
+				  <input id = "evaluate_6_down" type="image" class="img-responsive item-down link_item" src="/site_media/static/images/Down.png" onclick="reorder_collection(6, 'evaluate', 'down');" width="15" height="15"/>
+
+
+			  <button onclick="reorder_phase(963, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
+			  </button>
+			  </div>
+			</td>
+		  </tr> 
+  
+		    
+
+		</tbody>
+	  </table>
+   
+	  
+	  <h4>Add A Link</h4>
+		  <form  id="newlink" enctype="multipart/form-data" onsubmit="add_new_link()" role="form" method = "post">
+		<input type='hidden' name='csrfmiddlewaretoken' value='NAiY0yFpLZPRSvSJ5hXwJAviBoiW52DPOofbKDV0Aplqv2ItVcOfkp9m1sFcmObo' />
+		
+		
+
+
+
+
+    
+
+<div class="form-group">
+    
+        
+            <label class="control-label  " for="id_link">Paste URL</label>
+        
+
+        <div class=" ">
+            <input class=" form-control" id="id_link" name="link" type="text" required />
+
+            
+
+            
+        </div>
+    
+</div>
+
+
+    
+
+<div class="form-group">
+    
+        
+            <label class="control-label  " for="id_link_type">Select Phase</label>
+        
+
+        <div class=" ">
+            <select class=" form-control" id="id_link_type" name="link_type" required>
+<option value="Engage">Engage</option>
+<option value="Evaluate">Evaluate</option>
+</select>
+
+            
+
+            
+        </div>
+    
+</div>
+
+
+    
+
+<div class="form-group">
+    
+        
+            <label class="control-label  " for="id_link_title">Title of the page</label>
+        
+
+        <div class=" ">
+            <input class=" form-control" id="id_link_title" name="link_title" type="text" required />
+
+            
+
+            
+        </div>
+    
+</div>
+
+
+    
+
+<div class="form-group">
+    
+        
+            <label class="control-label  " for="id_link_desc">Short Description</label>
+        
+
+        <div class=" ">
+            <textarea class=" form-control" cols="40" id="id_link_desc" name="link_desc" rows="10" required>
+</textarea>
+
+            
+
+            
+        </div>
+    
+</div>
+
+
+
+		<button class="btn btn-primary" type="submit">Add to your Lesson Plan</button>
+	</form>
+
+	  <script type="text/javascript" src="/site_media/static/js/jquery-1.7.1.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+	  <script type="text/javascript">
+		 function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+				var cookies = document.cookie.split(';');
+				for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+
+		function objectifyForm(formArray) {//serialize data function
+		  var returnArray = {};
+		  for (var i = 0; i < formArray.length; i++){
+			returnArray[formArray[i]['name']] = formArray[i]['value'];
+		  }
+		  return returnArray;
+		}
+		function add_new_link(){
+		  var fd = ($('#newlink').serializeArray());
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'csrfmiddlewaretoken': csrf_token, 'fd': objectifyForm(fd)};
+
+		  var url = "/create_lesson_plan/375/user_lesson_plan/6";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
+
+		function delete_url_collection(link_id, type, up_down){
+		  var up_down = up_down || null;
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
+
+		  var url = "/create_lesson_plan/375/user_lesson_plan/2";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					console.log(response);
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
+
+		function reorder_collection(link_id, type, up_down){
+		  var up_down = up_down || null;
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'id':link_id , 'type': type , 'up_down':up_down, 'csrfmiddlewaretoken': csrf_token};
+
+		  var url = "/create_lesson_plan/375/user_lesson_plan/3";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					console.log(response);
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
+
+		function save_lesson_plan(){
+		  
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'csrfmiddlewaretoken': csrf_token};
+
+		  var url = "/create_lesson_plan/375/user_lesson_plan/4";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					var modal_header = document.getElementById("modal-header");
+					var modal_body = document.getElementById("modal-body");
+					if(response == "saved"){
+						modal_header.innerHTML = "Saved.";
+						modal_body.innerHTML = "<a href=/create_lesson_plan/profile/> Go to your profile </a>"
+						$("#errorModal").modal();
+					   //location.href="/create_lesson_plan/profile/";
+					} else {
+					  console.log(response);
+					  location.reload();
+					}
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
+
+		function reorder_phase(link_id, type, change_to){
+		  var csrf_token = getCookie('csrftoken');
+		  var data = {'id':link_id , 'type': type , 'change_to':change_to, 'csrfmiddlewaretoken': csrf_token, 'pk': 375 };
+
+		  var url = "/create_lesson_plan/375/user_lesson_plan/5";
+		  if(data != null){
+			  $.ajax({ 
+				  data: data ,
+				  type: "POST",
+				  url: url,
+				  success: function(response) {
+					location.reload();
+				  },
+				  error: function(e, x, r) {
+					  console.log("Failed!");
+				  }
+			  });
+		  }
+		  return false;
+		}
+
+
+
+	  </script>
+
+	</div>
+
+
+	
+    
+
+
+
+                    </div>
+                </section>
+            
+
+            
+                <hr />
+                <footer>
+                    <div class="container">
+                        
+    
+
+&copy; 2018 &lt;CollectiveTeach&gt;
+
+
+                    </div>
+                </footer>
+            
+        </div>
+
+        
+
+        
+            <script src="/site_media/static/pinax/js/theme.js"></script>
+        
+
+        
+    
+    
+
+    </body>
+</html>

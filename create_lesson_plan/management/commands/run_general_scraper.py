@@ -14,7 +14,7 @@ class Command(BaseCommand):
 	def __init__(self):
 		self.visited = set()
 	
-    	def get_seed_links(self, file_name):
+    def get_seed_links(self, file_name):
         	f = open(file_name, 'r')
         	lines = f.readlines()
         	seed_links = [x.strip() for x in lines]
