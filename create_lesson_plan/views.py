@@ -833,7 +833,7 @@ class IndexView(View):
             if(len(unique_list) <= 6):
                 context[each_course] = each_lesson
             else:
-                context[each_course] = unique_list        
+                context[each_course] = unique_list[:6]        
         return render(request, template, {"context":context, "form":self.form})
 
     def post(self, request, *args, **kwargs):
