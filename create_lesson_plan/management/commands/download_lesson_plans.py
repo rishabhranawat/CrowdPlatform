@@ -12,10 +12,10 @@ class Command(BaseCommand):
 
 
 	def handle(self, *args, **options):
-		all_lesson_plans_staged = lesson.objects.filter(stage=1)[:1]
+		all_lesson_plans_staged = lesson.objects.filter(stage=1)
 
 		for each_lesson_plan in all_lesson_plans_staged:
-			url = "%s://%s/%s/%s" % (self.HTTP, self.hostname, str(375), self.endpoint)
+			url = "%s://%s/%s/%s" % (self.HTTP, self.hostname, str(each_lesson_plan.pk), self.endpoint)
 			print(url)
 			response = requests.get(url)
 
