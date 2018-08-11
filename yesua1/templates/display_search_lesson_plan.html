@@ -34,6 +34,7 @@
 					Take Test
 				</button>
 			</a>
+			<br></br>
 
 
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -63,9 +64,7 @@
 				<table class="table table-hover" id="table1" name="table1">
 
 					<thead>
-						<tr>
-							<th>Engage</th>
-						</tr>
+						<blockquote>Engage</blockquote>
 					</thead>
 
 					<tbody>
@@ -73,39 +72,42 @@
 						{% for enlink in engage_urls %}
 
 						<!--</tr> -->
-						<tr id="engage_{{enlink.item_id}}_row">
-							<td>
-							  <div class="col-md-11" >
-								  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
-										{% for t, v in eva_url_to_tag.items %}
-											  {% if t.url == enlink.url %}
-													{% for each_tag in v%}
-													<span class="label label-info">{{each_tag.tag_name}}</span>
-													{% endfor %}
-											  {% endif %}
+	<tr id="engage_{{enlink.item_id}}_row">
+				
+			  	<div class="col-xs-12 col-lg-12 col-md-12">
+				  	<div class="thumbnail">
+				  		<div class="caption">
+							<h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
+							{% for t, v in eng_url_to_tag.items %}
+								  {% if t.url == enlink.url %}
+										{% for each_tag in v%}
+										<span class="label label-info">{{each_tag.tag_name}}</span>
 										{% endfor %}
-										<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
-											<script text="text/javascript">
-										  		document.write(extractDomain('{{enlink.url}}'));
-										  	</script>
-										</span>&nbsp;
+								  {% endif %}
+							{% endfor %}
+							<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
+								<script text="text/javascript">
+									document.write(extractDomain('{{enlink.url}}'));
+								</script>
+							</span>&nbsp;
 
-										<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
-										  <script text="text/javascript">
-											var fileType = (extractFileType('{{enlink.url}}'));
-											if(fileType != null){
-											  document.write("("+fileType+")");
-											}
-											else {
-												document.write("(html)")
-											}
-										  </script>
-										</span >
-								  <p>{{ enlink.desc }}</p>
-							  </div>
-									
-								</td>
-						</tr> 
+							<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
+							  <script text="text/javascript">
+								var fileType = (extractFileType('{{enlink.url}}'));
+								if(fileType != null){
+								  document.write("("+fileType+")");
+								}
+								else {
+									document.write("(html)")
+								}
+							  </script>
+							</span >
+							<p>{{ enlink.desc }}</p>  
+						</div>
+				  	</div>
+				</div>
+			
+			</tr> 
 				{% endfor %}
 				</tbody>
 			</table>
@@ -117,9 +119,7 @@
 			<table class="table table-hover" id="table3">
 
 				<thead>
-					<tr>
-						<th>Evaluate</th>
-					</tr>
+					<blockquote>Evaluate</blockquote>
 				</thead>
 
 				<tbody>
@@ -127,39 +127,43 @@
 					{% for enlink in evaluate_urls %}
 					<!--- search result -->
 					 
-					<tr id="evaluate_{{enlink.item_id}}_row">
-						<td>
-						  <div class="col-md-11" >
-							  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
-									{% for t, v in eva_url_to_tag.items %}
-										  {% if t.url == enlink.url %}
-												{% for each_tag in v%}
-												<span class="label label-info">{{each_tag.tag_name}}</span>
-												{% endfor %}
-										  {% endif %}
-									{% endfor %}
-									<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
-										<script text="text/javascript">
-									  		document.write(extractDomain('{{enlink.url}}'));
-									  	</script>
-									</span>&nbsp;
+							  	<tr id="evaluate_{{enlink.item_id}}_row">
+				<div class="col-sm-12 col-md-12 col-lg-12">
+					<div class="thumbnail">
+						<div class="caption">
+				  			<h4 ><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
+							{% for t, v in eva_url_to_tag.items %}
+								  {% if t.url == enlink.url %}
+										{% for each_tag in v%}
+										<span class="label label-info">{{each_tag.tag_name}}</span>
+										{% endfor %}
+								  {% endif %}
+							{% endfor %}
 
-									<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
-									  <script text="text/javascript">
-										var fileType = (extractFileType('{{enlink.url}}'));
-										if(fileType != null){
-										  document.write("("+fileType+")");
-										}
-										else {
-											document.write("(html)")
-										}
-									  </script>
-									</span >
-							  <p>{{ enlink.desc }}</p>
-						  </div>
+							<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
+								<script text="text/javascript">
+									document.write(extractDomain('{{enlink.url}}'));
+								</script>
+							</span>&nbsp;
 
-						</td>
-					</tr> 
+							<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
+							  <script text="text/javascript">
+								var fileType = (extractFileType('{{enlink.url}}'));
+								if(fileType != null){
+								  document.write("("+fileType+")");
+								}
+								else {
+									document.write("(html)")
+								}
+							  </script>
+							</span>
+
+							<p>{{ enlink.desc }}</p>
+						</div>
+					</div>
+				</div>
+		  	</tr>
+
 	
 					{% endfor %}  
 
