@@ -519,7 +519,7 @@ class UserLessonPlan(View):
         return HttpResponse("Okay!")
 
     def delete_link(self, request, pk):
-        l, engage_urls, evaluate_urls = self.get_details(pk)
+        l, engage_urls, evaluate_urls, eng_url_to_tag, eva_url_to_tag = self.get_details(pk)
         url_type = request.POST["type"]
         item_id = int(request.POST['id'])
 
@@ -552,7 +552,7 @@ class UserLessonPlan(View):
 
 
     def reorder_links(self, request, pk):
-        l, engage_urls, evaluate_urls = self.get_details(pk)
+        l, engage_urls, evaluate_urls, eng_url_to_tag, eva_url_to_tag = self.get_details(pk)
         url_type = request.POST["type"]
         item_id = int(request.POST['id'])
         up_down = request.POST["up_down"]

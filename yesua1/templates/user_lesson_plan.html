@@ -53,6 +53,35 @@
 	  }
 	</script>
 
+	<style>
+		.edit {
+			float: right;
+		}
+		.editor-buttons {
+			padding: 0 !important;
+			border: none !important;
+			background: none !important;
+			float: center;
+			box-shadow: none;
+			margin-bottom: 10px !important;
+		}
+
+		.editor-buttons:hover{
+			opacity: 0.5;
+		}
+
+		.caret {
+			border-left: 8px solid transparent;
+			border-right: 8px solid transparent;
+			border-top: 8px solid #000000;
+		}
+
+		.caret.caret-reversed {
+		    border-top-width: 0;
+		    border-bottom: 8px solid #000000;
+		}
+	</style>
+
 	<!-- Our own CSS -->
 	<link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
 
@@ -80,57 +109,71 @@
 		<table class="table table-hover" id="table1" name="table1">
 
 		  <thead>
-			<tr>
-			  <th>Engage</th>
-			</tr>
+			<blockquote>Engage</blockquote>
 		  </thead>
 
 		  <tbody>
 			{% for enlink in engage_urls %}
 			<tr id="engage_{{enlink.item_id}}_row">
-			  <td>
-				  <div class="col-xs-12 col-md-11">
-						<h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a></h4>
-						{% for t, v in eng_url_to_tag.items %}
-							  {% if t.url == enlink.url %}
-									{% for each_tag in v%}
-									<span class="label label-info">{{each_tag.tag_name}}</span>
-									{% endfor %}
-							  {% endif %}
-						{% endfor %}
-						<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
-							<script text="text/javascript">
-						  		document.write(extractDomain('{{enlink.url}}'));
-						  	</script>
-						</span>&nbsp;
+				
+			  	<div class="col-xs-12 col-lg-12 col-md-12">
+				  	<div class="thumbnail">
+				  		<div class="caption">
+							<h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a>
+								<div class="btn-group edit">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    <span class="glyphicon glyphicon-cog"></span>
+									</button>
+									<ul class="dropdown-menu" style="text-align:center">
+										<li>
+											<button type="button" id="explain_{{ enlink.item_id}}" class="btn btn-default editor-buttons item-delete link_item img-responsive"  onclick="delete_url_collection({{enlink.item_id}}, 'engage');"><span class="glyphicon glyphicon-remove"></span></button>
+										</li>
+										<li>
+											<button src=""  id = "explain_{{ enlink.item_id}}_up" type="button" class="btn btn-default editor-buttons item-up link_item" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');">
+												<span class="caret caret-reversed"></span>
+											</button>
+										</li>
+										<li>
+											<button id = "explain_{{ enlink.item_id}}_down" type="button" class="btn btn-default editor-buttons item-down link_item" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'down');" />		<span class="caret"></span>
+											</button>
+										</li>
 
-						<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
-						  <script text="text/javascript">
-							var fileType = (extractFileType('{{enlink.url}}'));
-							if(fileType != null){
-							  document.write("("+fileType+")");
-							}
-							else {
-								document.write("(html)")
-							}
-						  </script>
-						</span >
-						<p>{{ enlink.desc }}</p>  
-				  </div>
-				  <div class="col-md-1">
-				<input id = "explain_{{ enlink.item_id}}" type="image" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'engage');" width="20" height="20"/>
+										<li>
+											<button onclick="reorder_phase({{enlink.pk}}, 'engage', 'evaluate');" type="button" class="btn btn-default editor-buttons">To Engage</button>
+										</li>
+									</ul>
+								</div>
+
+							</h4>
+							{% for t, v in eng_url_to_tag.items %}
+								  {% if t.url == enlink.url %}
+										{% for each_tag in v%}
+										<span class="label label-info">{{each_tag.tag_name}}</span>
+										{% endfor %}
+								  {% endif %}
+							{% endfor %}
+							<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
+								<script text="text/javascript">
+									document.write(extractDomain('{{enlink.url}}'));
+								</script>
+							</span>&nbsp;
+
+							<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
+							  <script text="text/javascript">
+								var fileType = (extractFileType('{{enlink.url}}'));
+								if(fileType != null){
+								  document.write("("+fileType+")");
+								}
+								else {
+									document.write("(html)")
+								}
+							  </script>
+							</span >
+							<p>{{ enlink.desc }}</p>  
+						</div>
+				  	</div>
+				</div>
 			
-				  <input id = "explain_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'up');" width="15" height="15"/>
-			   
-				  <input id = "explain_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'engage', 'ḍown');" width="15" height="15"/>
-
-
-			  <button onclick="reorder_phase({{enlink.pk}}, 'engage', 'evaluate');" type="button" class="btn btn-default">
-				  To Evaluate
-			  </button>
-			   
-			  </div>
-				</td>
 			</tr> 
 		{% endfor %}
 		</tbody>
@@ -142,70 +185,79 @@
 	  <!-- third div -->
 	  {% if evaluate_urls %}
 	  <table class="table table-hover" id="table3">
-
-		<thead>
-		  <tr>
-			<th>Evaluate</th>
-		  </tr>
-		</thead>
-
 		<tbody>
-		  <!--- search result -->
+			<thead>
+			  <blockquote>Evaluate</blockquote>
+			</thead>
+
 		  {% for enlink in evaluate_urls %}
-		  <!--- search result -->
-		   <!--<tr> -->
 			<input type="hidden" id="evaluateurl_{{enlink.item_id}}" name="evaluateurl_{{enlink.item_id}}" value="{{enlink.url}}"/>
 			<input type="hidden" id="evaluatedesc_{{enlink.item_id}}" name="evaluatedesc_{{enlink.item_id}}" value="{{enlink.desc}}"/>
 			<input type="hidden" id="evaluatetitle_{{enlink.item_id}}" name="evaluatetitle_{{enlink.item_id}}" value="{{enlink.title}}"/>
-		  <!--</tr> -->
-		  <tr id="evaluate_{{enlink.item_id}}_row">
-			<td>
-			  <div class="col-md-11" >
-				  <h4 ><a href="{{ enlink.url }}" target="_blank" display:block;width:400px;>{{ enlink.title }}</a></h4>
-						{% for t, v in eva_url_to_tag.items %}
-							  {% if t.url == enlink.url %}
-									{% for each_tag in v%}
-									<span class="label label-info">{{each_tag.tag_name}}</span>
-									{% endfor %}
-							  {% endif %}
-						{% endfor %}
-						<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
-							<script text="text/javascript">
-						  		document.write(extractDomain('{{enlink.url}}'));
-						  	</script>
-						</span>&nbsp;
-
-						<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
-						  <script text="text/javascript">
-							var fileType = (extractFileType('{{enlink.url}}'));
-							if(fileType != null){
-							  document.write("("+fileType+")");
-							}
-							else {
-								document.write("(html)")
-							}
-						  </script>
-						</span >
-				  <p>{{ enlink.desc }}</p>
-			  </div>
-			  <div class="col-md-1">
-				<input type="image" id = "evaluate_{{ enlink.item_id}}" class="img-responsive item-delete link_item" src="{% static "images/delete.png" %}" onclick="delete_url_collection({{enlink.item_id}}, 'evaluate');" width="20" height="20"/>
-  
-				  <input id = "evaluate_{{ enlink.item_id}}_up" type="image" class="img-responsive item-up link_item" src="{% static "images/Up.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'up');" width="15" height="15"/>
-				
-				  <input id = "evaluate_{{ enlink.item_id}}_down" type="image" class="img-responsive item-down link_item" src="{% static "images/Down.png" %}" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'down');" width="15" height="15"/>
 
 
-			  <button onclick="reorder_phase({{enlink.pk}}, 'evaluate', 'engage');" type="button" class="btn btn-default">To Engage
-			  </button>
-			  </div>
-			</td>
-		  </tr> 
-  
+		  	<tr id="evaluate_{{enlink.item_id}}_row">
+				<div class="col-sm-12 col-md-12 col-lg-12">
+					<div class="thumbnail">
+						<div class="caption">
+				  			<h4 ><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a>
+							<div class="btn-group edit">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <span class="glyphicon glyphicon-cog"></span>
+								</button>
+								<ul class="dropdown-menu" style="text-align:center">
+									<li>
+										<button type="button" id="evaluate_{{ enlink.item_id}}" class="btn btn-default btn-block item-delete link_item img-responsive"  onclick="delete_url_collection({{enlink.item_id}}, 'evaluate');"><span class="glyphicon glyphicon-remove"></span></button>
+									</li>
+									<li>
+										<button src=""  id = "evaluate_{{ enlink.item_id}}_up" type="button" class="btn btn-default btn-block item-up link_item" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'up');"><span class="caret caret-reversed"></span></button>
+									</li>
+									<li>
+										<button id = "evaluate_{{ enlink.item_id}}_down" type="button" class="btn btn-default btn-block item-down link_item" onclick="reorder_collection({{enlink.item_id}}, 'evaluate', 'down');" /><span class="caret"></span></button>
+									</li>
+
+									<li>
+										<button onclick="reorder_phase({{enlink.pk}}, 'evaluate', 'engage');" type="button" class="btn btn-default btn-block">To Engage</button>
+									</li>
+								</ul>
+							</div>
+								
+				  			</h4>
+							{% for t, v in eva_url_to_tag.items %}
+								  {% if t.url == enlink.url %}
+										{% for each_tag in v%}
+										<span class="label label-info">{{each_tag.tag_name}}</span>
+										{% endfor %}
+								  {% endif %}
+							{% endfor %}
+
+							<span class="label label-info" style="color:black;" id='domainId+{{enlink.url}}'>
+								<script text="text/javascript">
+									document.write(extractDomain('{{enlink.url}}'));
+								</script>
+							</span>&nbsp;
+
+							<span class="label label-info" style="color:red;" id ='fileType+{{enlink.url}}'> 
+							  <script text="text/javascript">
+								var fileType = (extractFileType('{{enlink.url}}'));
+								if(fileType != null){
+								  document.write("("+fileType+")");
+								}
+								else {
+									document.write("(html)")
+								}
+							  </script>
+							</span>
+
+							<p>{{ enlink.desc }}</p>
+						</div>
+					</div>
+				</div>
+		  	</tr>
 		  {% endfor %}  
 
 		</tbody>
-	  </table>
+	 </table>
    
 	  {% endif %}
 	  <h4>Add A Link</h4>
