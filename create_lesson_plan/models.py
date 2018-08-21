@@ -31,6 +31,7 @@ class lesson(VoteModel, models.Model):
 	bullets = models.CharField(max_length=1200)
 	stage = models.IntegerField(default=0)
 	score = models.IntegerField(default=0)
+	user_study_link = models.URLField(max_length=2083, null=True, blank=True)
 
 	def bullets_as_list(self):
 		return self.bullets.split('\n')
