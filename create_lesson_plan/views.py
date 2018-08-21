@@ -856,7 +856,7 @@ class SearchLessonPlans(View):
             input_title = request.POST['input_title']
 
             form = SearchResultsForm({"subject_name": subject, "course_name": course_name, "input_title":input_title})
-            lessons = lesson.objects.filter(Q(subject = subject, 
+            lessons = lesson.objects.filter(Q(subject__icontains = subject, 
                 course_name__icontains=course_name,
                 lesson_title__icontains=input_title,
                 grade=input_grade, stage=1)).order_by('-score')
