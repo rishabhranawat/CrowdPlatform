@@ -15,11 +15,11 @@ import operator
 Lesson Plan Object
 '''
 class LP:
-	#def __init__(self, filepath):
-	#	self.content, self.index = self.get_lpd(filepath)
+	def __init__(self, filepath):
+		self.content, self.index = self.get_lpd(filepath)
 
-	def __init__(self, docs, index):
-	    self.content, self.index = docs, index
+	# def __init__(self, docs, index):
+	#     self.content, self.index = docs, index
 
 	def get_lpd(self, filepath):
 		f = open(filepath, 'r')
@@ -30,6 +30,7 @@ class LP:
 		for u in l:
 			url = u.replace("\n", "")
 			try:
+				print("Getting content for url %s", url)
 				docs[url] = requests.get(url).content
 				index[url] = counter
 				counter += 1
@@ -255,7 +256,7 @@ class CB:
 	Get kg labels
 	'''
 	def get_kg_labels(self):
-		kg_path = "create_lesson_plan/graph_query/graphs/weighted_knowledge_graph.gpickle"
+		kg_path = "../graph_query/graphs/weighted_knowledge_graph.gpickle"
 		kg = nx.read_gpickle(kg_path)
 		return [str(x) for x in list(kg.nodes())[1:]], kg
 
