@@ -1,6 +1,7 @@
 import requests
 from collections import Counter
 import random as randomlib
+import logging
 
 from bs4 import BeautifulSoup
 import numpy as np
@@ -17,6 +18,7 @@ Lesson Plan Object
 class LP:
 	def __init__(self, filepath):
 		self.content, self.index = self.get_lpd(filepath)
+		self.number_of_docs = len(self.content)
 
 	# def __init__(self, docs, index):
 	#     self.content, self.index = docs, index
@@ -27,10 +29,11 @@ class LP:
 		docs = {}
 		index = {}
 		counter = 0
+
+		logging.info("Fetching content for documents")
 		for u in l:
 			url = u.replace("\n", "")
 			try:
-				print("Getting content for url %s", url)
 				docs[url] = requests.get(url).content
 				index[url] = counter
 				counter += 1
@@ -38,6 +41,7 @@ class LP:
 				print(url, "Error")
 				continue
 		f.close()
+		logging.info("Completed content for documents")
 		return docs, index
 
 class ConceptDetails:
