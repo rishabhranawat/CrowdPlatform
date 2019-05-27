@@ -5,7 +5,7 @@ import logging
 from comprehension_burden import *
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 '''
@@ -19,34 +19,68 @@ class BSS:
 	def __init__(self, beam_width):
 		self.beam_width = beam_width
 
+
+	def generate_choices(self, docs):
+		random_docs_to_try = set()
+		number_of_docs_remaining = len(docs)
+
+		potential_candidates = self.beam_width if(self.beam_width <= len(docs)) else len(docs)
+		while(len(random_docs_to_try) < potential_candidates):
+			random_docs_to_try.add(docs[random.randint(0, number_of_docs_remaining-1)])
+
+		return random_docs_to_try
+
+
 	def generate_beam_sequence(self, lesson_plan):
 		comprehension_burden_calculator = CB(lesson_plan)
 
 		url_to_content = lesson_plan.content
 		number_of_documents = lesson_plan.number_of_docs
+		all_docs = url_to_content.keys()
 
 		doc_to_concepts, doc_to_keys, related_concepts = comprehension_burden_calculator.get_doc_to_key_concepts(3)
 		concept_to_score = comprehension_burden_calculator.get_concept_to_global_score(related_concepts, doc_to_keys)
 
 		beamed_sequence = []
+		cb = 0.0
 
-		docs_tried = []
-		min_marginal_cb = 0
+		logging.debug("Number of Documents: %d", number_of_documents)
+		while(len(beamed_sequence) < number_of_documents):
+			
+			doc_to_append = None
+			intermediate_cb = None
 
-		random_docs_to_try = set()
-		keys = url_to_content.keys()
+			random_docs_to_try = self.generate_choices(all_docs)
+			for doc_to_try in random_docs_to_try:
+				
+				# generate potential sequence
+				beamed_sequence.append(doc_to_try)
 
-		while(len(random_docs_to_try) < self.beam_width):
-			random_docs_to_try.add(keys[random.randint(0, number_of_documents-1)])
+				# compute comprehension burden for that particular option
+				cb_current_seq = comprehension_burden_calculator.lp_cb(beamed_sequence, doc_to_concepts, doc_to_keys)
+				logging.debug("Document: %s, with related keys: %s, has a comprehension burden of %d", 
+					doc_to_try, doc_to_keys[doc_to_try], cb_current_seq)
 
-		intermediate_cb = 0.0
-		for doc_to_try in random_docs_to_try:
-			beamed_sequence.append(doc_to_try)
+				# pick the one that reduces the comprehension burden of the overall doc the least
+				if(intermediate_cb == None or cb_current_seq + cb < intermediate_cb):
+					intermediate_cb = cb_current_seq + cb
+					doc_to_append = doc_to_try
 
-			intermediate_cb = comprehension_burden_calculator.lp_cb(beamed_sequence, doc_to_concepts, doc_to_keys)
-			logging.info("Document: %s, with related keys: %s, has a comprehension burden of %d", 
-				doc_to_try, doc_to_keys[doc_to_try], intermediate_cb)
-			beamed_sequence.pop()
+				# revert it to the original sequence
+				beamed_sequence.pop()
+
+			# set sequence and corresponding cb
+			logging.debug("Comprehension Burden: %d and number of documents in sequence: %d", cb, len(beamed_sequence))
+			cb = intermediate_cb
+			beamed_sequence.append(doc_to_append)
+
+			# remove appended doc from chocies
+			all_docs.remove(doc_to_append)
+
+		for each in beamed_sequence:
+			logging.debug(each)
+		logging.debug("Comprehension Burden of the lesson plan: %d", cb)
+		return beamed_sequence
 
 
 '''

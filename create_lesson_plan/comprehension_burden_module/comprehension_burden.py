@@ -30,7 +30,7 @@ class LP:
 		index = {}
 		counter = 0
 
-		logging.info("Fetching content for documents")
+		logging.debug("Fetching content for documents")
 		for u in l:
 			url = u.replace("\n", "")
 			try:
@@ -41,7 +41,7 @@ class LP:
 				print(url, "Error")
 				continue
 		f.close()
-		logging.info("Completed content for documents")
+		logging.debug("Completed content for documents")
 		return docs, index
 
 class ConceptDetails:
