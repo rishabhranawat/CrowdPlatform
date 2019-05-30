@@ -1,6 +1,7 @@
 import requests
 from collections import Counter
 import random as randomlib
+import logging
 
 from bs4 import BeautifulSoup
 import numpy as np
@@ -15,11 +16,12 @@ import operator
 Lesson Plan Object
 '''
 class LP:
-	#def __init__(self, filepath):
-	#	self.content, self.index = self.get_lpd(filepath)
+	def __init__(self, filepath):
+		self.content, self.index = self.get_lpd(filepath)
+		self.number_of_docs = len(self.content)
 
-	def __init__(self, docs, index):
-	    self.content, self.index = docs, index
+	# def __init__(self, docs, index):
+	#     self.content, self.index = docs, index
 
 	def get_lpd(self, filepath):
 		f = open(filepath, 'r')
@@ -27,6 +29,8 @@ class LP:
 		docs = {}
 		index = {}
 		counter = 0
+
+		logging.debug("Fetching content for documents")
 		for u in l:
 			url = u.replace("\n", "")
 			try:
@@ -37,6 +41,7 @@ class LP:
 				print(url, "Error")
 				continue
 		f.close()
+		logging.debug("Completed content for documents")
 		return docs, index
 
 class ConceptDetails:
@@ -255,7 +260,7 @@ class CB:
 	Get kg labels
 	'''
 	def get_kg_labels(self):
-		kg_path = "create_lesson_plan/graph_query/graphs/weighted_knowledge_graph.gpickle"
+		kg_path = "../graph_query/graphs/weighted_knowledge_graph.gpickle"
 		kg = nx.read_gpickle(kg_path)
 		return [str(x) for x in list(kg.nodes())[1:]], kg
 
