@@ -8,6 +8,17 @@ from comprehension_burden import *
 logging.basicConfig(level=logging.DEBUG)
 
 
+def write_to_file(filepath, sequence, cb):
+	beamed_filepath = filepath.replace(".txt", "_beamed.txt")
+
+	with open(beamed_filepath, "w") as beamed_file:
+		for each_doc in sequence:
+			beamed_file.write(each_doc+"\n")
+
+		beamed_file.write("Sequence has a comprehension burden of: %d" % (cb))
+
+
+
 '''
 Beam Search Sequencer - Explore graph based 
 on a beam_width number of possibilities
@@ -30,6 +41,13 @@ class BSS:
 
 		return random_docs_to_try
 
+	def pretty_print_doc_concepts(self, doc, concepts):
+		print("Url: " + doc)
+		cs = ""
+		for x in concepts:
+			cs = cs +" ,"+x.label
+		print("Concepts: " + cs)
+		print("\n")
 
 	def generate_beam_sequence(self, lesson_plan):
 		comprehension_burden_calculator = CB(lesson_plan)
@@ -39,6 +57,14 @@ class BSS:
 		all_docs = url_to_content.keys()
 
 		doc_to_concepts, doc_to_keys, related_concepts = comprehension_burden_calculator.get_doc_to_key_concepts(3)
+		for doc, concepts in doc_to_concepts.items():
+			self.pretty_print_doc_concepts(doc, concepts)
+
+		for doc, key_concepts in doc_to_keys.items():
+			print("Url: " + doc)
+			print("Concepts: ", key_concepts)
+			print("\n")
+
 		concept_to_score = comprehension_burden_calculator.get_concept_to_global_score(related_concepts, doc_to_keys)
 
 		beamed_sequence = []
@@ -80,7 +106,7 @@ class BSS:
 		for each in beamed_sequence:
 			logging.debug(each)
 		logging.debug("Comprehension Burden of the lesson plan: %d", cb)
-		return beamed_sequence
+		return beamed_sequence, cb
 
 
 '''
@@ -126,7 +152,8 @@ def runner():
 	bss = BSS(beam_width)
 	lesson_plan = LP(filepath)
 
-	bss.generate_beam_sequence(lesson_plan)
+	sequence, cb = bss.generate_beam_sequence(lesson_plan)
+	write_to_file(filepath, sequence, cb)
 
 
 if __name__ == "__main__":
