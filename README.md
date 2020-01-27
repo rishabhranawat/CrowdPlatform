@@ -14,6 +14,8 @@ A. Venkataraman, R. Ranawat, S. Vakil, J. Chen, S. Jagabathula, L. Subramanian. 
 [Data-driven Probabilistic Framework for Student Learning](https://rishabhranawat.github.io/public/documents/icml_data_driven_student.pdf)
 A. Venkataraman, R. Ranawat, S. Iyer, S. Jagabathula, L. Subramanian. ICML/IJCAI Workshop on AI and Computational Psychology: Theories, Algorithms and Applications (CompPsy), July 2018
 
+Please reach out to read the latest draft of the paper that covers the recent development of the platform.
+
 #### Usage
 Install Python dependencies with the [pip](https://pip.pypa.io/en/stable/installing/) package
 manager using
