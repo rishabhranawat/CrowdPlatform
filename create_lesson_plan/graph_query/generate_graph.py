@@ -317,4 +317,25 @@ kg.add_edges_from([("Machine Learning", "Reinforcement Learning"),
     ("Reinforcement Learning", "Adversarial Machine Learning")
     ])
 
+# Data Science
+# kg.add_node("Data Science", NodeType="CourseNode")
+# kg.add_edge("Computer Science", "Data Science")
+
+# kg.add_node("Probability and Statistics", NodeType="TopicNode")
+# kg.add_node("Programming for Data Science", NodeType="ConceptNode")
+# kg.add_node("Inference and Representation", NodeType="ConceptNode")
+# kg.add_node("Natural Language Processing with Representation Learning", NodeType="ConceptNode")
+# kg.add_node("Mathematical Tools for Data Science", NodeType="ConceptNode")
+# kg.add_node("Optimization and Computational Linear Algebra", NodeType="ConceptNode")
+
+# kg.add_edges_from([("Data Science", "Probability and Statistics"),
+#     ("Data Science", "Programming for Data Science"),
+#     ("Data Science", "Inference and Representation"),
+#     ("Data Science", "Natural Language Processing with Representation Learning"),
+#     ("Data Science", "Mathematical Tools for Data Science"),
+#     ("Data Science", "Optimization and Computational Linear Algebra"),
+#     ("Data Science", "Policy search"), 
+#     ("Data Science", "Adversarial Machine Learning")
+#     ])
+
 nx.write_gpickle(kg, "graphs/weighted_knowledge_graph.gpickle")

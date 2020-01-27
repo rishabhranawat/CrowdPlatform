@@ -1,0 +1,23 @@
+Schedule for the lesson plan
+http://algo.ics.hawaii.edu/~nodari/teaching/f15/index.html
+
+
+Summary of key-concept(s)
+https://en.wikipedia.org/wiki/Depth-first_search
+
+
+Explains key-concept(s)
+https://www.ics.uci.edu/~eppstein/161/960215.html
+https://jeremykun.com/2013/01/22/depth-and-breadth-first-search/
+http://www.bogotobogo.com/Algorithms/algorithms.php
+https://en.wikipedia.org/wiki/Breadth-first_search
+https://algs4.cs.princeton.edu/41graph
+
+
+Related to key-concept(s)
+https://stackoverflow.com/questions/tagged/depth-first-search?page=2&sort=newest
+https://stackoverflow.com/questions/tagged/depth-first-search+data-structures
+https://codereview.stackexchange.com/questions/tagged/breadth-first-search
+
+
+Sequence has a comprehension burden of: 769

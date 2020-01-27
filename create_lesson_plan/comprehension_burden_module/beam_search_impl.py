@@ -87,6 +87,8 @@ def generateSubOptimalBeamSequence(lp, beamWidth):
 
 	docToConcepts, docToKeys, relatedConcepts = cbCalculator.get_doc_to_key_concepts(3)
 
+	if(beamWidth == None):
+		beamWidth = len(allDocs)
 	lbt = LessonBeamTree(beamWidth)
 	roots = lbt.constructTree(allDocs, allDocs[0:beamWidth])
 
@@ -143,17 +145,44 @@ def getBeamedSequenceAndBurdenCrowdLevel(grouped, beamWidth):
 
 		return total_comprehension_burden
 
-def getTDFSWSequenceAndBurden(grouped):
+def getTDFSWSequenceAndBurden(grouped, algo):
 	total_tdfs_weighted_grouped = 0
 	for k, v in grouped.items():
 		lp = LP(v)
 		cb = CB(lp)
-		total_tdfs_weighted_grouped += cb.get_cb(2, "linearWeighted", "random")
+		total_tdfs_weighted_grouped += cb.get_cb(2, algo, "random")
 	return total_tdfs_weighted_grouped
 
-if __name__ == "__main__":
-	arguments = sys.argv[1:]
-	latestFiles = ["lesson" + str(count) + ".json" for count in xrange(int(arguments[0]), int(arguments[1]))]
+# traversals = ["bfs", "dfs"]
+algoForm = ["beamedMax", "beamed2", "beamed1"]
+def run(lps):
+	
+	fin = ''
+	for eachLpData in lps:
+		results = {}
+		crowdSourced = groupUrls(eachLpData["docs"])
+		lpTitle = eachLpData["lesson_title"]
+
+		beamedMax = getBeamedSequenceAndBurdenCrowdLevel(crowdSourced, None)
+		results['beamedMax'] = beamedMax/beamedMax
+		results['beamed2'] = getBeamedSequenceAndBurdenCrowdLevel(crowdSourced, 2)/beamedMax
+		results['beamed1'] =  getBeamedSequenceAndBurdenCrowdLevel(crowdSourced, 1)/beamedMax
+
+		# for trave in traversals:
+		# 	cb  = getTDFSWSequenceAndBurden(crowdSourced, trave)
+		# 	results[trave] = cb/beamedMax
+		
+		res = "\\textbf{" + lpTitle.title() + "} "
+		for k in algoForm:
+			v = results[k]
+			res += '& ' + str(round(v, 3)) 
+		res += '\\' + '\\' + '\n\\hline \n'
+		fin += res
+	print(fin)
+
+
+def crowdDataRunner(arguments):
+	latestFiles = ["lesson" + str(count) + ".json" for count in xrange(int(arguments[1]), int(arguments[2]))]
 	onlyfiles = ["lps/crowd_sourced_data/"+f for f in listdir("lps/crowd_sourced_data") if f in latestFiles]
 
 	lps = []
@@ -161,16 +190,21 @@ if __name__ == "__main__":
 		with open(eachfile, 'r') as data:
 			json_data = json.load(data)
 			lps.append(json_data)
+	run(lps)
 
-	results = []
-	for eachLpData in lps:
-		crowdSourced = groupUrls(eachLpData["docs"])
+def runner(arguments):
+	lps = []
+	with open(arguments[1], 'r') as data:
+		json_data = json.load(data)
+		lps.append(json_data)
+	run(lps)
 
-		beamed3 = getBeamedSequenceAndBurdenCrowdLevel(crowdSourced, 3)
-		beamed2 = getBeamedSequenceAndBurdenCrowdLevel(crowdSourced, 2)
-		beamed1 = getBeamedSequenceAndBurdenCrowdLevel(crowdSourced, 1)
-		tdfsw  = getTDFSWSequenceAndBurden(crowdSourced)
-		results.append('Beamed3: ' + str(beamed3/beamed3) +  ' Beamed2: ' + str(beamed2/beamed3) + ' Beamed3: ' + str(beamed1/beamed3) +' TDFSW: ' + str(tdfsw/beamed3))
-	for each in results:
-		print(each)
+
+if __name__ == "__main__":
+	arguments = sys.argv[1:]
+	if(arguments[0] == 'cd'):
+		crowdDataRunner(arguments)
+	else:
+		runner(arguments)
+
 

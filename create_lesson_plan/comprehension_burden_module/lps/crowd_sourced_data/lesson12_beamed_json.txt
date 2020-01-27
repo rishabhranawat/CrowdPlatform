@@ -1,0 +1,18 @@
+Summary of key-concept(s)
+https://en.wikipedia.org/wiki/Process_management_%28computing%29
+
+
+Explains key-concept(s)
+http://www.personal.kent.edu/~rmuhamma/OpSystems/Myos/processOperate.htm
+https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem
+
+
+Applications of key-concept(s)
+http://ecomputernotes.com/fundamental/disk-operating-system/what-is-semaphore
+
+
+Related to key-concept(s)
+https://www.studytonight.com/operating-system/process-scheduling
+
+
+Sequence has a comprehension burden of: 147

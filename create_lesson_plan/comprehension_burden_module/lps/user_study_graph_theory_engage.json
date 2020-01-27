@@ -1,0 +1,65 @@
+{
+	"docs" : [
+		{
+			"url" : "https://en.wikipedia.org/wiki/Depth-first_search",
+			"content_type": "Summary"
+		},
+		{
+			"url" : "https://stackoverflow.com/questions/tagged/breadth-first-search?sort=frequent&pageSize=50",
+			"content_type": "Related"
+		},
+		{
+			"url" : "https://www.youtube.com/watch?v=tlPuVe5Otio",
+			"content_type": "Related"
+		},
+		{
+			"url": "http://faculty.ycp.edu/~dbabcock/PastCourses/cs360/lectures/index.html",
+			"content_type": "Index"
+		},
+		{
+			"url": "https://brilliant.org/wiki/depth-first-search-dfs/",
+			"content_type": "Body"
+		},
+		{
+			"url": "https://mitpress.mit.edu/books/introduction-algorithms",
+			"content_type": "Index"
+		},
+		{
+			"url": "http://www3.cs.stonybrook.edu/~algorith/files/topological-sorting.html",
+			"content_type": "Application"
+		},
+		{
+			"url": "https://codereview.stackexchange.com/questions/tagged/breadth-first-search",
+			"content_type": "Related"
+		
+		},
+		{
+			"url": "https://en.wikipedia.org/wiki/Breadth-first_search",
+			"content_type": "Summary"
+		},
+		{
+			"url": "https://en.wikipedia.org/wiki/Post-order_traversal",
+			"content_type": "Summary"
+		},
+		{
+			"url": "https://jeremykun.com/2013/01/22/depth-and-breadth-first-search/",
+			"content_type": "Body"
+		},
+		{
+			"url": "https://en.wikipedia.org/wiki/Expected_linear_time_MST_algorithm",
+			"content_type": "Other"
+		},
+		{
+			"url": "http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap17.htm",
+			"content_type": "Body"
+		},
+		{
+			"url": "http://www.slader.com/textbook/9780262033848-introduction-to-algorithms-3rd-edition",
+			"content_type": "Index"
+		},
+		{
+			"url": "http://algo.ics.hawaii.edu/~nodari/teaching/f15/index.html",
+			"content_type": "Index"
+		}
+	]
+}

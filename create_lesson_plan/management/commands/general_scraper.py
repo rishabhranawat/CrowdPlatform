@@ -13,6 +13,7 @@ class GeneralSeedScraper:
         self.es_indexer = EsIndexer()
     
     def load_doc(self, link, response, source, subject, level):
+        print(link)
         file_type = get_file_type(link, response)[1]
         try:
             if("text/html" in file_type):
@@ -24,6 +25,7 @@ class GeneralSeedScraper:
                 file_name = link.split("/")[-1]
                 data = download_pdf_file(link, file_name, response)
                 r = self.es_indexer.index_document(link, source, subject, 'engage/evaluate', '', '', data)
+                print(r)
         except Exception as e:
             print(e)
             return False
@@ -32,8 +34,10 @@ class GeneralSeedScraper:
         for link in links:
             source = get_domain_from_url(link)
             response = get_page_content_response(link)
-            if(response == None): continue
-            else: self.load_doc(link, response, source, "Computer Science", 2)
+            if(response == None): 
+                continue
+            else: 
+                self.load_doc(link, response, source, "Computer Science", 2)
             time.sleep(2)
         return
 
@@ -42,14 +46,16 @@ class GeneralSeedScraper:
         response = get_page_content_response(link)
         if(response == None): return []
         loaded = self.load_doc(link, response, source, "Computer Science", 1)
-        if(loaded): 
-            links = get_fro_links([], link, response)
-            return links
-        else: return []
+        return []
+        # if(loaded): 
+        #     links = get_fro_links([], link, response)
+        #     return links
+        # else: return []
 
     def run_scraper(self, link):
+        print(link)
         links = self.level_depth_a(link)
-        self.level_depth_b(links)
+        # self.level_depth_b(links)
         return
         
 

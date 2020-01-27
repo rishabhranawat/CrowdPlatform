@@ -1,0 +1,14 @@
+[ 
+   { 
+      "https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx":"Explains key-concept(s)",
+      "https://www.edureka.co/blog/k-means-clustering-algorithm/":"Explains key-concept(s)",
+      "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00sc-introduction-to-computer-science-and-programming-spring-2011/unit-3/lecture-20-more-clustering/":"Schedule for the lesson plan",
+      "http://home.deib.polimi.it/matteucc/Clustering/tutorial_html/index.html":"Summary of key-concept(s)",
+      "http://www.cs.cmu.edu/~aarti/Class/10601/lectures.shtml":"Schedule for the lesson plan",
+      "https://en.wikipedia.org/wiki/Mixture_models":"Explains key-concept(s)",
+      "http://scikit-learn.org/stable/modules/mixture.html":"Explains key-concept(s)",
+      "https://en.wikipedia.org/wiki/Cluster_(statistics)":"Explains key-concept(s)",
+      "http://scikit-learn.org/stable/modules/clustering.html":"Applications of key-concept(s)",
+      "https://people.eecs.berkeley.edu/~jrs/189/":"Schedule for the lesson plan"
+   }
+]

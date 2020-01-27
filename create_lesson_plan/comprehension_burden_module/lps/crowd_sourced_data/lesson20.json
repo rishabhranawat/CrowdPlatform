@@ -1,0 +1,45 @@
+{ 
+   "docs":[ 
+      { 
+         "url":"https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx",
+         "content_type":"Applications of key-concept(s)"
+      },
+      { 
+         "url":"https://www.edureka.co/blog/k-means-clustering-algorithm/",
+         "content_type":"Applications of key-concept(s)"
+      },
+      { 
+         "url":"https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00sc-introduction-to-computer-science-and-programming-spring-2011/unit-3/lecture-20-more-clustering/",
+         "content_type":"Applications of key-concept(s)"
+      },
+      { 
+         "url":"http://home.deib.polimi.it/matteucc/Clustering/tutorial_html/index.html",
+         "content_type":"Applications of key-concept(s)"
+      },
+      { 
+         "url":"http://www.cs.cmu.edu/~aarti/Class/10601/lectures.shtml",
+         "content_type":"Schedule for the lesson plan"
+      },
+      { 
+         "url":"https://en.wikipedia.org/wiki/Mixture_models",
+         "content_type":"Summary of key-concept(s)"
+      },
+      { 
+         "url":"http://scikit-learn.org/stable/modules/mixture.html",
+         "content_type":"Applications of key-concept(s)"
+      },
+      { 
+         "url":"https://en.wikipedia.org/wiki/Cluster_(statistics)",
+         "content_type":"Explains key-concept(s)"
+      },
+      { 
+         "url":"http://scikit-learn.org/stable/modules/clustering.html",
+         "content_type":"Explains key-concept(s)"
+      },
+      { 
+         "url":"https://people.eecs.berkeley.edu/~jrs/189/",
+         "content_type":"Explains key-concept(s)"
+      }
+   ],
+   "lesson_title":"Clustering"
+}

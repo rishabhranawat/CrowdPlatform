@@ -1,0 +1,20 @@
+Schedule for the lesson plan
+http://web.stanford.edu/~ouster/cgi-bin/cs140-spring14/index.php
+http://faculty.salina.k-state.edu/tim/ossg/index.html
+
+
+Summary of key-concept(s)
+http://jcsites.juniata.edu/faculty/rhodes/os/ch8a.htm
+https://stackoverflow.com/a/14070788
+
+
+Explains key-concept(s)
+https://cs.nyu.edu/~gottlieb/courses/2000s/2004-05-fall/os/lectures/lecture-08.html
+https://en.wikipedia.org/wiki/Virtual_memory
+https://en.wikipedia.org/wiki/Memory_management_(operating_systems)
+https://en.wikipedia.org/wiki/C_dynamic_memory_allocation
+https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/9_VirtualMemory.html
+https://gabrieletolomei.wordpress.com/miscellanea/operating-systems/virtual-memory-paging-and-swapping/
+
+
+Sequence has a comprehension burden of: 394

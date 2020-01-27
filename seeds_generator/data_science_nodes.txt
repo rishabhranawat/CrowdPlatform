@@ -1,0 +1,6 @@
+Probability and Statistics for Data Science
+Programming for Data Science
+Inference and Representation
+Natural Language Processing with Representation Learning
+Mathematical Tools for Data Science
+Optimization and Computational Linear Algebra

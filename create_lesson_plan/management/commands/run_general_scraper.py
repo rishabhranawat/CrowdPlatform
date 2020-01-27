@@ -14,22 +14,25 @@ class Command(BaseCommand):
 	def __init__(self):
 		self.visited = set()
 	
-    def get_seed_links(self, file_name):
-        	f = open(file_name, 'r')
-        	lines = f.readlines()
-        	seed_links = [x.strip() for x in lines]
-       	 	f.close()
-        	return seed_links
+	def get_seed_links(self, file_name):
+			f = open(file_name, 'r')
+			lines = f.readlines()
+			seed_links = [x.strip() for x in lines]
+			f.close()
+			return seed_links
 
 	
 	def handle(self, *args, **options):
-		seeds = self.get_seed_links('seeds_generator/seeds_os_feb.txt')
-                res_seeds = []
-                for each_link in seeds:
-                    num = len(IndexDocument.objects.filter(link=each_link))
-                    if(num == 0): 
-                        res_seeds.append(each_link)
-                final_seeds = res_seeds
-                p = Pool(2)
-                func = partial(spawn_tasks)
-                p.map(func, final_seeds)
+		seeds = self.get_seed_links('seeds_generator/seeds_ml.txt')
+		res_seeds = []
+		for each_link in seeds:
+			print(each_link)
+			num = len(IndexDocument.objects.filter(link=each_link))
+			if(num == 0): 
+				res_seeds.append(each_link)
+		final_seeds = res_seeds
+		# p = Pool(1)
+		# func = partial(spawn_tasks)
+		# p.map(func, final_seeds)
+		for each in final_seeds:
+			spawn_tasks(each)

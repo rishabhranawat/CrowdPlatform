@@ -77,8 +77,8 @@
 		}
 
 		.caret.caret-reversed {
-		    border-top-width: 0;
-		    border-bottom: 8px solid #000000;
+			border-top-width: 0;
+			border-bottom: 8px solid #000000;
 		}
 	</style>
 
@@ -109,20 +109,20 @@
 		<table class="table table-hover" id="table1" name="table1">
 
 		  <thead>
-			<blockquote>Engage</blockquote>
+			<blockquote>Rishabh Engage</blockquote>
 		  </thead>
 
 		  <tbody>
 			{% for enlink in engage_urls %}
 			<tr id="engage_{{enlink.item_id}}_row">
 				
-			  	<div class="col-xs-12 col-lg-12 col-md-12">
-				  	<div class="thumbnail">
-				  		<div class="caption">
+				<div class="col-xs-12 col-lg-12 col-md-12">
+					<div class="thumbnail">
+						<div class="caption">
 							<h4><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a>
 								<div class="btn-group edit">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								    <span class="glyphicon glyphicon-cog"></span>
+									<span class="glyphicon glyphicon-cog"></span>
 									</button>
 									<ul class="dropdown-menu" style="text-align:center">
 										<li>
@@ -142,6 +142,19 @@
 											<button onclick="reorder_phase({{enlink.pk}}, 'engage', 'evaluate');" type="button" class="btn btn-default editor-buttons">To Engage</button>
 										</li>
 									</ul>
+
+									<div class="dropdown">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-th-list"></span></button>
+										<ul class="dropdown-menu">
+											<li><a href="#" id="">Schedule for the lesson plan</a></li>
+											<li><a href="#" id="">Summary of key-concept(s)</a></li>
+											<li><a href="#" id="">Explains key-concept(s)</a></li>
+											<li><a href="#" id="">Applications of key-concept(s)</a></li>
+											<li><a href="#" id="">Related to key-concept(s)</a></li>
+											<li><a href="#" id="">Unrelated to the lesson plan</a></li>
+										</ul>
+									</div>
+
 								</div>
 
 							</h4>
@@ -171,7 +184,7 @@
 							</span >
 							<p>{{ enlink.desc }}</p>  
 						</div>
-				  	</div>
+					</div>
 				</div>
 			
 			</tr> 
@@ -196,14 +209,14 @@
 			<input type="hidden" id="evaluatetitle_{{enlink.item_id}}" name="evaluatetitle_{{enlink.item_id}}" value="{{enlink.title}}"/>
 
 
-		  	<tr id="evaluate_{{enlink.item_id}}_row">
+			<tr id="evaluate_{{enlink.item_id}}_row">
 				<div class="col-sm-12 col-md-12 col-lg-12">
 					<div class="thumbnail">
 						<div class="caption">
-				  			<h4 ><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a>
+							<h4 ><a href="{{ enlink.url }}" target="_blank">{{ enlink.title }}</a>
 							<div class="btn-group edit">
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							    <span class="glyphicon glyphicon-cog"></span>
+								<span class="glyphicon glyphicon-cog"></span>
 								</button>
 								<ul class="dropdown-menu" style="text-align:center">
 									<li>
@@ -222,7 +235,7 @@
 								</ul>
 							</div>
 								
-				  			</h4>
+							</h4>
 							{% for t, v in eva_url_to_tag.items %}
 								  {% if t.url == enlink.url %}
 										{% for each_tag in v%}
@@ -253,7 +266,7 @@
 						</div>
 					</div>
 				</div>
-		  	</tr>
+			</tr>
 		  {% endfor %}  
 
 		</tbody>

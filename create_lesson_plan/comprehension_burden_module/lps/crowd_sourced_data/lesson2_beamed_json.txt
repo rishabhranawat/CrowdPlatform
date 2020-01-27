@@ -1,0 +1,16 @@
+Schedule for the lesson plan
+https://datascienceplus.com/category/regression-models
+
+
+Summary of key-concept(s)
+http://www.biostathandbook.com/simplelogistic.html
+
+
+Applications of key-concept(s)
+https://docs.microsoft.com/en-us/sql/analysis-services/data-mining/microsoft-logistic-regression-algorithm-technical-reference
+https://stats.idre.ucla.edu/stata/dae/logistic-regression/
+https://www.r-bloggers.com/how-to-perform-a-logistic-regression-in-r/
+https://www.medcalc.org/manual/logistic_regression.php
+
+
+Sequence has a comprehension burden of: 63

@@ -1,0 +1,25 @@
+Schedule for the lesson plan
+http://www.cs.cmu.edu/~aarti/Class/10601/lectures.shtml
+
+
+Summary of key-concept(s)
+https://en.wikipedia.org/wiki/Mixture_models
+
+
+Explains key-concept(s)
+http://scikit-learn.org/stable/modules/clustering.html
+https://en.wikipedia.org/wiki/Cluster_(statistics)
+
+
+Applications of key-concept(s)
+https://msdn.microsoft.com/en-us/library/azure/dn905944.aspx
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00sc-introduction-to-computer-science-and-programming-spring-2011/unit-3/lecture-20-more-clustering/
+https://www.edureka.co/blog/k-means-clustering-algorithm/
+
+
+Related to key-concept(s)
+http://home.deib.polimi.it/matteucc/Clustering/tutorial_html/index.html
+http://scikit-learn.org/stable/modules/mixture.html
+
+
+Sequence has a comprehension burden of: 622

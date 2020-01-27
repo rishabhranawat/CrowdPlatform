@@ -1,0 +1,22 @@
+Schedule for the lesson plan
+http://www.cs.cornell.edu/courses/cs6780/2015sp/
+http://www.cs.cmu.edu/~aarti/Class/10601/lectures.shtml
+
+
+Summary of key-concept(s)
+https://en.wikipedia.org/wiki/Class_membership_probabilities
+https://en.wikipedia.org/wiki/Classification_(machine_learning)
+
+
+Explains key-concept(s)
+http://www.bogotobogo.com/python/scikit-learn/Artificial-Neural-Network-ANN-8-Deep-Learning-1-Image-Recognition-Image-Uploading.php
+https://en.wikipedia.org/wiki/Supervised_classification
+https://gradebuddy.com/doc/1756754/reducing-data-dimension
+
+
+Related to key-concept(s)
+https://en.wikipedia.org/wiki/Multilayer_perceptron
+http://www.teachingtree.co/cs/
+
+
+Sequence has a comprehension burden of: 1268

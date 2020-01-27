@@ -1,6 +1,11 @@
 import sys
 import random
 import logging
+import json
+import time
+
+from os import listdir
+from os.path import isfile, join
 
 from comprehension_burden import *
 
@@ -8,9 +13,13 @@ from comprehension_burden import *
 logging.basicConfig(level=logging.DEBUG)
 
 
+format = ["Schedule for the lesson plan", "Summary of key-concept(s)","Explains key-concept(s)", "Applications of key-concept(s)","Related to key-concept(s)", "Other"]
+
+
 def write_to_file(filepath, sequence, cb):
 	beamed_filepath = filepath.replace(".txt", "_beamed.txt")
 
+	beamed_filepath = filepath.replace(".json", "_beamed_json.txt")
 	with open(beamed_filepath, "w") as beamed_file:
 		for each_doc in sequence:
 			beamed_file.write(each_doc+"\n")
@@ -155,9 +164,134 @@ def runner():
 	sequence, cb = bss.generate_beam_sequence(lesson_plan)
 	write_to_file(filepath, sequence, cb)
 
+def group_urls(docs):
+	grouped = {}
+	for d in docs:
+		typ = d["content_type"]
+		if(typ in grouped):
+			grouped[typ].append(d["url"])
+		else:
+			grouped[typ] = [d["url"]]
+	return grouped
+
+def all_urls(docs):
+	urls = []
+	for each in docs:
+		urls.append(each["url"])
+	return urls
+
+def get_burden_for_sequence(sequence):
+	au = sequence
+	lesson_plan_Td = LP(au)
+	cb = CB(lesson_plan_Td)
+	tdfsw = cb.get_cb_for_sequence_provided(2, sequence)
+	return tdfsw
+
+
+def runner_grouped():
+	arguments = sys.argv[1:]
+
+	bss = BSS(5)
+	grouped_lesson_plans = []
+
+	latest_files = ["lesson" + str(count) + ".json" for count in xrange(int(arguments[0]), int(arguments[1]))]
+	onlyfiles = ["lps/crowd_sourced_data/"+f for f in listdir("lps/crowd_sourced_data") if f in latest_files]
+
+	lesson_plans = []
+
+	for eachfile in onlyfiles:
+		with open(eachfile, 'r') as data:
+			json_data = json.load(data)
+			lesson_plans.append(json_data)
+
+	burdens = []
+	for each_lesson_plan_json_data in lesson_plans:
+		
+		# calculating topic DFS weighted
+		# tdfsw_time = time.time()
+		# au = all_urls(each_lesson_plan_json_data["docs"])
+		# lesson_plan_Td = LP(au)
+		# cb = CB(lesson_plan_Td)
+		# tdfsw = cb.get_cb(2, "random", "random")
+		# tdfsw_time = time.time() - tdfsw_time
+
+		bss_sequence, bss_cb = bss.generate_beam_sequence(LP(all_urls(each_lesson_plan_json_data["docs"])))
+
+		grouped_urls = group_urls(each_lesson_plan_json_data["docs"])
+
+		# print("RANDOM GROUPED")
+		# total_random = 0
+		# for k, v in grouped_urls.items():
+		# 	lesson_plan_a = LP(v)
+		# 	cb = CB(lesson_plan_a)
+		# 	total_random += cb.get_cb(2, "random", "random")
+
+		# calculating beamed, crowd sourced
+		print("BEAM")
+		typ_to_sequence = {}
+		total_comprehension_burden = 0
+		for k, v in grouped_urls.items():
+			lesson_plan = LP(v)
+			sequence, cb = bss.generate_beam_sequence(lesson_plan)
+			typ_to_sequence[k] = sequence
+			total_comprehension_burden += cb
+		
+		final_sequence = []
+		for each in format:
+			if(each in typ_to_sequence):
+				final_sequence.extend(typ_to_sequence[each])
+
+
+		actual_burden = get_burden_for_sequence(final_sequence)
+
+
+		# print("TDFSW GROUPED")
+		# grouped_tdfs_time = time.time()
+		# total_tdfs_weighted_grouped = 0
+		# for k, v in grouped_urls.items():
+		# 	lesson_plan_a = LP(v)
+		# 	cb = CB(lesson_plan_a)
+		# 	total_tdfs_weighted_grouped += cb.get_cb(2, "linearWeighted", "random")
+		# grouped_tdfs_time = time.time() - grouped_tdfs_time
+
+		# burdens.append(
+			
+		# 	# ['Random: ' + str(tdfsw/total_comprehension_burden) + 
+		# 	[' Crowd Sourced Beam Search: ' + str(total_comprehension_burden/total_comprehension_burden) + 
+		# 	' TDFS-Grouped: ' + str(total_tdfs_weighted_grouped/total_comprehension_burden) + 
+		# 	' Random-Grouped: ' + str(total_random/total_comprehension_burden)
+		# 	]
+		
+		# )
+	
+		print('BSS')
+		for each in bss_sequence:
+			print(each)
+
+		print('Crowd BSS')
+		for each in final_sequence:
+			print(each)
+
+
+		burdens.append(
+			['BSS: ' + str(bss_cb/actual_burden), ' Crowd BSS: ' + str(actual_burden/actual_burden)]
+		)
+
+	for each in burdens:
+		print(each)
+
+
+	# final_sequence = []
+	# for each in format:
+	# 	if(each in typ_to_sequence):
+	# 		final_sequence.append(each)
+	# 		final_sequence.extend(typ_to_sequence[each])
+	# 		final_sequence.append("\n")
+	# write_to_file(filepath, final_sequence, total_comprehension_burden)
+
 
 if __name__ == "__main__":
-	runner()
+	runner_grouped()
 
 
 

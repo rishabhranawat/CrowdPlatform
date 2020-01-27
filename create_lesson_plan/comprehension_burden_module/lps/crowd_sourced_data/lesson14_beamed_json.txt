@@ -1,0 +1,19 @@
+Schedule for the lesson plan
+http://web.engr.oregonstate.edu/~huanlian/teaching/cs570/
+
+
+Explains key-concept(s)
+https://www.tutorialspoint.com/data_structures_algorithms/divide_and_conquer.htm
+https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-3-divide-and-conquer-strassen-fibonacci-polynomial-multiplication
+
+
+Applications of key-concept(s)
+https://dzone.com/articles/algorithm-week-strassens
+
+
+Related to key-concept(s)
+https://www.geeksforgeeks.org/analysis-algorithm-set-4-master-method-solving-recurrences/
+http://www.teachingtree.co/cs/
+
+
+Sequence has a comprehension burden of: 638

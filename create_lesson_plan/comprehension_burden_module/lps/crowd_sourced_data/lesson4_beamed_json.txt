@@ -1,0 +1,17 @@
+Schedule for the lesson plan
+http://algo.ics.hawaii.edu/~nodari/teaching/f15/index.html
+
+
+Summary of key-concept(s)
+https://en.wikipedia.org/wiki/Optimal_substructure
+https://en.wikipedia.org/wiki/Exchange_algorithm
+
+
+Applications of key-concept(s)
+https://www.geeksforgeeks.org/greedy-algorithms-set-1-activity-selection-problem/
+http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap17.htm
+https://www.geeksforgeeks.org/greedy-algorithms-set-3-huffman-coding/
+https://www.hackerearth.com/practice/algorithms/greedy/basics-of-greedy-algorithms/
+
+
+Sequence has a comprehension burden of: 866

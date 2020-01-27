@@ -122,18 +122,25 @@ def get_index_results(input_title, lesson_outline, phase):
     return links
 
 
-
 '''
 Gets the closest node label and passes it to 
 GQF which in turn returns related queries.
 '''
 def get_queries_knowledge_graph(query):
+
     gqf = collective_cache[gqf_key]
-    query = query.replace("\n", "")
-    if(not gqf.kg.has_node(query)):
-        query_node = get_relevant_queries_sent2vec(query).replace("\n", "").strip()
+    query = str(query.replace("\n", "").strip()).title()
+
+
+    if(not gqf.kg.has_node(str(query))):
+        # query_node = get_relevant_queries_sent2vec(query).replace("\n", "").strip()
+        gqf = collective_cache[gqf_key]
+        new_label = query.replace("\n", "").strip()
+        gqf.add_to_kg(None, new_label)
+        query_node = new_label
     else:
         query_node = query
+
     queries = gqf.get_queries(query, query_node)
     return queries
 
@@ -151,8 +158,6 @@ def run_topic_search(duplicate_dict, query_set, type1, input_title, input_grade)
             generateDictAndLinksList(es_links, duplicate_dict, new_link_list)
     output = {'dups': duplicate_dict, 'links': new_link_list}
     return output
-
-
 
 
 '''
@@ -278,8 +283,8 @@ class GenerateLessonPlan(View):
         return render(request, 'generate.html', {'form':self.form})
 
     def post(self, request, todo, *args, **kwargs):
-        if(collective_cache[sent2Vec_process_key] == None):
-            start_subprocess_sent2vec()
+        # if(collective_cache[sent2Vec_process_key] == None):
+        #     start_subprocess_sent2vec()
 
         if(todo == '1'):
           if 'input_title' in request.POST:
@@ -445,7 +450,7 @@ class UserLessonPlan(View):
             eng_url_to_tag[each_url] = Tag.objects.filter(lesson_fk=l, eng_url_fk=each_url)
 
         eva_url_to_tag = {}
-        for each_url in evaluate_urls:
+        for each_url in evaluate_urls:  
             eva_url_to_tag[each_url] = Tag.objects.filter(lesson_fk=l, eva_url_fk=each_url)
 
         return l, engage_urls, evaluate_urls, eng_url_to_tag, eva_url_to_tag
@@ -847,6 +852,7 @@ class SearchLessonPlans(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'search_results_terse.html', {'form':self.form})
 
+
     def post(self, request, *args, **kwargs):
 
         if(request.method == 'POST'):
@@ -856,10 +862,18 @@ class SearchLessonPlans(View):
             input_title = request.POST['input_title']
 
             form = SearchResultsForm({"subject_name": subject, "course_name": course_name, "input_title":input_title})
-            lessons = lesson.objects.filter(Q(subject__icontains = subject, 
-                course_name__icontains=course_name,
-                lesson_title__icontains=input_title,
-                grade=input_grade, stage=1)).order_by('-score')
+
+            if(len(input_title) == 0 and len(course_name) == 0):
+                lessons = lesson.objects.filter(Q(subject__icontains = subject)  and
+                                                Q(stage=1)).order_by('-score')
+            elif(len(input_title) == 0):
+                lessons = lesson.objects.filter(Q(course_name__icontains=course_name) and
+                                                Q(stage=1)).order_by('-score')
+            else:
+                lessons = lesson.objects.filter(Q(course_name__icontains=course_name) |
+                                               Q(lesson_title__icontains=input_title) and
+                                               Q(stage=1)).order_by('-score')
+
             
             return render(request, 'search_results_terse.html', 
                 {'lessons':lessons, "form":form})

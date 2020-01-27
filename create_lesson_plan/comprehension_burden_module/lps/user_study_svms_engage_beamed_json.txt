@@ -1,0 +1,11 @@
+http://math.arizona.edu/~hzhang/math574m.html
+https://www.youtube.com/watch?v=_PwhiWxHK8o
+https://www.youtube.com/watch?v=N1vOgolbjSc
+http://curtis.ml.cmu.edu/w/courses/index.php/Support_Vector_Machines
+https://nelsonslog.wordpress.com/2015/08/30/machine-learning-support-vector-machines/
+https://en.wikipedia.org/wiki/Support_vector_machines
+https://nlp.stanford.edu/IR-book/html/htmledition/support-vector-machines-and-machine-learning-on-documents-1.html
+https://www.mathworks.com/help/stats/support-vector-machines-for-binary-classification.html
+https://en.wikipedia.org/wiki/Regularization_perspectives_on_support_vector_machines
+https://nlp.stanford.edu/IR-book/html/htmledition/extensions-to-the-svm-model-1.html
+Sequence has a comprehension burden of: 408

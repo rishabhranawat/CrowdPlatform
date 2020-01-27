@@ -1,0 +1,65 @@
+{
+	"docs" : [
+		{
+			"url" : "http://curtis.ml.cmu.edu/w/courses/index.php/Support_Vector_Machines",
+			"concepts" : [],
+			"key_concepts": ["Support Vector Machines"],
+			"content_type": "Summary"
+		},
+		{
+			"url" : "https://nlp.stanford.edu/IR-book/html/htmledition/support-vector-machines-and-machine-learning-on-documents-1.html",
+			"concepts" : [],
+			"key_concepts": [],
+			"content_type": "Application"
+		},
+		{
+			"url" : "https://www.youtube.com/watch?v=N1vOgolbjSc",
+			"concepts" : [],
+			"key_concepts": ["Support Vector Machines"],
+			"content_type": "Body"
+		},
+		{
+			"url" : "http://math.arizona.edu/~hzhang/math574m.html",
+			"concepts" : [],
+			"key_concepts": [],
+			"content_type": "Index"
+		},
+		{
+			"url" : "https://en.wikipedia.org/wiki/Regularization_perspectives_on_support_vector_machines",
+			"concepts" : ["Regularization and Model Selection"],
+			"key_concepts": ["Regularization and Model Selection"],
+			"content_type": "Related"
+
+		},
+		{
+			"url" : "https://en.wikipedia.org/wiki/Support_vector_machines",
+			"concepts" : [],
+			"key_concepts": ["Support Vector Machines"],
+			"content_type": "Summary"
+		},
+		{
+			"url" : "https://nlp.stanford.edu/IR-book/html/htmledition/extensions-to-the-svm-model-1.html",
+			"concepts" : [],
+			"key_concepts": [],
+			"content_type": "Related"
+		},
+		{
+			"url" : "https://www.mathworks.com/help/stats/support-vector-machines-for-binary-classification.html",
+			"concepts" : [],
+			"key_concepts": [],
+			"content_type": "Application"
+		},
+		{
+			"url" : "https://nelsonslog.wordpress.com/2015/08/30/machine-learning-support-vector-machines/",
+			"concepts" : [],
+			"key_concepts": ["Support Vector Machines"],
+			"content_type": "Summary"
+		},
+		{
+			"url" : "https://www.youtube.com/watch?v=_PwhiWxHK8o",
+			"concepts" : [],
+			"key_concepts": [],
+			"content_type": "Body"
+		}
+	]
+}

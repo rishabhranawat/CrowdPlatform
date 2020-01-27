@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+text {
+  font-family: sans-serif;
+  font-size: 10px;
+}
+
+</style>
+<svg width="960" height="600"></svg>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script>
+
+d3.json("kg_json_dump.json", function(error, graph) {
+  if (error) throw error;
+
+    var width = 960
+    var height = 600;
+
+    nodes = graph.nodes;
+    ogLinks = graph.links;
+
+    nodeToId = {}
+    for (var i = 0; i < nodes.length; i++){
+      nodeToId[nodes[i].id] = i;
+    }
+
+    links = []
+    for (l of ogLinks){
+      rev = {
+        "source" : nodeToId[l["source"]], 
+        "target" : nodeToId[l["target"]]
+      };
+      links.push(rev);
+    }
+
+    var force = d3.layout.force()
+        .nodes(nodes)
+        .links(links)
+        .size([width, height])
+        .linkDistance(100)
+        .charge(-1000)
+        .on("tick", tick)
+        .start();
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+
+    svg.append("svg:defs").selectAll("marker")
+        .data(["arrow"])
+      .enter().append("svg:marker")
+        .attr("id", String)
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 10)
+        .attr("refY", 0)
+        .attr("markerWidth", 10)
+        .attr("markerHeight", 10)
+        .attr("orient", "auto")
+        .append("svg:path")
+        .attr("d", "M 0 0 12 6 0 12 3 6")
+
+    var link = svg.selectAll(".link")
+        .data(force.links())
+        .enter().append("line")
+        .attr("stroke", "black")
+        .attr("class", "link arrow")
+        .attr("marker-end", "url(#arrow)");
+
+    var node = svg.selectAll(".node")
+        .data(force.nodes())
+        .enter().append("g")
+        .attr("class", "node");
+
+    var labels = node.append("text")
+      .text(d => d.id)
+      .attr('x', 12)
+      .attr('y', 6);
+
+    node.append("circle")
+        .attr("r", (d,i) => i ? 10 : 16)
+        .style("fill", (d,i) => i ? "teal" : "brown");
+
+    function tick() {
+        link.attr("x1", function(d) {
+                return d.source.x;
+            })
+            .attr("y1", function(d) {
+                return d.source.y;
+            })
+            .attr("x2", function(d) {
+                return d.target.x;
+            })
+            .attr("y2", function(d) {
+                return d.target.y;
+            });
+
+        node.attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+    }
+});
+</script>

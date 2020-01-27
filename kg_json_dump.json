@@ -1,0 +1,93 @@
+{
+  "directed": true,
+  "graph": {},
+  "nodes": [
+    {
+      "NodeType": "ConceptNode",
+      "id": "Convex Optimization"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Pca"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Files"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Duality"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Variance"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Clustering"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Noise"
+    },
+    {
+      "NodeType": "TopicNode",
+      "id": "Unsupervised Learning"
+    },
+    {
+      "NodeType": "TopicNode",
+      "id": "Linear Programming"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Dfs"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Linear Regression"
+    },
+    {
+      "NodeType": "TopicNode",
+      "id": "Processes"
+    },
+    {
+      "NodeType": "TopicNode",
+      "id": "Deep Learning"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Iteration"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Portfolio Optimization"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Bias"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Scheduling"
+    },
+    {
+      "NodeType": "ConceptNode",
+      "id": "Regression"
+    }
+  ],
+  "links": [
+    {
+      "source": "Unsupervised Learning",
+      "target": "Clustering"
+    },
+    {
+      "source": "Linear Programming",
+      "target": "Duality"
+    },
+    {
+      "source": "Processes",
+      "target": "Files"
+    }
+  ],
+  "multigraph": false
+}

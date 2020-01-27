@@ -16,12 +16,35 @@ import operator
 Lesson Plan Object
 '''
 class LP:
-	def __init__(self, filepath):
-		self.content, self.index = self.get_lpd(filepath)
+	# def __init__(self, filepath):
+	# 	self.content, self.index = self.get_lpd(filepath)
+	# 	self.number_of_docs = len(self.content)
+
+	def __init__(self, urls):
+		self.content, self.index = self.get_lpd_by_url(urls)
 		self.number_of_docs = len(self.content)
 
 	# def __init__(self, docs, index):
 	#     self.content, self.index = docs, index
+
+
+	def get_lpd_by_url(self, urls):
+
+		docs = {}
+		index = {}
+		counter = 0
+
+		logging.debug("Fetching content for documents")
+		for url in urls:
+			try:
+				docs[url] = requests.get(url).content
+				index[url] = counter
+				counter += 1
+			except:
+				print(url, "Error")
+				continue
+		logging.debug("Completed content for documents")
+		return docs, index
 
 	def get_lpd(self, filepath):
 		f = open(filepath, 'r')
@@ -260,7 +283,7 @@ class CB:
 	Get kg labels
 	'''
 	def get_kg_labels(self):
-		kg_path = "../graph_query/graphs/weighted_knowledge_graph.gpickle"
+		kg_path = "/Users/rishabh/CrowdPlatform/create_lesson_plan/graph_query/graphs/knowledge_graph.gpickle"
 		kg = nx.read_gpickle(kg_path)
 		return [str(x) for x in list(kg.nodes())[1:]], kg
 
@@ -487,12 +510,15 @@ class CB:
 
 	def get_cb(self, top_n, typ, base_arrangement):
 		doc_to_concepts, doc_to_keys, related_concepts = self.get_doc_to_key_concepts(top_n)
-
 		concept_to_score = self.get_concept_to_global_score(related_concepts, doc_to_keys)
-		print(doc_to_keys)
+
 		related_concepts = self.get_base_arrangement(related_concepts, concept_to_score, base_arrangement)
 		s = SequenceGenerator(self.kg, related_concepts, concept_to_score)
 		return self.get_cb_for_sequence(typ, s, doc_to_concepts, doc_to_keys)
+
+	def get_cb_for_sequence_provided(self, top_n, docs_sequence):
+		doc_to_concepts, doc_to_keys, related_concepts = self.get_doc_to_key_concepts(top_n)
+		return self.lp_cb(docs_sequence, doc_to_concepts, doc_to_keys)
 
 	def get_sequenced_documents_present(self, top_n, typ, base_arrangement):
 		doc_to_concepts, doc_to_keys, related_concepts = self.get_doc_to_key_concepts(top_n)
@@ -503,6 +529,8 @@ class CB:
 		linear_weighted_sequence = s.get_linear_weighted_sequence()
 		docs_sequence =  s.arrange_docs(linear_weighted_sequence, doc_to_keys)
 		return docs_sequence, doc_to_keys
+
+
 
 
 

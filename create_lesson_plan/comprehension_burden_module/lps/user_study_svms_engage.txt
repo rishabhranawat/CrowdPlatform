@@ -1,5 +1,4 @@
-https://en.wikipedia.org/wiki/Nello_Cristianini
-https://en.wikibooks.org/w/index.php?title=Support_Vector_Machines&action=history
+https://en.wikibooks.org/w/index.php?title=Support_Vector_Machines
 http://svms.org/tutorials/
 http://curtis.ml.cmu.edu/w/courses/index.php/Support_Vector_Machines
 http://svms.org/finance/
@@ -7,13 +6,11 @@ https://nlp.stanford.edu/IR-book/html/htmledition/support-vector-machines-the-li
 https://nlp.stanford.edu/IR-book/html/htmledition/support-vector-machines-and-machine-learning-on-documents-1.html
 https://www.youtube.com/watch?v=N1vOgolbjSc
 http://math.arizona.edu/~hzhang/math574m.html
-https://en.wikibooks.org/w/index.php?title=Support_Vector_Machines&action=edit&section=18
 https://en.wikipedia.org/wiki/Regularization_perspectives_on_support_vector_machines
 http://svms.org/srm/
 https://en.wikipedia.org/wiki/Support_vector_machines
 https://nlp.stanford.edu/IR-book/html/htmledition/extensions-to-the-svm-model-1.html
 https://www.mathworks.com/help/stats/support-vector-machines-for-binary-classification.html
-https://en.wikipedia.org/wiki/John_Shawe-Taylor
 https://nelsonslog.wordpress.com/2015/08/30/machine-learning-support-vector-machines/
 http://svms.org/regression/
 https://www.youtube.com/watch?v=_PwhiWxHK8o

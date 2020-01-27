@@ -1,0 +1,16 @@
+https://mitpress.mit.edu/books/introduction-algorithms
+http://faculty.ycp.edu/~dbabcock/PastCourses/cs360/lectures/index.html
+http://algo.ics.hawaii.edu/~nodari/teaching/f15/index.html
+http://www.slader.com/textbook/9780262033848-introduction-to-algorithms-3rd-edition
+https://brilliant.org/wiki/depth-first-search-dfs/
+https://jeremykun.com/2013/01/22/depth-and-breadth-first-search/
+http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap17.htm
+https://en.wikipedia.org/wiki/Post-order_traversal
+https://en.wikipedia.org/wiki/Breadth-first_search
+https://en.wikipedia.org/wiki/Depth-first_search
+http://www3.cs.stonybrook.edu/~algorith/files/topological-sorting.html
+https://en.wikipedia.org/wiki/Expected_linear_time_MST_algorithm
+https://stackoverflow.com/questions/tagged/breadth-first-search?sort=frequent&pageSize=50
+https://codereview.stackexchange.com/questions/tagged/breadth-first-search
+https://www.youtube.com/watch?v=tlPuVe5Otio
+Sequence has a comprehension burden of: 2062

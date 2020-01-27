@@ -15,7 +15,7 @@ from create_lesson_plan.pyms_cog import *
 
 class Command(BaseCommand):
 	def __init__(self):
-	    self.links = set()
+		self.links = set()
 
 	def get_existing(self, file_name):
 		l = []
@@ -25,14 +25,14 @@ class Command(BaseCommand):
 		return res
 
 	def dump_visited_queries(self, nodes):
-		with open('seeds_generator/visited_queries_os_feb.txt', 'a') as f:
+		with open('seeds_generator/visited_queries_data_science.txt', 'a') as f:
 			for each_node in nodes:
 				f.write(each_node)
 				f.write("\n")
 		return
 
 	def get_graph_nodes(self):
-		visited_queries = self.get_existing('seeds_generator/visited_queries_os_feb.txt')
+		visited_queries = self.get_existing('seeds_generator/visited_queries_data_science.txt')
 		gqf = GraphQueryFormulator()
 		nodes = gqf.kg.nodes
 		l = []
@@ -42,24 +42,24 @@ class Command(BaseCommand):
 		return l
 
 	def get_links_query(self, query, f):
-                typ = ["", "homework final exams filetype:pdf", "filetype:pdf"]
+		typ = ["", "homework final exams filetype:pdf", "filetype:pdf"]
 		for each in typ:
-                    results = bing_search(query+" "+each, 20)
-                    for each_link in results:
-                        try:
-                                resp = requests.get(each_link['Url'])
-                                f.write(resp.url.encode('utf-8'))
-                                f.write("\n")
-                        except Exception, e:
-                                print("random error", e)
-                                continue
+			results = bing_search(query+" "+each, 20)
+			for each_link in results:
+				try:
+					resp = requests.get(each_link['Url'])
+					f.write(resp.url.encode('utf-8'))
+					f.write("\n")
+				except Exception, e:
+					print("random error", e)
+					continue
 		return
 
 	def handle(self, *args, **options): 
 		# get query nodes
-		queries = self.get_existing("seeds_generator/os_nodes.txt")
+		queries = self.get_existing("seeds_generator/data_science_nodes.txt")
 		
-		f = open('seeds_generator/seeds_os_feb.txt', 'a')
+		f = open('seeds_generator/seeds_data_science.txt', 'a')
 		
 		for query in queries:
 			self.get_links_query(query, f)
@@ -68,5 +68,5 @@ class Command(BaseCommand):
 
 		self.dump_visited_queries(queries)
 		return
-                
+				
 
