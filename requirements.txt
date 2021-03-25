@@ -112,7 +112,7 @@ python-dateutil==2.6.0
 python-simhash==0.1
 pytz==2016.10
 pyxattr==0.5.0
-PyYAML==3.10
+PyYAML==5.4
 queuelib==1.4.2
 requests==2.18.4
 roman==2.0.0
