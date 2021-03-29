@@ -100,7 +100,7 @@ pycrypto==2.6.1
 pycurl==7.19.0
 PyDispatcher==2.0.5
 pydot==1.2.3
-Pygments==2.2.0
+Pygments==2.7.4
 pygpgme==0.3
 pyliblzma==0.5.3
 pyOpenSSL==16.2.0
