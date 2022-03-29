@@ -75,7 +75,7 @@ numpy==1.13.3
 oauth2client==2.2.0
 packaging==16.8
 pandas==0.22.0
-paramiko==1.15.1
+paramiko==2.10.1
 parsel==1.1.0
 pathlib==1.0.1
 pathlib2==2.2.1
